@@ -1,0 +1,17 @@
+{
+  "name": "talkssharing",
+  "version": "1.0.0",
+  "description": "Talks sharing - Restfull service under Node.js based on simple JS (it's partially got from http://eloquentjavascript.net/). It uses libs like http, ecstatic, fs and shows long pulling technique",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "Dmitry Y",
+  "license": "ISC",
+  "dependencies": {
+    "ecstatic": "^1.4.0",
+    "fs": "0.0.2",
+    "http": "0.0.0"
+  }
+}
