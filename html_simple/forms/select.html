@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Select</title>
+</head>
+<body>
+    <select size="2" multiple >
+        <option value="1">One</option>
+        <option value="2">Two</option>
+        <option value="3">Three</option>
+    </select>
+    <span id="result"></span>
+    <script>
+        var select = document.querySelector('select');
+        var result = document.querySelector('#result');
+        select.addEventListener('change', function(event){
+            var options = select.options;
+            var sum = 0;
+            for (var i = 0; i < options.length; i++){
+                var option = options[i];
+                if (option.selected){
+                    sum += Number(option.value);
+                }
+            }
+            result.textContent = sum;
+        });
+    </script>
+</body>
+</html>

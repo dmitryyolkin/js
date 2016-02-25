@@ -1,0 +1,13 @@
+<html>
+    <canvas width="100" height="100"></canvas>
+    <script>
+        var canvas = document.querySelector('canvas');
+        var context = canvas.getContext('2d');
+
+        context.beginPath(); //begin painting lines
+        context.moveTo(70, 10);
+        context.lineTo(40, 40);
+        context.lineTo(100, 40);
+        context.fill(); //fill triangle with black background (context.fillStyle to change color)
+    </script>
+</html>

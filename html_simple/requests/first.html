@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>First</title>
+
+    <link rel="stylesheet" type="text/css" href="../css/style.css">
+</head>
+<body>
+    <p></p>
+    <p><button onclick="goTo()">Go to second</button></p>
+    <p><button onclick="showFruitsXML()">Get fruits (xml)</button></p>
+    <p><button onclick="showFruitsJSON()">Get fruits (json)</button></p>
+    <script>
+        function goTo(){
+            var request = new XMLHttpRequest();
+            request.open('GET', 'second.html', true);
+            request.addEventListener('load', function(){
+                console.log('second.html is loaded');
+            });
+            request.send(null);
+        }
+
+        function showFruitsXML(){
+            var request = new XMLHttpRequest();
+            request.open('GET', './fruits.xml', true);
+            request.addEventListener('load', function(){
+                var fruits = request.responseXML.querySelectorAll('fruit');
+                for (var i = 0; i < fruits.length; i++) {
+                    var fruit = fruits[i];
+                    var p = document.createElement('p');
+                    p.textContent = fruit.getAttribute('name');
+                    document.body.appendChild(p);
+                }
+            });
+            request.send();
+        }
+        function showFruitsJSON(){
+            var request = new XMLHttpRequest();
+            request.open('GET', './fruits.json', true);
+            request.addEventListener('load', function(){
+                var fruits = JSON.parse(request.responseText);
+                console.log(fruits)
+            });
+            request.send();
+        }
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Test style</title>
+    </head>
+    <body>
+        <p style="color: red; border: solid 3px">Red text in solid border</p>
+        <p style="display: none">Invisible</p>
+
+        <button onclick="changeColor()">Change color</button>
+        <button onclick="makeVisible()">Make visible</button>
+
+        <script>
+            function changeColor(){
+                var paragraphs = document.body.getElementsByTagName('p');
+                for(var i = 0; i < paragraphs.length; i++){
+                    var p = paragraphs[i];
+                    if (p.hasAttribute('style')){
+                        console.log('current color: ' + p.style.color);
+                        p.style.color = 'green';
+                    }
+                }
+            }
+
+            function makeVisible(){
+                var parags = document.body.getElementsByTagName('p');
+                for (var i = 0; i < parags.length; i++) {
+                    var p = parags[i];
+                    if (p.hasAttribute('style') && p.style.hasOwnProperty('display')){
+                        console.log('display option: ' + p.style.display);
+                        p.style.display = '';
+                    }
+                }
+            }
+        </script>
+    </body>
+</html>

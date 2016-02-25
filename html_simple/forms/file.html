@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Choose file</title>
+</head>
+<body>
+    <!--multiple attribute allows to choose more than one file -->
+    <input type="file" multiple>
+    <script>
+        //simple implementation for file reading
+        function readFileSimple(file){
+            //read file asynchoniously
+            var fileReader = new FileReader();
+            fileReader.addEventListener('load', function(event){
+                console.log(fileReader.result);
+            });
+            fileReader.addEventListener('error', function(event){
+                console.log('Error: ' + fileReader.error);
+            });
+            fileReader.readAsText(file);
+        }
+
+        //read file with promises
+        function readFileWithPromise(file){
+            return new Promise(function(succeed, fail){
+                var reader = new FileReader();
+                reader.addEventListener('load', function(event){
+                    succeed(reader.result);
+                });
+                reader.addEventListener('error', function(event){
+                    fail(reader.error);
+                });
+                reader.readAsText(file);
+            });
+        }
+
+        var fileChooser = document.querySelector('input');
+        //change event is fired when some other files are chosen
+        fileChooser.addEventListener('change', function(event){
+            var files = fileChooser.files;
+            for (var i = 0; i < files.length; i++){
+                var file = files[i];
+                //print details
+                console.log(file.name);
+                console.log(file.size);
+                console.log(file.type); //text/html, jpeg and so on - usually valid for media files
+
+                //readFileSimple(file);
+                readFileWithPromise(file).then(function(result){
+                    console.log(result);
+                }).catch(function(error){
+                    console.log(error)
+                });
+            }
+        });
+    </script>
+</body>
+</html>

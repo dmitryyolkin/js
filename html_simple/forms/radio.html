@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Radio</title>
+</head>
+<body>
+    <input type="radio" name="color" value="red"> Red
+    <input type="radio" name="color" value="blue"> Blue
+    <script>
+        var radios = document.getElementsByName('color');
+        for (var i = 0; i < radios.length; i++){
+            radios[i].addEventListener('change', function(event){
+                document.body.style.background = event.target.value;
+            })
+        }
+    </script>
+</body>
+</html>

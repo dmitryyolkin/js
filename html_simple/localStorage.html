@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Local Storage</title>
+</head>
+<body>
+    <script>
+        //read
+        console.log(localStorage.getItem('key1'));//null
+        console.log(localStorage.key2);//underfined
+
+        //set
+        localStorage.setItem('key1', 'value1');
+        localStorage.key2 = 'value2';
+
+        console.log(localStorage.getItem('key1'));
+        console.log(localStorage.key2);
+
+        //remove
+        localStorage.removeItem('key1');
+        localStorage.removeItem('key2');
+        console.log(localStorage.getItem('key1'));//null
+        console.log(localStorage.key2);//underfined
+    </script>
+</body>
+</html>

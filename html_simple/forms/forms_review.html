@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Form review</title>
+</head>
+<body>
+    <p><input type="text" value="abc">(text)</p>
+    <p><input type="password" value="abc">password</p>
+    <!-- checked значит, что checkbox включен -->
+    <p><input type="checkbox" checked>checkbox</p>
+    <p>
+        <input type="radio" value="A" name="choise">
+        <input type="radio" value="B" name="choise" checked>
+        <input type="radio" value="C" name="choise">
+    </p>
+    <!-- текст вводится между тегами textarea, а не в атрибуте value -->
+    <p><textarea>
+            A,
+            B,
+            C
+        </textarea>
+    </p>
+    <select>
+        <option>One</option>
+        <option>Two</option>
+        <option>Three</option>
+    </select>
+
+    <button onclick="submit()">Submit</button>
+    <p>
+    <input type="text" tabindex="1" id="focus1">
+    <input type="text" tabindex="2" id="focus2" disabled>
+    </p>
+
+    <script>
+        function submit(){
+            document.querySelector('input#focus1').focus();
+            console.log(document.activeElement.id);
+        }
+    </script>
+</body>
+</html>

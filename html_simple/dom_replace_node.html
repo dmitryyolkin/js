@@ -1,0 +1,29 @@
+<!doctype html>
+<html>
+    <body>
+        <p>
+            Images:
+                <img src="img/cat1.jpg" alt="cat1"/> and
+                <img src="img/cat2.jpg" alt="cat2">
+        </p>
+        <!--this way we can specify handlers for buttons - refer to JS function or file-->
+        <!--<p><button onclick="replace()">Replace</button></p>-->
+        <p><button onclick="replace()">Replace</button></p>
+    </body>
+
+    <script>
+        function replace(){
+            console.log("replace function is invoken");
+            var imgs = document.body.getElementsByTagName("img");
+
+            //after replace imps length became less - so we have to iterate in descendent order
+            for (var i = imgs.length - 1; i >= 0; i--) {
+                var img = imgs[i];
+                if (img.alt){
+                    var text = document.createTextNode(img.alt);
+                    img.parentNode.replaceChild(text, img);
+                }
+            }
+        }
+    </script>
+</html>

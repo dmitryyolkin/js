@@ -1,0 +1,14 @@
+strong{
+    color: blue;
+}
+
+button{
+    background: yellow;
+    color: red;
+}
+
+/* for all p elements having classes b and id=test*/
+p.b#test{
+    color: magenta;
+    font-size: 50%;
+}

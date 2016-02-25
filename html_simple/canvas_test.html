@@ -1,0 +1,44 @@
+<html>
+    <p>Before canvas</p>
+    <canvas width="100" height="100"></canvas>
+    <p>After canvas</p>
+
+    <script>
+        var canvas = document.querySelector('canvas');
+        var context = canvas.getContext('2d'); //get context
+        context.fillStyle = "red";
+        context.fillRect(10, 10, 100, 100);//x, y, width, height
+
+        context.strokeStyle = "blue"; //set border color
+        context.lineWidth = 5; //set border width
+        context.strokeRect(10,10,87,87);
+
+        try{
+            var dataURL = canvas.toDataURL();
+        }catch (e){
+            if (e instanceof SecurityError){
+                console.error("Can't save canvas image");
+            }else{
+                throw e;
+            }
+        }
+
+        console.log(dataURL);
+
+        //загрузка изображения
+        var image = document.createElement('img');
+        image.addEventListener('load', function(event){
+            cx.drawImage(image, 0, 0);
+        });
+        image.src = dataURL;
+        document.body.appendChild(image);
+
+        //Если есть файл, то
+        var reader = new FileReader();
+        reader.addEventListener('load', function(event){
+            var url = reader.result;
+            //все как в предыдущем примере
+        });
+        reader.readAsDataURL(file);
+    </script>
+</html>

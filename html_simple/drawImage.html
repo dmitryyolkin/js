@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Draw Image</title>
+</head>
+<body>
+    <canvas width='300' height="400"></canvas>
+    <script>
+        var cx = document.querySelector('canvas').getContext('2d');
+        var img = document.createElement('img');
+        img.src = 'img/cat1.jpg';
+        addEventListener('load', function(event){
+            cx.drawImage(img, 10, 10);
+
+            console.log('opening');
+            var img_width = img.width;
+            var i = 0;
+            setInterval(function(){
+                cx.clearRect(10, 200, img.width, img.height);
+                cx.drawImage(
+                        img,
+                        //source rectangle
+                        0, 0, (img_width / 10) * (i + 1), img.height,
+                        //destination rectangle
+                        10, 200, img_width / 10 * (i + 1), img.height
+                );
+                i = (i + 1) % 10;
+            }, 120);
+        });
+    </script>
+</body>
+</html>

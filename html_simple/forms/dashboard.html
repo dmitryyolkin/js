@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+</head>
+<body>
+    <p>You're logged with:</p>
+    <script>
+        //получение параметров запроса для GET метода доступа
+        function parseGetParams() {
+            var $_GET = {};
+            //window.location.search.substring(1) returns all after ? - 1 means all woithout '?', e.g. "name=Dm&pwd=123"
+            var __GET = window.location.search.substring(1).split("&");
+            for(var i=0; i<__GET.length; i++) {
+                var getVar = __GET[i].split("=");
+                $_GET[getVar[0]] = typeof(getVar[1])=="undefined" ? "" : getVar[1];
+            }
+            return $_GET;
+        }
+        console.log(parseGetParams()); //Object {name: "Dm", pwd: "123"}
+        //
+    </script>
+</body>
+</html>

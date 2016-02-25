@@ -1,0 +1,28 @@
+<!doctype html>
+<html>
+    <body>
+        <!-- It's important if we put position = relative for 'p' tag and doesn't put for image image won't rotate -->
+        <p style="text-align: center"><img src="img/cat1.jpg" style="position: relative"/></p>
+    </body>
+    <script>
+        var cat = document.getElementsByTagName("img")[0];
+        var lastTime = null;
+        var angle = 0;
+
+        //time is passed from requestAnimationFrame
+        function animate(time){
+            if (lastTime != null){
+                angle += (time - lastTime) * 0.001;
+            }
+
+            lastTime = time;
+            cat.style.top = (Math.sin(angle) * 20) + 'px';
+            cat.style.left = (Math.cos(angle) * 200) + 'px';
+
+            //recursive call
+            requestAnimationFrame(animate);
+        }
+        //1st run
+        requestAnimationFrame(animate);
+    </script>
+</html>

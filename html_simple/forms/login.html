@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Log in</title>
+</head>
+<body>
+    <form action="dashboard.html" method="get">
+        <p>Name: <input type="text" name="name"></p>
+        <p>Pass: <input type="password" name="pwd"></p>
+        <p><button type="submit">Log in</button></p>
+    </form>
+
+    <script>
+        var form = document.querySelector('form');
+        form.addEventListener('submit', function(event){
+            var nameV = form.name.value;
+            var pwdV = form.pwd.value;
+            if (nameV == '' || pwdV == ''){
+                alert('Name or password is not specified');
+                event.preventDefault();
+            }
+        });
+    </script>
+</body>
+</html>

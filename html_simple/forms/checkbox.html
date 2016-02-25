@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Checkbox</title>
+</head>
+<body>
+    <input type="checkbox" id="red" checked>
+    <label for="red">Red or transparent</label>
+    <script>
+        var checkbox = document.querySelector('#red');
+        checkbox.addEventListener('change', function(event){
+            document.body.style.background = checkbox.checked ? "red" : "";
+        })
+    </script>
+</body>
+</html>

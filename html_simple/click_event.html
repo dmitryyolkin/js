@@ -1,0 +1,16 @@
+        <p><button>Print console</button></p>
+        <script>
+            var button = document.querySelector('button');
+            var p = document.querySelector('p');
+            button.addEventListener('click', function(event){
+                console.log("click handler 4 button: target " + event.target.nodeName); //click handler 4 button: target BUTTON
+                event.stopPropagation();//if it absence then 'p' event handler is invoked
+            });
+            p.addEventListener('click', function(event){
+                console.log('click handler 4 p: target ' + event.target.nodeName)
+            });
+
+            addEventListener('keypress', function(event){
+                console.log(String.fromCharCode(event.charCode));
+            })
+        </script>

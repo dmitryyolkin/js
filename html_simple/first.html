@@ -1,0 +1,18 @@
+<!doctype html>
+<html>
+    <head>My first test html with scripts</head>
+    <body>
+        <p>JS calculations in script tag (x+y=)</p>
+        <script>
+            var x = prompt('Input x', '5');
+            var y = prompt('Input y', '7');
+            function sum(x, y){
+                return Number(x) + Number(y);
+            }
+            console.log(sum(x, y));
+        </script>
+        <P>JS multiplication in another file</P>
+        <script src="multiply.js"></script>
+    </body>
+</html>
+
