@@ -1,0 +1,12 @@
+<h1>Todos:</h1>
+<a href="/createTodo.html">Create todo</a><br>
+<div class="todos">
+    {{#each data}}
+        <!-- It's strange but style for todo class from style.css is not considered if we refer to it from hbs helper -->
+        <div class="'todo">
+            <p class="todoId">Id: {{id}}</p>
+            <p class="todoSummary">summary: {{summary}}</p>
+            <p class="todoDescription">description: {{description}}</p>
+        </div>
+    {{/each}}
+</div>
