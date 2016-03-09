@@ -1,0 +1,11 @@
+{
+  "name": "js-db-test",
+  "version": "1.0.0",
+  "description": "project to test different frameworks to connect to DB underJava script",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Dmitry Y",
+  "license": "ISC"
+}
