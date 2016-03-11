@@ -73,7 +73,7 @@ db.once('open', function(){
 
 // If the Node process ends, close the Mongoose connection
 var exit = function() {
-    mongoose.connection.close(function () {
+    db.close(function () {
         console.log('Close mongo DB connection');
         process.exit(0);
     });
