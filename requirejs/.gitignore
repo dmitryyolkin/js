@@ -1,0 +1,15 @@
+.idea/*
+*.iml
+*.swp
+*.swo
+*~
+*.ipr
+
+
+npm-debug.log
+
+# Exclude ALL node_modules from commit
+node_modules/*
+
+# Exclude ALL bower modules from commit
+src/components/*

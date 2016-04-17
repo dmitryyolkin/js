@@ -1,0 +1,24 @@
+{
+  "name": "requirejs_test",
+  "description": "",
+  "main": "index.js",
+  "authors": [
+    "Dmitry Yolkin <dmitry.yolkin@maxifier.com>"
+  ],
+  "license": "ISC",
+  "homepage": "https://github.com/dmitryyolkin/js",
+  "moduleType": [
+    "amd",
+    "yui"
+  ],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "requirejs": "~2.2.0"
+  }
+}
