@@ -1,6 +1,6 @@
 {
   "name": "requirejs_test",
-  "description": "",
+  "description": "This project is created according with tutorial https://m.habrahabr.ru/post/209228/ to practise in requirejs usages",
   "main": "index.js",
   "authors": [
     "Dmitry Yolkin <dmitry.yolkin@maxifier.com>"
