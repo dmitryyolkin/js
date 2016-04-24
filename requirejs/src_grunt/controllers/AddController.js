@@ -2,7 +2,11 @@
  * Created by yolkin on 20.04.2016.
  */
 
-define(['views/AddView', 'models/User'], function(AddView, User){
+define(function(require){
+
+    var AddView = require('../views/AddView');
+    var User = require('../models/User');
+
     function _start(){
         AddView.render(this);
     }

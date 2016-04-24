@@ -12,6 +12,8 @@ define(function(){
     var currentHash = '';
 
     function _startRouting(){
+        console.log('startRouting');
+
         window.location.hash = window.location.hash || defaultRoute;
         setInterval(checkHash, 100);
     }

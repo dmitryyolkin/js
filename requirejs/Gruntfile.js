@@ -33,14 +33,19 @@ module.exports = function(grunt) {
             centralized: {
                 options: {
                     'modules': [{
-                        'name': 'common',
+                        'name': 'main',
                         'include': [
                             'jquery',
                             'underscore',
 
+                            //specify local files that should be included in build/main.js
                             'app/controllers/AddController',
-                            'app/models/*',
-                            'app/views/*'
+                            'app/controllers/ListController',
+                            'app/models/User',
+                            'app/views/AddView',
+                            'app/views/ListView',
+
+                            'app/Router'
                         ]
                     }]
                 }
