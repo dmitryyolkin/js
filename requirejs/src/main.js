@@ -8,6 +8,6 @@ require(['models/User', 'Router'], function(User, Router){
           users[i] = new User('user' + i);
      }
 
-     localStorage.users = JSON.stringify(users);
+     localStorage.users = localStorage.users || JSON.stringify(users);
      Router.startRouting();
 });

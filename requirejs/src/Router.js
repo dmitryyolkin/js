@@ -12,7 +12,7 @@ define(function(){
     var currentHash = '';
 
     function _startRouting(){
-        window.location.hash = window.location.hash | defaultRoute;
+        window.location.hash = window.location.hash || defaultRoute;
         setInterval(checkHash, 100);
     }
 
