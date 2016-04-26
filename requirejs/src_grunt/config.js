@@ -9,7 +9,7 @@ require.config({
         //it's path to config
         'main': '../main'
     },
-    //it's not clear what 'shim' tag does
+    //для поддержки сторонних модулей описанных не через define
     shim: {
         underscore: {
             exports: '_'

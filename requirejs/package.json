@@ -9,8 +9,9 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "grunt-contrib-jshint": "~0.6.4",
     "grunt": "~0.4.1",
+    "grunt-contrib-clean": "^1.0.0",
+    "grunt-contrib-jshint": "~0.6.4",
     "grunt-requirejs": "git://github.com/cloudchen/grunt-requirejs"
   }
 }

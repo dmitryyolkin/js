@@ -20,6 +20,8 @@ module.exports = function(grunt) {
         //    }
         //},
 
+        //clean build directory
+        clean: ['build'],
         requirejs: {
             options: {
                 'appDir': 'src_grunt',
@@ -51,57 +53,59 @@ module.exports = function(grunt) {
                 }
             },
 
-            independent: {
-                options: {
-                    replaceRequireScript: [{
-                        files: ['build/hello.html'],
-                        module: 'app/hello/main',
-                        modulePath: 'app/hello/main'
-                    }, {
-                        files: ['build/world.html'],
-                        module: 'app/world/main',
-                        modulePath: 'app/world/main'
-                    }],
-                    'modules': [{
-                        name: 'app/hello/main',
-                        include: ['backbone', 'common'],
-                    }, {
-                        name: 'app/world/main',
-                        include: ['backbone', 'common'],
-                    }
-                    ],
-                }
-            },
-
-            shared: {
-                options: {
-                    'modules': [{
-                        'name': 'common',
-                        'include': ['jquery',
-                            'underscore',
-                            'backbone',
-                            'text',
-                        ],
-                    },
-                        {
-                            'name': 'app/hello/main',
-                            'exclude': ['common']
-                        },
-                        {
-                            'name': 'app/world/main',
-                            'exclude': ['common']
-                        }
-                    ],
-                }
-            },
+        //    independent: {
+        //        options: {
+        //            replaceRequireScript: [{
+        //                files: ['build/hello.html'],
+        //                module: 'app/hello/main',
+        //                modulePath: 'app/hello/main'
+        //            }, {
+        //                files: ['build/world.html'],
+        //                module: 'app/world/main',
+        //                modulePath: 'app/world/main'
+        //            }],
+        //            'modules': [{
+        //                name: 'app/hello/main',
+        //                include: ['backbone', 'common'],
+        //            }, {
+        //                name: 'app/world/main',
+        //                include: ['backbone', 'common'],
+        //            }
+        //            ],
+        //        }
+        //    },
+        //
+        //    shared: {
+        //        options: {
+        //            'modules': [{
+        //                'name': 'common',
+        //                'include': ['jquery',
+        //                    'underscore',
+        //                    'backbone',
+        //                    'text',
+        //                ],
+        //            },
+        //                {
+        //                    'name': 'app/hello/main',
+        //                    'exclude': ['common']
+        //                },
+        //                {
+        //                    'name': 'app/world/main',
+        //                    'exclude': ['common']
+        //                }
+        //            ],
+        //        }
+        //    },
         }
     });
 
     // These plugins provide necessary tasks.
     //grunt.loadNpmTasks('grunt-contrib-jshint');
+    //clean build directory
+    grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-requirejs');
 
     // Default task.
-    grunt.registerTask('default', ['requirejs:centralized']);
+    grunt.registerTask('default', ['clean', 'requirejs']);
     //grunt.registerTask('default', ['jshint, centralized']);
 };
