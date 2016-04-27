@@ -23,17 +23,22 @@ module.exports = function(grunt) {
         //clean build directory
         clean: ['build'],
         requirejs: {
+            //All possible values can be found here
+            //https://github.com/requirejs/r.js/blob/master/build/example.build.js
             options: {
                 'appDir': 'src_grunt',
                 'dir': 'build',
                 'mainConfigFile': 'src_grunt/config.js',
                 'optimize': 'none',
                 //'optimize': 'uglify2',
-                'normalizeDirDefines': 'skip',
-                'skipDirOptimize': true,
+                //'normalizeDirDefines': 'skip',
+                //'skipDirOptimize': true,
             },
             centralized: {
                 options: {
+                    //modules specifies what module should be optimized
+                    //in name we sp[ecify name of JS file
+
                     'modules': [{
                         'name': 'main',
                         'include': [
@@ -103,7 +108,7 @@ module.exports = function(grunt) {
     //grunt.loadNpmTasks('grunt-contrib-jshint');
     //clean build directory
     grunt.loadNpmTasks('grunt-contrib-clean');
-    grunt.loadNpmTasks('grunt-requirejs');
+    grunt.loadNpmTasks('grunt-contrib-requirejs');
 
     // Default task.
     grunt.registerTask('default', ['clean', 'requirejs']);
