@@ -37,22 +37,17 @@ module.exports = function(grunt) {
             centralized: {
                 options: {
                     //modules specifies what module should be optimized
-                    //in name we sp[ecify name of JS file
-
+                    //in name we specify name of JS file
                     'modules': [{
-                        'name': 'main',
+                        'name': 'config',
                         'include': [
-                            'jquery',
-                            'underscore',
+                            //'jquery',
+                            //'underscore',
 
                             //specify local files that should be included in build/main.js
+                            //we don't include all other js files becasue they will be added automatically through require dependencies
                             'app/controllers/AddController',
-                            'app/controllers/ListController',
-                            'app/models/User',
-                            'app/views/AddView',
-                            'app/views/ListView',
-
-                            'app/Router'
+                            'app/controllers/ListController'
                         ]
                     }]
                 }

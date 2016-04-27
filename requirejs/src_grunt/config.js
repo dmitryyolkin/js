@@ -1,13 +1,13 @@
 require.config({
-    baseUrl: 'components',
+    baseUrl: '.',
     paths: {
-        'jquery': 'jquery/jquery.min',
-        'underscore': 'underscore/underscore-min',
+        'jquery': './components/jquery/jquery.min',
+        'underscore': './components/underscore/underscore-min',
 
-        'app': '..',
+        'app': '.',
         //common is module name used in centralized task in Gruntfile.js
         //it's path to config
-        'main': '../main'
+        //'common': 'common'
     },
     //для поддержки сторонних модулей описанных не через define
     shim: {
@@ -16,3 +16,6 @@ require.config({
         }
     }
 });
+
+// Load the main app module to start the app
+requirejs(['./main']);
