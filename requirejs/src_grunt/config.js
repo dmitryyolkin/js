@@ -4,10 +4,9 @@ require.config({
         'jquery': './components/jquery/jquery.min',
         'underscore': './components/underscore/underscore-min',
 
-        'app': '.',
-        //common is module name used in centralized task in Gruntfile.js
-        //it's path to config
-        //'common': 'common'
+        //app is path relatively to baseUrl
+        //we added 'app' variable to refer to it from GruntFile.js
+        'app': ''
     },
 
     //для поддержки сторонних модулей описанных не через define

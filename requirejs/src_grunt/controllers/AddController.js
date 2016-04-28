@@ -20,6 +20,7 @@ define(function(require){
         window.location.hash = '#list';
     }
 
+    //таким образом выставляется публичный интерфейс
     return {
         start: _start,
         addUser: _addUser

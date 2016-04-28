@@ -14,6 +14,7 @@ define(function(){
         appDiv.innerHTML = html;
     }
 
+    //таким образом выставляется публичный интерфейс
     return {
         render: _render
     };

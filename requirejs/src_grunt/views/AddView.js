@@ -15,6 +15,7 @@ define(function(){
         }, false)
     }
 
+    //таким образом выставляется публичный интерфейс
     return {
         render: _render
     }

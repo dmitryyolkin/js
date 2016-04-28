@@ -37,6 +37,7 @@ define(function(){
         })
     }
 
+    //таким образом выставляется публичный интерфейс
     return {
         startRouting: _startRouting
     }

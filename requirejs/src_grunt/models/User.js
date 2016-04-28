@@ -8,5 +8,6 @@ define(function(){
         this.name = name || 'Default name';
     }
 
+    //таким образом выставляется публичный интерфейс
     return User;
 });
