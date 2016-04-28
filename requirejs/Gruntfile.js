@@ -41,8 +41,8 @@ module.exports = function(grunt) {
                     'modules': [{
                         'name': 'config',
                         'include': [
-                            //'jquery',
-                            //'underscore',
+                            'jquery',
+                            'underscore',
 
                             //specify local files that should be included in build/main.js
                             //we don't include all other js files becasue they will be added automatically through require dependencies
