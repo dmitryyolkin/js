@@ -2,17 +2,19 @@
  * Created by yolkin on 20.04.2016.
  */
 
-define(function(){
+define(function(require){
 
     function _render(AddController){
-        var appDiv = document.getElementById('app');
-        appDiv.innerHTML = "<input id='user-name' /><button id='addBtn'>Add this user</button>";
+        var $ = require('jquery');
 
-        var addBtn = document.getElementById('addBtn');
-        var userNameInput = document.getElementById('user-name');
-        addBtn.addEventListener('click', function(){
-            AddController.addUser(userNameInput.value);
-        }, false)
+        var appDiv = $('#app');
+        appDiv.html("<input id='user-name' /><button id='addBtn'>Add this user</button>");
+
+        var addBtn = $('#addBtn');
+        var userNameInput = $('#user-name');
+        addBtn.click(function(){
+            AddController.addUser(userNameInput.val());
+        })
     }
 
     //таким образом выставляется публичный интерфейс
