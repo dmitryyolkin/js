@@ -53,27 +53,19 @@ module.exports = function(grunt) {
                 }
             },
 
-        //    independent: {
-        //        options: {
-        //            replaceRequireScript: [{
-        //                files: ['build/hello.html'],
-        //                module: 'app/hello/main',
-        //                modulePath: 'app/hello/main'
-        //            }, {
-        //                files: ['build/world.html'],
-        //                module: 'app/world/main',
-        //                modulePath: 'app/world/main'
-        //            }],
-        //            'modules': [{
-        //                name: 'app/hello/main',
-        //                include: ['backbone', 'common'],
-        //            }, {
-        //                name: 'app/world/main',
-        //                include: ['backbone', 'common'],
-        //            }
-        //            ],
-        //        }
-        //    },
+            independent: {
+                options: {
+                    'modules': [{
+                        name: 'main',
+                        include: ['jquery', 'underscore']
+                    }, {
+                        name: 'Router',
+                        include: ['controllers/AddController', 'controllers/ListController']
+                    }
+                    ],
+                }
+            },
+
         //
         //    shared: {
         //        options: {
@@ -106,5 +98,6 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-requirejs');
 
     // Default task.
-    grunt.registerTask('default', ['clean', 'requirejs:centralized']);
+    //grunt.registerTask('default', ['clean', 'requirejs:centralized']);
+    grunt.registerTask('default', ['clean', 'requirejs:independent']);
 };
