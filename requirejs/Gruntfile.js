@@ -106,6 +106,5 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-requirejs');
 
     // Default task.
-    grunt.registerTask('default', ['clean', 'requirejs']);
-    //grunt.registerTask('default', ['jshint, centralized']);
+    grunt.registerTask('default', ['clean', 'requirejs:centralized']);
 };
