@@ -46,8 +46,8 @@ module.exports = function(grunt) {
 
                             //specify local files that should be included in build/main.js
                             //we don't include all other js files becasue they will be added automatically through require dependencies
-                            'app/controllers/AddController',
-                            'app/controllers/ListController'
+                            'controllers/AddController',
+                            'controllers/ListController'
                         ]
                     }]
                 }

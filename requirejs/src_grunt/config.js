@@ -2,11 +2,7 @@ require.config({
     baseUrl: '.',
     paths: {
         'jquery': './components/jquery/jquery.min',
-        'underscore': './components/underscore/underscore-min',
-
-        //app is path relatively to baseUrl
-        //we added 'app' variable to refer to it from GruntFile.js
-        'app': ''
+        'underscore': './components/underscore/underscore-min'
     },
 
     //для поддержки сторонних модулей описанных не через define
