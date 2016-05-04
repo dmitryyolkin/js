@@ -16,6 +16,8 @@ require.config({
     },
     deps: ['require'],
     callback: function(require){
+        //this construction helps to specify main.js with all dependencies in 'define' section
+        //when grunt requirejs:task is executed
         require(['./main']);
     }
 });

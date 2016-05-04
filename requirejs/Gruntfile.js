@@ -39,7 +39,7 @@ module.exports = function(grunt) {
                     //modules specifies what module should be optimized
                     //in name we specify name of JS file
                     'modules': [{
-                        'name': 'config',
+                        'name': 'main',
                         'include': [
                             'jquery',
                             'underscore',
