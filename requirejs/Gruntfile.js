@@ -29,7 +29,7 @@ module.exports = function(grunt) {
                 'appDir': 'src_grunt',
                 'dir': 'build',
                 'mainConfigFile': 'src_grunt/config.js',
-                'optimize': 'none',
+                'optimize': 'none'
                 //'optimize': 'uglify2',
                 //'normalizeDirDefines': 'skip',
                 //'skipDirOptimize': true,
@@ -53,6 +53,7 @@ module.exports = function(grunt) {
                 }
             },
 
+            //todo think how it can be combined
             independent: {
                 options: {
                     'modules': [{
@@ -66,28 +67,28 @@ module.exports = function(grunt) {
                 }
             },
 
-        //
-        //    shared: {
-        //        options: {
-        //            'modules': [{
-        //                'name': 'common',
-        //                'include': ['jquery',
-        //                    'underscore',
-        //                    'backbone',
-        //                    'text',
-        //                ],
-        //            },
-        //                {
-        //                    'name': 'app/hello/main',
-        //                    'exclude': ['common']
-        //                },
-        //                {
-        //                    'name': 'app/world/main',
-        //                    'exclude': ['common']
-        //                }
-        //            ],
-        //        }
-        //    },
+            //common sources are in one js file
+            //and separate resources in separate files without common
+            shared: {
+                options: {
+                    'modules': [
+                        {
+                            'name': 'config',
+                            'include': ['jquery', 'underscore']
+                        },
+                        {
+                            'name': 'main',
+                            'include': [
+
+                                //if controllers weren't loaded dynamically then such includes can be ommited
+                                'controllers/AddController',
+                                'controllers/ListController'
+                            ],
+                            'exclude': ['config']
+                        }
+                    ]
+                }
+            },
         }
     });
 
@@ -99,5 +100,5 @@ module.exports = function(grunt) {
 
     // Default task.
     //grunt.registerTask('default', ['clean', 'requirejs:centralized']);
-    grunt.registerTask('default', ['clean', 'requirejs:independent']);
+    grunt.registerTask('default', ['clean', 'requirejs:centralized']);
 };
