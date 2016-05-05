@@ -38,6 +38,9 @@ module.exports = function(grunt) {
                 options: {
                     //modules specifies what module should be optimized
                     //in name we specify name of JS file
+
+                    //As a result we have one main,js file including all files in itself in build directory
+                    //All other files can be removed
                     'modules': [{
                         'name': 'main',
                         'include': [
@@ -71,24 +74,31 @@ module.exports = function(grunt) {
             //and separate resources in separate files without common
             shared: {
                 options: {
+                    //As a result we have in build directory
+                    //  main.js with jQuery, _, User, Router
+                    //  controleers
+                    //      ListController including ListView
+                    //      AddController including AddView
                     'modules': [
                         {
-                            'name': 'config',
+                            'name': 'main',
                             'include': ['jquery', 'underscore']
                         },
                         {
-                            'name': 'main',
-                            'include': [
-
-                                //if controllers weren't loaded dynamically then such includes can be ommited
-                                'controllers/AddController',
-                                'controllers/ListController'
-                            ],
-                            'exclude': ['config']
+                            'name': 'controllers/ListController',
+                            //ListView will be added automaticaly
+                            'include': [],
+                            'exclude': ['main']
+                        },
+                        {
+                            'name': 'controllers/AddController',
+                            //AddView will be added automaticaly
+                            'include': [],
+                            'exclude': ['main']
                         }
                     ]
                 }
-            },
+            }
         }
     });
 
