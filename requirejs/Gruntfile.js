@@ -56,17 +56,33 @@ module.exports = function(grunt) {
                 }
             },
 
-            //todo think how it can be combined
+
             independent: {
                 options: {
                     'modules': [{
-                        name: 'main',
-                        include: ['jquery', 'underscore']
+                        name: 'controllers/main',
+
+                        'create': true, //allow to create new file
+                        include: [
+                            'jquery',
+                            'underscore',
+                            'main',
+                            'controllers/ListController'
+                        ]
                     }, {
-                        name: 'Router',
-                        include: ['controllers/AddController', 'controllers/ListController']
-                    }
-                    ],
+                        //todo можно создать файл main.js и по нему будет вызываться только какой-то один из контроллеров
+                        //но для этого надо менять в index.html менять data-main на controllers/main + прописывать пусть к библиотекам jquery и _
+                        //относительно директории controllers
+                        name: 'controllers/main1',
+
+                        'create': true, //allow to create new file
+                        include: [
+                            'jquery',
+                            'underscore',
+                            'main',
+                            'controllers/AddController'
+                        ]
+                    }]
                 }
             },
 
@@ -76,7 +92,7 @@ module.exports = function(grunt) {
                 options: {
                     //As a result we have in build directory
                     //  main.js with jQuery, _, User, Router
-                    //  controleers
+                    //  controllers
                     //      ListController including ListView
                     //      AddController including AddView
                     'modules': [
