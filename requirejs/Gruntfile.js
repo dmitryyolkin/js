@@ -2,6 +2,10 @@
 module.exports = function(grunt) {
     'use strict';
 
+    //variables
+    var scrDir = 'src_grunt/';
+    var buildDir = 'build/';
+
     // Project configuration.
     grunt.initConfig({
         // Metadata.
@@ -21,15 +25,15 @@ module.exports = function(grunt) {
         //},
 
         //clean build directory
-        clean: ['build'],
+        clean: [buildDir],
 
         requirejs: {
             //All possible values can be found here
             //https://github.com/requirejs/r.js/blob/master/build/example.build.js
             options: {
-                'appDir': 'src_grunt',
-                'dir': 'build',
-                'mainConfigFile': 'src_grunt/config.js',
+                'appDir': scrDir,
+                'dir': buildDir,
+                'mainConfigFile': scrDir + 'config.js',
                 'optimize': 'none'
                 //'optimize': 'uglify2',
                 //'normalizeDirDefines': 'skip',
@@ -134,9 +138,9 @@ module.exports = function(grunt) {
                 files: [
                     {
                         expand: true,
-                        cwd: 'build/',
+                        cwd: buildDir,//src dir
                         src: 'index.html',
-                        dest: 'build'
+                        dest: buildDir //build dir
                     }
                 ],
                 options: {
@@ -162,22 +166,18 @@ module.exports = function(grunt) {
                     {
                         expand: true,
                         //cwd specifies src dir - without it index.html will be copied to scr_grunt/index.html
-                        cwd: 'build/',
-                        src: [
-                            'index.html'
-                        ],
-                        dest: 'build/controllers/list'
+                        cwd: buildDir,
+                        src: ['index.html'],
+                        dest: buildDir + 'controllers/list'
                     },
 
                     //add index.html config
                     {
                         expand: true,
                         //cwd specifies src dir - without it index.html will be copied to scr_grunt/index.html
-                        cwd: 'build/',
-                        src: [
-                            'index.html'
-                        ],
-                        dest: 'build/controllers/add'
+                        cwd: buildDir,
+                        src: ['index.html'],
+                        dest: buildDir + 'controllers/add'
                     }
                 ]
             }
@@ -195,6 +195,7 @@ module.exports = function(grunt) {
 
     //details can be found https://www.npmjs.com/package/grunt-string-replace
     grunt.loadNpmTasks('grunt-string-replace');
+
 
     // Default task.
     grunt.registerTask('default', ['clean', 'requirejs:centralized']);
