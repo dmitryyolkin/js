@@ -22,6 +22,7 @@ module.exports = function(grunt) {
 
         //clean build directory
         clean: ['build'],
+
         requirejs: {
             //All possible values can be found here
             //https://github.com/requirejs/r.js/blob/master/build/example.build.js
@@ -56,11 +57,17 @@ module.exports = function(grunt) {
                 }
             },
 
-
             independent: {
                 options: {
+                    //in this scheme we will have two new modules
+                    //  * controllers/list - it contains everything related to List users (without adding possibilities)
+                    //      * main.js
+                    //      * index.html
+                    //  * controllers/add - it contains everything related to Add users (without listing possibilities)
+                    //      * main.js
+                    //      * index.html
                     'modules': [{
-                        name: 'controllers/main',
+                        name: 'controllers/list/main',
 
                         'create': true, //allow to create new file
                         include: [
@@ -69,11 +76,11 @@ module.exports = function(grunt) {
                             'main',
                             'controllers/ListController'
                         ]
-                    }, {
-                        //todo можно создать файл main.js и по нему будет вызываться только какой-то один из контроллеров
-                        //но для этого надо менять в index.html менять data-main на controllers/main + прописывать пусть к библиотекам jquery и _
-                        //относительно директории controllers
-                        name: 'controllers/main1',
+                    },
+
+                    //add config
+                    {
+                        name: 'controllers/add/main',
 
                         'create': true, //allow to create new file
                         include: [
@@ -115,6 +122,65 @@ module.exports = function(grunt) {
                     ]
                 }
             }
+        },
+
+        //this task is needed for requirejs:independent only
+        //replace path to components/requirejs and css in build/index.html
+
+        //Potentially we don't need to replace something - all could be done with 'copy' plugin
+        //requirejs and css could be copied to appropriate paths
+        'string-replace': {
+            dist: {
+                files: [
+                    {
+                        expand: true,
+                        cwd: 'build/',
+                        src: 'index.html',
+                        dest: 'build'
+                    }
+                ],
+                options: {
+                    replacements: [
+                        {
+                            pattern: 'components/requirejs/require.js',
+                            replacement: '../../components/requirejs/require.js'
+                        },
+                        {
+                            pattern: '../css/style.css',
+                            replacement: '../../../css/style.css'
+                        }]
+                }
+            }
+        },
+
+        copy: {
+            //this task is needed for requirejs:independent only
+            //we copy base src_grunt/index.html to build/controllers/list/index.html and build/controllers/add/index.html
+            main: {
+                files: [
+                    //list index.html config
+                    {
+                        expand: true,
+                        //cwd specifies src dir - without it index.html will be copied to scr_grunt/index.html
+                        cwd: 'build/',
+                        src: [
+                            'index.html'
+                        ],
+                        dest: 'build/controllers/list'
+                    },
+
+                    //add index.html config
+                    {
+                        expand: true,
+                        //cwd specifies src dir - without it index.html will be copied to scr_grunt/index.html
+                        cwd: 'build/',
+                        src: [
+                            'index.html'
+                        ],
+                        dest: 'build/controllers/add'
+                    }
+                ]
+            }
         }
     });
 
@@ -124,7 +190,14 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-requirejs');
 
+    //details regarding grunt-contrib-copy can be found http://grunt-tasks.com/grunt-contrib-copy/
+    grunt.loadNpmTasks('grunt-contrib-copy');
+
+    //details can be found https://www.npmjs.com/package/grunt-string-replace
+    grunt.loadNpmTasks('grunt-string-replace');
+
     // Default task.
     //grunt.registerTask('default', ['clean', 'requirejs:centralized']);
-    grunt.registerTask('default', ['clean', 'requirejs:centralized']);
+    grunt.registerTask('default', ['clean', 'requirejs:independent', 'string-replace', 'copy']);
+    //grunt.registerTask('default', ['clean', 'requirejs:shared']);
 };
