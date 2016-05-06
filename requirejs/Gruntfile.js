@@ -197,7 +197,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-string-replace');
 
     // Default task.
-    //grunt.registerTask('default', ['clean', 'requirejs:centralized']);
-    grunt.registerTask('default', ['clean', 'requirejs:independent', 'string-replace', 'copy']);
+    grunt.registerTask('default', ['clean', 'requirejs:centralized']);
+    //grunt.registerTask('default', ['clean', 'requirejs:independent', 'string-replace', 'copy']);
     //grunt.registerTask('default', ['clean', 'requirejs:shared']);
 };
