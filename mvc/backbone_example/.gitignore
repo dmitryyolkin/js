@@ -10,3 +10,7 @@ npm-debug.log
 
 # Exclude ALL node_modules from commit
 node_modules/*
+
+
+# Exclude ALL bower_modules from commit
+src/components/*

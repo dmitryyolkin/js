@@ -1,0 +1,23 @@
+{
+  "name": "backbone_example",
+  "description": "",
+  "main": "index.js",
+  "authors": [
+    "Dmitry Yolkin <dmitry.yolkin@maxifier.com>"
+  ],
+  "license": "ISC",
+  "homepage": "https://github.com/dmitryyolkin/js",
+  "moduleType": [
+    "node"
+  ],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "devDependencies": {
+    "backbone": "~1.3.3"
+  }
+}
