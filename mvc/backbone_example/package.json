@@ -1,11 +1,16 @@
 {
   "name": "backbone_example",
   "version": "1.0.0",
-  "description": "",
+  "description": "It's implementation of project from https://habrahabr.ru/post/127049/",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "grunt": "~0.4.1",
+    "grunt-contrib-clean": "^1.0.0",
+    "grunt-requirejs": "^0.4.2"
+  }
 }
