@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Backbode example</title>
+
+    <link rel=””stylesheet type=”text/css” href=”../css/default.css”/>
+</head>
+<body>
+
+    <div id="menu">
+        <ul>
+            <!--Menu-->
+            <li><a href="#!/">Start</a> </li>
+            <li><a href="#!/success">Start</a> </li>
+            <li><a href="#!/error">Start</a> </li>
+        </ul>
+    </div>
+
+    <div id="start" class="block">
+        <div class="userplace">
+            <label for="username">User name:</label>
+            <input type="text" id="username">
+        </div>
+        <div class="buttonplace">
+            <input type="button" value="Check">
+        </div>
+    </div>
+
+    <div id="error" class="block">
+        Error: there is no such user
+    </div>
+
+    <div id="success" class="block">
+        User is found
+    </div>
+
+    <script data-main="main" src="components/requirejs/require.js"></script>
+</body>
+</html>
