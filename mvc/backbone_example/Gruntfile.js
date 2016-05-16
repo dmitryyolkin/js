@@ -70,14 +70,10 @@ module.exports = function(grunt) {
                         'include': [
                             'jquery',
                             'underscore',
+                            'backbone',
 
                             //if config is not included in final file then almond configuration doesn't work
-                            'config',
-
-                            //specify local files that should be included in build/main.js
-                            //we don't include all other js files becasue they will be added automatically through require dependencies
-                            'controllers/AddController',
-                            'controllers/ListController'
+                            'config'
                         ]
                     }]
                 }
@@ -101,8 +97,8 @@ module.exports = function(grunt) {
 
 
     // Default task.
-    grunt.registerTask('default', ['clean', 'requirejs:centralized']);
-    //grunt.registerTask('default', ['clean', 'requirejs:centralizedAlmond']);
+    //grunt.registerTask('default', ['clean', 'requirejs:centralized']);
+    grunt.registerTask('default', ['clean', 'requirejs:centralizedAlmond']);
     //grunt.registerTask('default', ['clean', 'requirejs:independent', 'string-replace', 'copy']);
     //grunt.registerTask('default', ['clean', 'requirejs:shared']);
 };
