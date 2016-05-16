@@ -1,3 +1,11 @@
 #success, #error{
     display: none;
 }
+
+body{
+    width:200px;
+    margin:100px auto 0;
+    padding:10px;
+    border:1px solid #ddd;
+    background:#f6f6f6;
+}
