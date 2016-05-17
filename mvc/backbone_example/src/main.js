@@ -6,8 +6,16 @@
 
 define(function(require){
 
-    var Router = require('Router');
+    var backbone = require('backbone');
+    var Controller = require('./controller/Controller');
+    var View = require('./views/View');
 
-    Router.startRouting();
+    //start Routing
+    var controller = new Controller();
+    var view = new View();
+
+    //Run HTML5 History API push
+    //https://habrahabr.ru/post/123106/
+    backbone.history.start();
 
 });
