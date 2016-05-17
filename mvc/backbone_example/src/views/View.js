@@ -22,7 +22,9 @@ define(function(require){
             //OR use something like $(this.el) or this.$el every time
             //For details please see http://stackoverflow.com/questions/5554865/backbone-js-el-is-not-working
             if (this.$el.find('input:text').val() == 'test'){
-                //true is trigger
+                //огда вы решите, что ваше приложение находится в состоянии, которое желательно было бы сохранить,
+                //вызовите navigate чтобы обновить URL, передав в качестве аргумента fragment необходимый фрагмент URL.
+                //Если при этом вы хотите вызвать функцию роутера, то установите свойство trigger в true.
                 Controller.navigate('success', {trigger: true});
             }else{
                 Controller.navigate('error', {trigger: true});
