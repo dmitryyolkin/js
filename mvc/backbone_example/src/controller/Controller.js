@@ -6,7 +6,7 @@ define(function(require){
     var backbone = require('backbone');
     var $ = require("jquery");
 
-    return backbone.Router.extend({
+    var Controller = backbone.Router.extend({
 
         //ставит в соответсвие hash-tag и обработчик
         routes: {
@@ -32,4 +32,6 @@ define(function(require){
         }
 
     });
+
+    return new Controller();
 });

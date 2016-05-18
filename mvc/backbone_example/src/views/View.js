@@ -7,9 +7,11 @@ define(function(require){
 
     var Backbone = require('backbone');
     var $ = require('jquery');
-    var Controller = require('../controller/Controller');
+    //I don't require App here because App requires View and we have cycle dependency
+    //require('../App') can be invoked from check method below but it looks like as a shit
+    var controller = require('../controller/Controller');
 
-    return Backbone.View.extend({
+    var View = Backbone.View.extend({
         el: $('#start'), //DOM элемент виджета
         events: {
             'click input:button': 'check'  // Обработчик клика на кнопке "Проверить"
@@ -25,10 +27,12 @@ define(function(require){
                 //огда вы решите, что ваше приложение находится в состоянии, которое желательно было бы сохранить,
                 //вызовите navigate чтобы обновить URL, передав в качестве аргумента fragment необходимый фрагмент URL.
                 //Если при этом вы хотите вызвать функцию роутера, то установите свойство trigger в true.
-                Controller.navigate('success', {trigger: true});
+                controller.navigate('success', {trigger: true});
             }else{
-                Controller.navigate('error', {trigger: true});
+                controller.navigate('error', {trigger: true});
             }
         }
     });
+
+    return new View();
 });
