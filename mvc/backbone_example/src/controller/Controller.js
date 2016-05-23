@@ -5,8 +5,13 @@
 define(function(require){
     var backbone = require('backbone');
     var $ = require("jquery");
+    var _ = require("underscore");
 
-    var Controller = backbone.Router.extend({
+    return backbone.Router.extend({
+        initialize: function(options){
+            //_,extend копирует все св-ва из destination = options в source = this
+            _.extend(this, options);
+        },
 
         //ставит в соответсвие hash-tag и обработчик
         routes: {
@@ -16,22 +21,26 @@ define(function(require){
             "!/error": "error" //error hash-tag
         },
 
-        start: function(){
-            $(".block").hide();
-            $("#start").show();
+        start: function () {
+            var startView = this.Views.StartView;
+            if (!_.isNull(startView) && !_.isUndefined(startView)) {
+                startView.render();
+            }
         },
 
-        success: function(){
-            $(".block").hide();
-            $("#success").show();
+        success: function () {
+            var successView = this.Views.SuccessView;
+            if (!_.isNull(successView) && !_.isUndefined(successView)) {
+                successView.render();
+            }
         },
 
-        error: function(){
-            $(".block").hide();
-            $("#error").show();
+        error: function () {
+            var errorView = this.Views.ErrorView;
+            if (!_.isNull(errorView) && !_.isUndefined(errorView)) {
+                errorView.render();
+            }
         }
 
     });
-
-    return new Controller();
 });
