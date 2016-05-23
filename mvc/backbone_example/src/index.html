@@ -18,23 +18,36 @@
         </ul>
     </div>
 
-    <div id="start" class="block">
-        <div class="userplace">
-            <label for="username">User name:</label>
-            <input type="text" id="username">
-        </div>
-        <div class="buttonplace">
-            <input type="button" value="Check">
-        </div>
+    <!-- make the same task with template -->
+    <div id="block" class="block">
     </div>
 
-    <div id="error" class="block">
-        Error: there is no such user
-    </div>
+    <!-- Use standard underscore templates -->
+    <script type="text/template" id="start">
+        <div class="start">
+            <div class="userplace">
+                <label for="username">User name:</label>
+                <input type="text" id="username">
+            </div>
+            <div class="buttonplace">
+                <input type="button" value="Check">
+            </div>
+        </div>
+    </script>
 
-    <div id="success" class="block">
-        User is found
-    </div>
+    <script type="text/template" id="error">
+        <div class="error">
+            Error: there is no <%= username %> user.
+            <a href="#!/">Go back</a>
+        </div>
+    </script>
+
+    <script type="text/template" id="success">
+        <div class="success">
+            User <%= username %> is found.
+            <a href="#!/">Go back</a>
+        </div>
+    </script>
 
     <script data-main="main" src="components/requirejs/require.js"></script>
 </body>
