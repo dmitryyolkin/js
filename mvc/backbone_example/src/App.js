@@ -9,10 +9,13 @@ define(function(require){
     var backbone = require('backbone');
     var _ = require('underscore');
 
+    //Model
+    var User = require('./models/User');
+
     //Controller
     var Controller = require('./controller/Controller');
 
-    //views
+    //Views
     var StartView = require('./views/Start');
     var SuccessView = require('./views/Success');
     var ErrorView = require('./views/Error');
@@ -24,6 +27,9 @@ define(function(require){
         data: {},
 
         init: function () {
+            //Model
+            this.Models.User = new User();
+
             //Controller
             //_.pick - берет из options только значения Views
             this.Routers.Controller = new Controller(_.pick(this, 'Views'));
