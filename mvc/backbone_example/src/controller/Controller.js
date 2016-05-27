@@ -13,7 +13,7 @@ define(function(require){
             _.extend(this, options);
         },
 
-        //ставит в соответсвие hash-tag и обработчик
+        //ставит в  соответсвие hash-tag и обработчик
         routes: {
             "": "start", //Пустой hash-тег
             "!/": "start", //initial page
