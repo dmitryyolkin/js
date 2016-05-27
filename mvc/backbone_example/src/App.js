@@ -9,16 +9,10 @@ define(function(require){
     var backbone = require('backbone');
     var _ = require('underscore');
 
-    //Model
+    //Model + Controller + View
     var User = require('./models/User');
-
-    //Controller
     var Controller = require('./controller/Controller');
-
-    //Views
-    var StartView = require('./views/Start');
-    var SuccessView = require('./views/Success');
-    var ErrorView = require('./views/Error');
+    var BlockView = require('./views/Block');
 
     return {
         Models: {},
@@ -32,19 +26,22 @@ define(function(require){
 
             //Controller
             //_.pick - берет из options только значения Views
-            this.Routers.Controller = new Controller(_.pick(this, 'Views'));
+            this.Routers.Controller = new Controller({
+                model: this.Models.User
+            });
 
             //views
-            this.Views.StartView = new StartView(_.pick(this, 'Routers', 'data'));
-            this.Views.SuccessView = new SuccessView(_.pick(this, 'data'));
-            this.Views.ErrorView = new ErrorView(_.pick(this, 'data'));
-
-            //data set
-            this.data.username = "";
+            this.Views.BlockView = new BlockView({
+                model: this.Models.User,
+                controller: this.Routers.Controller
+            });
 
             //Run HTML5 History API push
             //https://habrahabr.ru/post/123106/
             backbone.history.start();
+
+            //fire 'change' event on model to represent data because model was created before view
+            this.Models.User.trigger('change');
         }
     };
 

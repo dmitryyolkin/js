@@ -4,13 +4,25 @@
 
 define(function(require){
     var backbone = require('backbone');
-    var $ = require("jquery");
     var _ = require("underscore");
 
     return backbone.Router.extend({
         initialize: function(options){
-            //_,extend копирует все св-ва из destination = options в source = this
+            //_,extend копирует все св-ва (в частности model) из destination = options в source = this
             _.extend(this, options);
+
+            //bind model change with navigation - it's needed for changing hash tag in URL
+            //I don't know most correct place for binding model and controller - so I've put it here
+            var changeStateHandler = _.bind(function(){
+                var state = this.model.get('state');
+                if (state == 'start'){
+                    // false потому, что нам не надо вызывать обработчик у Router
+                    this.navigate('!/', false);
+                }else{
+                    this.navigate('!/' + state, false);
+                }
+            }, this);
+            this.model.bind('change:state', changeStateHandler);
         },
 
         //ставит в соответсвие hash-tag и обработчик
@@ -22,24 +34,21 @@ define(function(require){
         },
 
         start: function () {
-            var startView = this.Views.StartView;
-            if (!_.isNull(startView) && !_.isUndefined(startView)) {
-                startView.render();
-            }
+            this.model.set({
+                'state': 'start'
+            });
         },
 
         success: function () {
-            var successView = this.Views.SuccessView;
-            if (!_.isNull(successView) && !_.isUndefined(successView)) {
-                successView.render();
-            }
+            this.model.set({
+                'state': 'success'
+            });
         },
 
         error: function () {
-            var errorView = this.Views.ErrorView;
-            if (!_.isNull(errorView) && !_.isUndefined(errorView)) {
-                errorView.render();
-            }
+            this.model.set({
+                'state': 'error'
+            });
         }
 
     });
