@@ -24,7 +24,8 @@ define(function(require){
         },
 
         events: {
-            'click input:button': 'check'  //Обработчик клика на кнопке "Проверить"
+            'click input:button': 'check',  //Обработчик клика на кнопке "Проверить"
+            'keyup input:text': 'keyPressEventHandler' //Обработчик нажатия enter в тексовом поле
         },
 
         check: function () {
@@ -49,6 +50,14 @@ define(function(require){
             var state = this.model.get('state');
             $(this.el).html(this.templates[state](this.model.toJSON()));
             return this;
+        },
+
+        keyPressEventHandler: function(event){
+            if (event.keyCode == 13){
+                //it's interesting if I invoke this.render() then method above is executed
+                //but data is not updated in UI
+                $('input:button').click();
+            }
         }
 
     });
