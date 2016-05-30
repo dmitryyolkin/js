@@ -11,11 +11,13 @@ define(function(require){
 
     //Model + Controller + View
     var User = require('./models/User');
-    var Controller = require('./controller/Controller');
+    var UsersCollection = require('./collections/UsersCollection');
+    var Controller = require('./controllers/Controller');
     var BlockView = require('./views/Block');
 
     return {
         Models: {},
+        Collections: {},
         Routers: {},
         Views: {},
         data: {},
@@ -23,6 +25,12 @@ define(function(require){
         init: function () {
             //Model
             this.Models.User = new User();
+
+            //Collections
+            this.Collections.UsersCollection = new UsersCollection([
+                {username: 'test'},
+                {username: 'test1'}
+            ]);
 
             //Controller
             //_.pick - берет из options только значения Views
@@ -33,7 +41,8 @@ define(function(require){
             //views
             this.Views.BlockView = new BlockView({
                 model: this.Models.User,
-                controller: this.Routers.Controller
+                controller: this.Routers.Controller,
+                collection: this.Collections.UsersCollection
             });
 
             //Run HTML5 History API push

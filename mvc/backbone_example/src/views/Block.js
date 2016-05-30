@@ -40,7 +40,7 @@ define(function(require){
             //as I understand we have to use set() method to specify values
             //because it fires special event
             this.model.set({
-                'state': username == 'test' ? 'success' : 'error',
+                'state': this.collection.checkUser(username) ? 'success' : 'error',
                 'username': username
             });
         },
