@@ -3,7 +3,7 @@ module.exports = function(grunt) {
     'use strict';
 
     //variables
-    var scrDir = 'src/';
+    var scrDir = 'client/';
     var buildDir = 'build/';
 
     // Project configuration.

@@ -4,9 +4,9 @@
 require.config({
     baseUrl: '.',
     paths: {
-        'jquery': './components/jQuery/dist/jquery.min',
-        'underscore': './components/underscore/underscore-min',
-        'backbone': './components/backbone/backbone-min'
+        'jquery': '../static/components/jQuery/dist/jquery.min',
+        'underscore': '../static/components/underscore/underscore-min',
+        'backbone': '../static/components/backbone/backbone-min'
     },
 
     //для поддержки сторонних модулей описанных не через define

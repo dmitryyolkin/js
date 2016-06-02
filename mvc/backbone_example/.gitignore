@@ -13,4 +13,4 @@ node_modules/*
 
 
 # Exclude ALL bower_modules from commit
-src/components/*
+static/components/*
