@@ -3,8 +3,8 @@ module.exports = function(grunt) {
     'use strict';
 
     //variables
-    var scrDir = 'client/';
-    var buildDir = 'build/';
+    var scrDir = 'static/client/';
+    var buildDir = 'static/client/build';
 
     // Project configuration.
     grunt.initConfig({
@@ -58,13 +58,7 @@ module.exports = function(grunt) {
 
                     //In addition almond.js in included in main.js as well and require.js can be removed from build directory as well
                     almond: true,
-                    //replaceRequireScript section remove src="components/requirejs/require.js"
-                    //and replace data-main="main" with src="main.js"
-                    replaceRequireScript: [{
-                        files: [buildDir + 'index.html'],
-                        module: 'main',
-                        modulePath: 'main'
-                    }],
+
                     'modules': [{
                         'name': 'main',
                         'include': [

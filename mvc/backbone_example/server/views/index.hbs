@@ -1,0 +1,43 @@
+<div id="menu">
+    <span>Menu:</span>
+    <ul>
+        <!--Menu-->
+        <li><a href="#!/">Start</a> </li>
+        <li><a href="#!/success">Success</a> </li>
+        <li><a href="#!/error">Error</a> </li>
+    </ul>
+</div>
+
+<!-- make the same task with template -->
+<div id="block" class="block">
+</div>
+
+<!-- Use standard underscore templates -->
+<script type="text/template" id="start">
+    <div class="start">
+        <div class="userplace">
+            <label for="username">User name:</label>
+            <input type="text" id="username">
+        </div>
+        <div class="buttonplace">
+            <input type="button" value="Check">
+        </div>
+    </div>
+</script>
+
+<script type="text/template" id="error">
+    <div class="error">
+        Error: there is no <%= username %> user.
+        <a href="#!/">Go back</a>
+    </div>
+</script>
+
+<script type="text/template" id="success">
+    <div class="success">
+        User <%= username %> is found.
+        <a href="#!/">Go back</a>
+    </div>
+</script>
+
+<!-- run scripts -->
+<script src="./client/build/main.js"></script>
