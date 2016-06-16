@@ -37,12 +37,8 @@ define(function(require){
 
             var username = $(this.el).find('input:text').val();
 
-            //as I understand we have to use set() method to specify values
-            //because it fires special event
-            this.model.set({
-                'state': this.collection.checkUser(username) ? 'success' : 'error',
-                'username': username
-            });
+            //run asynchronious check
+            this.collection.checkUser(username, this.model);
         },
 
         render: function () {

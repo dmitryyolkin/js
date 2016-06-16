@@ -7,6 +7,7 @@ define(function(require){
     var backbone = require('backbone');
 
     return backbone.Model.extend({
+        idAttribute: "id",
         defaults: {
             username: '',
             state: 'start'

@@ -449,6 +449,7 @@ define('models/User',['require','backbone'],function(require){
     var backbone = require('backbone');
 
     return backbone.Model.extend({
+        idAttribute: "id",
         defaults: {
             username: '',
             state: 'start'
@@ -470,12 +471,38 @@ define('collections/UsersCollection',['require','backbone'],function(require){
             _.extend(this, options);
         },
 
-        checkUser: function(username){
-            var foundUser = this.find(function(user){
-                //it's a bit strange if I compare user.username then this check is always false
-                return user.get('username') == username;
+        parse: function(response){
+            //here we can parse response somehow and wrap it in a interesting result
+            return response;
+        },
+
+        checkUser: function(username, model){
+            //fetch is used for Lazy loading
+            //and results are returned asynchroniously
+            this.fetch({
+                success: function(collection, response){
+                    var foundUser = _.find(collection.models, function(user){
+                        //it's a bit strange if I compare user.username then this check is always false
+                        return user.get('username') == username;
+                    });
+
+                    //set state
+                    model.set({
+                        'state': foundUser != null ? 'success' : 'error',
+                        'username': username
+                    });
+                    return true;
+                },
+                error: function(collection, response){
+                    console.error(response.status);
+                    model.set({
+                        'state': 'error',
+                        'username': username
+                    });
+                    return false;
+                }
             });
-            return foundUser != null;
+
         }
     });
 
@@ -575,12 +602,8 @@ define('views/Block',['require','backbone'],function(require){
 
             var username = $(this.el).find('input:text').val();
 
-            //as I understand we have to use set() method to specify values
-            //because it fires special event
-            this.model.set({
-                'state': this.collection.checkUser(username) ? 'success' : 'error',
-                'username': username
-            });
+            //run asynchronious check
+            this.collection.checkUser(username, this.model);
         },
 
         render: function () {
@@ -603,73 +626,54 @@ define('views/Block',['require','backbone'],function(require){
 });
 
 /**
- * Created by dmitry on 18.05.16.
- */
-
-
-
-define('App',['require','backbone','underscore','./models/User','./collections/UsersCollection','./controllers/Controller','./views/Block'],function(require){
-
-    var backbone = require('backbone');
-    var _ = require('underscore');
-
-    //Model + Controller + View
-    var User = require('./models/User');
-    var UsersCollection = require('./collections/UsersCollection');
-    var Controller = require('./controllers/Controller');
-    var BlockView = require('./views/Block');
-
-    return {
-        Models: {},
-        Collections: {},
-        Routers: {},
-        Views: {},
-        data: {},
-
-        init: function () {
-            //Model
-            this.Models.User = new User();
-
-            //Collections
-            this.Collections.UsersCollection = new UsersCollection([
-                {username: 'test'},
-                {username: 'test1'}
-            ]);
-
-            //Controller
-            //_.pick - берет из options только значения Views
-            this.Routers.Controller = new Controller({
-                model: this.Models.User
-            });
-
-            //views
-            this.Views.BlockView = new BlockView({
-                model: this.Models.User,
-                controller: this.Routers.Controller,
-                collection: this.Collections.UsersCollection
-            });
-
-            //Run HTML5 History API push
-            //https://habrahabr.ru/post/123106/
-            backbone.history.start();
-
-            //fire 'change' event on model to represent data because model was created before view
-            this.Models.User.trigger('change');
-        }
-    };
-
-});
-/**
  * Created by dmitry on 13.05.16.
  */
 
 
 
-define('main',['require','./App'],function(require){
-    var App = require('./App');
+define('main',['require','backbone','underscore','./models/User','./collections/UsersCollection','./controllers/Controller','./views/Block'],function(require){
+    var backbone = require('backbone');
+    var _ = require('underscore');
 
-    //start Routing
-    App.init();
+    var User = require('./models/User');
+    var UsersCollection = require('./collections/UsersCollection');
+    var Controller = require('./controllers/Controller');
+    var BlockView = require('./views/Block');
+
+    //Model + Controller + View
+    var Models = {};
+    var Collections = {};
+    var Routers = {};
+    var Views = {};
+
+    //Model
+    Models.User = new User();
+
+    //Collections
+    Collections.UsersCollection = new UsersCollection({
+        model: User,
+        url: '/users'
+    });
+
+    //Controller
+    //_.pick - берет из options только значения Views
+    Routers.Controller = new Controller({
+        model: Models.User
+    });
+
+    //views
+    Views.BlockView = new BlockView({
+        model: Models.User,
+        controller: Routers.Controller,
+        collection: Collections.UsersCollection
+    });
+
+    //Run HTML5 History API push
+    //https://habrahabr.ru/post/123106/
+    backbone.history.start();
+
+    //fire 'change' event on model to represent data because model was created before view
+    Models.User.trigger('change');
 });
 /**
  * Created by dmitry on 13.05.16.
