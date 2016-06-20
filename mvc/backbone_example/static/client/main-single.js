@@ -479,6 +479,8 @@ define('collections/UsersCollection',['require','backbone'],function(require){
         checkUser: function(username, model){
             //fetch is used for Lazy loading
             //and results are returned asynchroniously
+
+            //check is done on clietn side what can be extremelly long
             this.fetch({
                 success: function(collection, response){
                     var foundUser = _.find(collection.models, function(user){
@@ -502,7 +504,6 @@ define('collections/UsersCollection',['require','backbone'],function(require){
                     return false;
                 }
             });
-
         }
     });
 
@@ -602,8 +603,33 @@ define('views/Block',['require','backbone'],function(require){
 
             var username = $(this.el).find('input:text').val();
 
-            //run asynchronious check
-            this.collection.checkUser(username, this.model);
+            //add user asynchronously
+            this.collection.create(
+                //new user
+                {
+                    username: username
+                },
+
+                //response handlers
+                {
+                    wait: true, // waits for server to respond with 200 before adding newly created model to collection
+                    success: _.bind(function(collection, response){
+                        console.log('success');
+                        this.model.set({
+                            'state': 'success',
+                            'username': username
+                        });
+                    }, this),
+
+                    error: _.bind(function(collection, response){
+                        console.log('error');
+                        this.model.set({
+                            'state': 'error',
+                            'username': username
+                        });
+                    }, this)
+                }
+            );
         },
 
         render: function () {

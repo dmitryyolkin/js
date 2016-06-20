@@ -37,8 +37,33 @@ define(function(require){
 
             var username = $(this.el).find('input:text').val();
 
-            //run asynchronious check
-            this.collection.checkUser(username, this.model);
+            //add user asynchronously
+            this.collection.create(
+                //new user
+                {
+                    username: username
+                },
+
+                //response handlers
+                {
+                    wait: true, // waits for server to respond with 200 before adding newly created model to collection
+                    success: _.bind(function(collection, response){
+                        console.log('success');
+                        this.model.set({
+                            'state': 'success',
+                            'username': username
+                        });
+                    }, this),
+
+                    error: _.bind(function(collection, response){
+                        console.log('error');
+                        this.model.set({
+                            'state': 'error',
+                            'username': username
+                        });
+                    }, this)
+                }
+            );
         },
 
         render: function () {
