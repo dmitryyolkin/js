@@ -24,29 +24,33 @@ define(function(require){
 
             //It's not so good check because verification is done on client side
             //ideally we have to invoke put
-            this.fetch({
-                success: function(collection, response){
-                    var foundUser = _.find(collection.models, function(user){
-                        //it's a bit strange if I compare user.username then this check is always false
-                        return user.get('username') == username;
-                    });
-
-                    //set state
-                    model.set({
-                        'state': foundUser != null ? 'success' : 'error',
-                        'username': username
-                    });
-                    return true;
-                },
-                error: function(collection, response){
-                    console.error(response.status);
-                    model.set({
-                        'state': 'error',
-                        'username': username
-                    });
-                    return false;
-                }
+            this.create({
+                username: username
             });
+
+            //this.fetch({
+            //    success: function(collection, response){
+            //        var foundUser = _.find(collection.models, function(user){
+            //            //it's a bit strange if I compare user.username then this check is always false
+            //            return user.get('username') == username;
+            //        });
+            //
+            //        //set state
+            //        model.set({
+            //            'state': foundUser != null ? 'success' : 'error',
+            //            'username': username
+            //        });
+            //        return true;
+            //    },
+            //    error: function(collection, response){
+            //        console.error(response.status);
+            //        model.set({
+            //            'state': 'error',
+            //            'username': username
+            //        });
+            //        return false;
+            //    }
+            //});
 
         }
     });
