@@ -10,15 +10,12 @@ var _ = require('underscore');
 
 
 var users = [];
-
-users.push({
-    id: 1,
-    username: 'test'
-});
-users.push({
-    id: 2,
-    username: 'test1'
-});
+for (var i = 1; i <=2; i++){
+    users.push({
+        id: i,
+        username: 'test' + i
+    });
+}
 
 router.post('/', function(req, res, next){
     var body = req.body;
