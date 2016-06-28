@@ -22,8 +22,7 @@ define(function(require){
             //fetch is used for Lazy loading
             //and results are returned asynchroniously
 
-            //It's not so good check because verification is done on client side
-            //ideally we have to invoke put
+            //check is done on clietn side what can be extremelly long
             this.fetch({
                 success: function(collection, response){
                     var foundUser = _.find(collection.models, function(user){
@@ -47,7 +46,6 @@ define(function(require){
                     return false;
                 }
             });
-
         }
     });
 
