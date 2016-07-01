@@ -38,6 +38,9 @@ define(function(require){
             var username = $(this.el).find('input:text').val();
 
             //add user asynchronously
+            //instead of using collection.create I could use model.save() where model is User model
+            //      Please keep in mind if the model is not saved on server then it has isNew flag = true and model.save() sends POST request
+            //      Otherwise if the moel already exists model.save sends PUT requests
             this.collection.create(
                 //new user
                 {
