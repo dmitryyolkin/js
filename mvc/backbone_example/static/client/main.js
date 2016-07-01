@@ -5,7 +5,7 @@
 'use strict';
 
 define(function(require){
-    var backbone = require('backbone');
+    var Backbone = require('Backbone');
     var _ = require('underscore');
 
     var User = require('./models/User');
@@ -44,7 +44,7 @@ define(function(require){
 
     //Run HTML5 History API push
     //https://habrahabr.ru/post/123106/
-    backbone.history.start();
+    Backbone.history.start();
 
     //fire 'change' event on model to represent data because model was created before view
     Models.AppState.trigger('change');

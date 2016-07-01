@@ -4,9 +4,9 @@
 'use strict';
 
 define(function(require){
-    var backbone = require('backbone');
+    var Backbone = require('Backbone');
 
-    return backbone.Collection.extend({
+    return Backbone.Collection.extend({
 
         initialize: function(options){
             //_,extend копирует все св-ва (в частности model) из destination = options в source = this

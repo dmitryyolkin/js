@@ -3,10 +3,10 @@
  */
 
 define(function(require){
-    var backbone = require('backbone');
+    var Backbone = require('Backbone');
     var _ = require("underscore");
 
-    return backbone.Router.extend({
+    return Backbone.Router.extend({
         initialize: function(options){
             //_,extend копирует все св-ва (в частности model) из destination = options в source = this
             _.extend(this, options);

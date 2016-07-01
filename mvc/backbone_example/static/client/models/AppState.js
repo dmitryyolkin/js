@@ -5,8 +5,8 @@
 
 define(function(require){
 
-    var backbone = require('backbone');
-    return backbone.Model.extend({
+    var Backbone = require('Backbone');
+    return Backbone.Model.extend({
         defaults: {
             state: 'start',
             username: ''

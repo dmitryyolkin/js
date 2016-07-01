@@ -7,9 +7,9 @@
 //  User saves all info regarding user profile
 //  AppState - it's state for BlockView
 define(function(require){
-    var backbone = require('backbone');
+    var Backbone = require('Backbone');
 
-    return backbone.Model.extend({
+    return Backbone.Model.extend({
         idAttribute: "id",
         defaults: {
             username: ''

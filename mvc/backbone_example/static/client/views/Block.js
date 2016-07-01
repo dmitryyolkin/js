@@ -4,9 +4,9 @@
 'use strict';
 
 define(function(require){
-    var backbone = require('backbone');
+    var Backbone = require('Backbone');
 
-    return backbone.View.extend({
+    return Backbone.View.extend({
         el: $('#block'), //DOM элемент виджета
 
         initialize: function(options){
@@ -33,7 +33,7 @@ define(function(require){
             //it happens because my DOM structure is initialized before assigning el to $('start')
             //Ideally we have to assign el to jquery value after DOM is initialized
             //OR use something like $(this.el) or this.$el every time
-            //For details please see http://stackoverflow.com/questions/5554865/backbone-js-el-is-not-working
+            //For details please see http://stackoverflow.com/questions/5554865/Backbone-js-el-is-not-working
 
             var username = $(this.el).find('input:text').val();
 
