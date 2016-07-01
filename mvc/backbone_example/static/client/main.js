@@ -9,6 +9,8 @@ define(function(require){
     var _ = require('underscore');
 
     var User = require('./models/User');
+    var AppState = require('./models/AppState');
+
     var UsersCollection = require('./collections/UsersCollection');
     var Controller = require('./controllers/Controller');
     var BlockView = require('./views/Block');
@@ -20,7 +22,7 @@ define(function(require){
     var Views = {};
 
     //Model
-    Models.User = new User();
+    Models.AppState = new AppState();
 
     //Collections
     Collections.UsersCollection = new UsersCollection({
@@ -31,13 +33,12 @@ define(function(require){
     //Controller
     //_.pick - берет из options только значения Views
     Routers.Controller = new Controller({
-        model: Models.User
+        model: Models.AppState
     });
 
     //views
     Views.BlockView = new BlockView({
-        model: Models.User,
-        controller: Routers.Controller,
+        model: Models.AppState,
         collection: Collections.UsersCollection
     });
 
@@ -46,5 +47,5 @@ define(function(require){
     backbone.history.start();
 
     //fire 'change' event on model to represent data because model was created before view
-    Models.User.trigger('change');
+    Models.AppState.trigger('change');
 });

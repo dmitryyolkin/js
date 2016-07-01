@@ -451,11 +451,27 @@ define('models/User',['require','backbone'],function(require){
     return backbone.Model.extend({
         idAttribute: "id",
         defaults: {
-            username: '',
-            state: 'start'
+            username: ''
         }
     });
 });
+/**
+ * Created by dmitry on 30.06.16.
+ */
+
+
+define('models/AppState',['require','backbone'],function(require){
+
+    var backbone = require('backbone');
+    return backbone.Model.extend({
+        defaults: {
+            state: 'start',
+            username: ''
+        }
+    });
+
+});
+
 /**
  * Created by dmitry on 30.05.16.
  */
@@ -657,11 +673,12 @@ define('views/Block',['require','backbone'],function(require){
 
 
 
-define('main',['require','backbone','underscore','./models/User','./collections/UsersCollection','./controllers/Controller','./views/Block'],function(require){
+define('main',['require','backbone','underscore','./models/User','./models/AppState','./collections/UsersCollection','./controllers/Controller','./views/Block'],function(require){
     var backbone = require('backbone');
     var _ = require('underscore');
 
     var User = require('./models/User');
+    var AppState = require('./models/AppState');
     var UsersCollection = require('./collections/UsersCollection');
     var Controller = require('./controllers/Controller');
     var BlockView = require('./views/Block');
@@ -673,7 +690,7 @@ define('main',['require','backbone','underscore','./models/User','./collections/
     var Views = {};
 
     //Model
-    Models.User = new User();
+    Models.AppState = new AppState();
 
     //Collections
     Collections.UsersCollection = new UsersCollection({
@@ -684,13 +701,12 @@ define('main',['require','backbone','underscore','./models/User','./collections/
     //Controller
     //_.pick - берет из options только значения Views
     Routers.Controller = new Controller({
-        model: Models.User
+        model: Models.AppState
     });
 
     //views
     Views.BlockView = new BlockView({
-        model: Models.User,
-        controller: Routers.Controller,
+        model: Models.AppState,
         collection: Collections.UsersCollection
     });
 
@@ -699,7 +715,7 @@ define('main',['require','backbone','underscore','./models/User','./collections/
     backbone.history.start();
 
     //fire 'change' event on model to represent data because model was created before view
-    Models.User.trigger('change');
+    Models.AppState.trigger('change');
 });
 /**
  * Created by dmitry on 13.05.16.
