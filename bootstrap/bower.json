@@ -1,0 +1,22 @@
+{
+  "name": "bootstrap_test",
+  "description": "",
+  "main": "",
+  "authors": [
+    "Dmitry Yolkin <dmitry.yolkin@maxifier.com>"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/dmitryyolkin/js",
+  "moduleType": [],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "static/components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "almond": "~0.3.2"
+  }
+}
