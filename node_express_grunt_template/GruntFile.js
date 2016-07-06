@@ -26,7 +26,6 @@ module.exports = function(grunt) {
                 //'optimize': 'uglify2',
             },
             centralized: {
-                //TODO it's very useful
                 //if we use modules option (see examples in my github https://github.com/dmitryyolkin/js/tree/master/requirejs)
                 //then we have to use 'appDir' and 'dir' attributes and DON'T use out because in this case we optimize whole directory (but not a separate file)
 
