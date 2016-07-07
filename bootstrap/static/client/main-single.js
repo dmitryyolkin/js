@@ -442,7 +442,7 @@ define("main", function(){});
 require.config({
     baseUrl: '.',
     paths: {
-        //'jquery': '../components/jQuery/dist/jquery.min',
+        'jquery': '../components/jQuery/dist/jquery.min'
         //'underscore': '../components/underscore/underscore-min',
         //'Backbone': '../components/backbone/backbone-min'
     },

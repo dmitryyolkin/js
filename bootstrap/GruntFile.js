@@ -42,6 +42,19 @@ module.exports = function(grunt) {
                     name: '../components/almond/almond'
                 }
             }
+        },
+
+        less: {
+            production: {
+                //https://github.com/gruntjs/grunt-contrib-less
+                options: {
+                    compress: true,
+                },
+                files: {
+                    "static/less/styles.min.css": "static/less/styles.less",
+                    "static/less/variables.min.css": "static/less/variables.less"
+                }
+            }
         }
 
     });
@@ -52,6 +65,6 @@ module.exports = function(grunt) {
 
     // Default task.
     //grunt.registerTask('default', ['clean', 'requirejs:centralized']);
-    grunt.registerTask('default', ['requirejs:centralized']);
+    grunt.registerTask('default', ['less', 'requirejs:centralized']);
 };
 
