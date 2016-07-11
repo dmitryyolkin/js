@@ -1,3 +1,120 @@
+<div class="wrapper container">
+    <header>
+        <a href="/"><img src="images/logo.png" alt="Whitesquare logo"></a>
+
+        <!-- todo we need some Rest service able to return search results -->
+        <form name="search" action="#" method="get" class="form-inline form-search pull-right">
+
+            <!--
+                В форму мы помещаем компонент «сгруппированные контролы».
+                Группировка контролов позволяет убрать отступ между вводом текста и кнопкой и как бы слить их в единый элемент.
+
+                TODO В идеале надо делать через AJAX и Backbone, когда будет не перезагрузка всей страницы,
+                а лишь небольшой ее части, которая отвечает за отображение результата
+            -->
+            <div class="input-group">
+                <label class="sr-only" for="searchInput">Search</label>
+                <input class="form-control" id="searchInput" type="text" name="search" placeholder="Search">
+                <div class="input-group-btn">
+                    <button type="submit" class="btn btn-primary">GO</button>
+                </div>
+            </div>
+        </form>
+    </header>
+
+    <!--
+        Для отображения меню возьмем компонент «навигационная панель» и поместим в него компонент «навигация»,
+        которая представляет из себя список со ссылками. Для навигации добавляется класс «navbar-nav»,
+        который применяет специальные стили навигации внутри навигационной панели.
+    -->
+    <nav class="navbar navbar-default">
+        <ul class="nav navbar-nav">
+            <li><a href="/Home">Home</a></li>
+            <li class="active"><a href="/about/">About us</a></li>
+            <li><a href="/services/">Services</a></li>
+            <li><a href="/partners/">Partners</a></li>
+            <li><a href="/customers/">Customers</a></li>
+            <li><a href="/projects/">Projects</a></li>
+            <li><a href="/careers/">Careers</a></li>
+            <li><a href="/contact/">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- Заголовок страницы помещается в div с классом «heading». -->
+    <div class="heading">
+        <h1>About us</h1>
+    </div>
+
+    <div class="row">
+        <!--
+            Классы «col-md-7» и «col-md-17» указывают, что блоки представляют из себя колонки шириной 7 и 17
+            относительно родительского контейнера. По умолчанию сумма ширин колонок в Bootstrap равняется 12,
+            однако мы увеличили это число вдвое для достижения нужной нам гибкости.
+        -->
+        <aside class="col-md-7">
+
+            <!--
+                Подменю нужно разместить в теге aside (т.е. сбоку от основного контента).
+                Список ссылок создаем аналогично главному меню.
+            -->
+            <ul class="list-group submenu">
+                <li class="list-group-item active">Lorem ipsum</li>
+                <li class="list-group-item"><a href="/donec/">Donec tincidunt laoreet</a></li>
+                <li class="list-group-item"><a href="/vestibulum/">Vestibulum elit</a></li>
+                <li class="list-group-item"><a href="/etiam/">Etiam pharetra</a></li>
+                <li class="list-group-item"><a href="/phasellus/">Phasellus placerat</a></li>
+                <li class="list-group-item"><a href="/cras/">Cras et nisi vitae odio</a></li>
+            </ul>
+
+            <!--
+                Контент сайдбара
+                В контенте сайдбара помимо подменю располагается также изображение с расположением офисов.
+            -->
+            <div class="panel panel-primary">
+                <div class="panel-heading">Our offices</div>
+                <div class="panel-body">
+                    <img src="/images/map.png" class="img-responsive" alt="Our offices">
+                </div>
+            </div>
+        </aside>
+
+        <section class="col-md-17">
+            <!--
+                Цитата
+                Вёрстку контента начнём с добавления цитаты.
+            -->
+            <div class="jumbotron">
+                <blockquote>
+                    <p>
+                        “Quisque in enim velit, at dignissim est. nulla ul corper, dolor ac pellentesque placerat, justo tellus gravida erat, vel porttitor libero erat.”
+                    </p>
+                    <small>John Doe, Lorem Ipsum</small>
+                </blockquote>
+
+            </div>
+
+            <p>Lorem ipsum dolor sit amet…</p>
+            <p>Donec vel nisl nibh…</p>
+            <p>Donec vel nisl nibh…</p>
+
+            <!--
+                Следующим шагом нужно добавить два изображения, которые находятся в конце текста контента.
+                Делается это с помощью двух колонок:
+
+                Класс «thumbnail» превращает изображения в компонент «миниатюра».
+                Он сделает за нас всю работу по стилизации изображений.
+                Единственное, что нам осталось — это установить свой отступ и цвет рамки в переменных для этого компонента:
+            -->
+            <div class="col-md-12">
+                <img src="/images/about-1.png" alt="" class="thumbnail">
+            </div>
+            <div class="col-md-12">
+                <img src="/images/about-2.png" alt="" class="thumbnail">
+            </div>
+        </section>
+    </div>
+</div>
+<footer></footer>
 
 <!-- run scripts -->
 <script src="./client/main-single.js"></script>

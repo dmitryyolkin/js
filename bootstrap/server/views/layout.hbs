@@ -1,10 +1,20 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>{{title}}</title>
-    <link rel='stylesheet' href='/css/default.css' />
-  </head>
-  <body>
-    {{{body}}}
-  </body>
+    <head>
+        <title>{{title}}</title>
+        <!--
+            Метатегом viewport указываем, что ширина страницы на мобильных устройствах будет равна ширине экрана и начальный масштаб будет 100%.
+            Затем подключается файл стилей. И для версий Internet Explorer меньше девятой подключаем скрипты,
+            позволяющие правильно отображать нашу верстку.
+        -->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="/less/styles.min.css" rel="stylesheet">
+        <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->
+    </head>
+    <body>
+        {{{body}}}
+    </body>
 </html>
