@@ -425,7 +425,7 @@ var requirejs, require, define;
     };
 }());
 
-define("../components/almond/almond", function(){});
+define("../static/components/almond/almond", function(){});
 
 /**
  * Created by dmitry on 06.07.16.

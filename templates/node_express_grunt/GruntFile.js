@@ -6,8 +6,8 @@ module.exports = function(grunt) {
     'use strict';
 
     //variables
-    var srcDir = 'static/client/';
-    var buildDir = 'static/client/';
+    var srcDir = 'client/';
+    var buildDir = 'client/';
 
     // Project configuration.
     grunt.initConfig({
@@ -39,7 +39,7 @@ module.exports = function(grunt) {
                     //The name parameter is pointing to almond, relative to our baseUrl, which will include almond in the build process.
                     //almond is small AMD (Asynchronious Model Definition) loader that is much smaller than requirejs
                     //and typically included at the same output file
-                    name: '../components/almond/almond'
+                    name: '../static/components/almond/almond'
                 }
             }
         }
