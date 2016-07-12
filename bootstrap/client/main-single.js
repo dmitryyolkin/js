@@ -425,7 +425,7 @@ var requirejs, require, define;
     };
 }());
 
-define("../components/almond/almond", function(){});
+define("../static/components/almond/almond", function(){});
 
 /**
  * Created by dmitry on 06.07.16.
@@ -442,7 +442,7 @@ define("main", function(){});
 require.config({
     baseUrl: '.',
     paths: {
-        'jquery': '../components/jQuery/dist/jquery.min'
+        'jquery': '../static/components/jquery/dist/jquery.min.js'
         //'underscore': '../components/underscore/underscore-min',
         //'Backbone': '../components/backbone/backbone-min'
     },
