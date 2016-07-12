@@ -25,6 +25,7 @@ app.use(require('less-middleware')(path.join(__dirname, '../static')));
 //set dir for statics resources
 //we plug second dit (build or client) to be able to develop client side js in a separate directory
 app.use(express.static(path.join(__dirname, '../static')));
+app.use(express.static(path.join(__dirname, '../client')));
 
 //we can specify a few directories where static resources can be found
 //app.use(express.static(path.join(__dirname, '../build')));

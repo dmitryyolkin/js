@@ -425,7 +425,7 @@ var requirejs, require, define;
     };
 }());
 
-define("../components/almond/almond", function(){});
+define("../static/components/almond/almond", function(){});
 
 //     Underscore.js 1.8.3
 //     http://underscorejs.org
@@ -730,9 +730,9 @@ define('main',['require','Backbone','underscore','./models/User','./models/AppSt
 require.config({
     baseUrl: '.',
     paths: {
-        'jquery': '../components/jQuery/dist/jquery.min',
-        'underscore': '../components/underscore/underscore-min',
-        'Backbone': '../components/backbone/backbone-min'
+        'jquery': '../static/components/jQuery/dist/jquery.min',
+        'underscore': '../static/components/underscore/underscore-min',
+        'Backbone': '../static/components/backbone/backbone-min'
     },
 
     //для поддержки сторонних модулей описанных не через define
