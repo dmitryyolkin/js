@@ -442,9 +442,10 @@ define("main", function(){});
 require.config({
     baseUrl: '.',
     paths: {
-        //'jquery': '../components/jQuery/dist/jquery.min',
-        //'underscore': '../components/underscore/underscore-min',
-        //'Backbone': '../components/backbone/backbone-min'
+        'jquery': '../static/components/jQuery/dist/jquery.min',
+        'underscore': '../static/components/underscore/underscore-min',
+        'backbone': '../static/components/backbone/backbone-min',
+        'marionette': "../static/components/backbone.marionette/lib/backbone.marionette.min"
     },
 
     //для поддержки сторонних модулей описанных не через define
