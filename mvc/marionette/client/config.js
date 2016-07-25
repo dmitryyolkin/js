@@ -7,7 +7,7 @@
 require.config({
     baseUrl: '.',
     paths: {
-        'jquery': '../static/components/jQuery/dist/jquery.min',
+        'jquery': '../static/components/jquery/dist/jquery.min',
         'underscore': '../static/components/underscore/underscore-min',
         'backbone': '../static/components/backbone/backbone-min',
         'marionette': "../static/components/backbone.marionette/lib/backbone.marionette.min"
