@@ -555,6 +555,15 @@ define('users/UsersCollection',['require','backbone'],function(require){
 
 });
 /**
+ * Created by dmitry on 27.07.16.
+ */
+
+
+define('users/views/UserView',['require'],function(require){
+
+});
+
+/**
  * Created by dmitry on 25.05.16.
  */
 
@@ -594,13 +603,14 @@ define('users/models/AppState',['require','backbone'],function(require){
  */
 
 
-define('users/UserModule',['require','marionette','./UserRouter','./UserController','./UsersCollection','./models/User','./models/AppState'],function(require){
+define('users/UserModule',['require','marionette','./UserRouter','./UserController','./UsersCollection','./views/UserView','./models/User','./models/AppState'],function(require){
     //imports
     var Marionette = require('marionette');
 
     var UserRouter = require('./UserRouter');
     var UserController = require('./UserController');
     var UsersCollection = require('./UsersCollection');
+    var UserView = require('./views/UserView');
 
     var User = require('./models/User');
     var AppState = require('./models/AppState');
@@ -622,6 +632,11 @@ define('users/UserModule',['require','marionette','./UserRouter','./UserControll
             var usersCollection = new UsersCollection({
                 model: User,
                 url: '/users'
+            });
+
+            new UserView({
+                model: appStateModel,
+                collection: usersCollection
             });
 
             //bind model change with navigation - it's needed for changing hash tag in URL
@@ -674,7 +689,6 @@ define('App',['require','backbone','marionette','./users/UserModule'],function(r
 /**
  * Created by dmitry on 06.07.16.
  */
-
 
 define('main',['require','./App'],function(require){
     var App = require('./App');

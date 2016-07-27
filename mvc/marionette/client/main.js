@@ -1,7 +1,6 @@
 /**
  * Created by dmitry on 06.07.16.
  */
-'use strict';
 
 define(function(require){
     var App = require('./App');
