@@ -10,7 +10,7 @@ define(function(require){
     var UserRouter = require('./UserRouter');
     var UserController = require('./UserController');
     var UsersCollection = require('./UsersCollection');
-    var UserView = require('./views/UserView');
+    var UserLayoutView = require('./views/layout/UserLayoutView');
 
     var User = require('./models/User');
     var AppState = require('./models/AppState');
@@ -34,10 +34,12 @@ define(function(require){
                 url: '/users'
             });
 
-            new UserView({
+            var usersLayoutView = new UserLayoutView({
                 model: appStateModel,
                 collection: usersCollection
             });
+            //usersLayoutView.contentRegion.currentView
+            appStateModel.bind('change', usersLayoutView.render);
 
             //bind model change with navigation - it's needed for changing hash tag in URL
             //I don't know most correct place for binding model and controller - so I've put it here

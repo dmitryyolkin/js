@@ -8,6 +8,11 @@ define(function(require){
 
     return Backbone.Collection.extend({
 
+        initialize: function(options){
+            //_,extend копирует все св-ва (в частности model) из destination = options в source = this
+            _.extend(this, options);
+        },
+
         checkUser: function(username, model){
             //fetch is used for Lazy loading
             //and results are returned asynchroniously
