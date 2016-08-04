@@ -8,32 +8,55 @@ define(function(require){
     var Marionette = require('marionette');
     var _ = require('underscore');
 
-    var templates = {};
     return Marionette.ItemView.extend({
         //el and template: false can be used when we don't have template
         //el: $('#block'), //DOM элемент виджета
         //template: false, //template-less
 
         initialize: function(options){
+            //copy controller, model, state to this.controller, model, state
             _.extend(this, options);
         },
 
-        template: function(serialized_model){
-            var state = serialized_model.state;
-            var temp = templates[state];
+        //template is used for static template, i.e. which is not changed depending on model's state
+        //if we need dynamic template then getTemplate method should be used
+        //template: function(serialized_model){
+        //    return '#start';
+        //},
 
-            if (_.isUndefined(temp)){
-                temp = _.template($('#' + state).html());
-                templates[state] = temp;
-            }
+        getTemplate: function(){
+            return '#' + this.model.get('state');
+        },
 
-            return temp;
+        //if you like to use some helper functions into your template
+        //we can specify templateHelpers field with fields/functions used from template
+        //E.g. underscore doesn't support templateHelpers as long as HBs supports that
+        //
+        //Details: http://marionettejs.com/docs/v2.4.7/marionette.view.html#viewtemplatehelpers
+        templateHelpers: function () {
+            return {
+                testFunction1: function(){
+                    //from templateHelpers we need to refer to out links with this prefix
+                    return "test function 1 with model state: " + this.model.state;
+                },
 
+                testField1: "test field 1"
+            };
         },
 
         events: {
             'click input:button': 'check',  //Обработчик клика на кнопке "Проверить"
             'keyup input:text': 'keyPressEventHandler' //Обработчик нажатия enter в тексовом поле
+        },
+
+        modelEvents: {
+            //it's the same as this.listenTo(this.model, 'change:state', this.render, this);
+            'change:state' : 'render'
+        },
+
+        onRender: function () {
+            //find current model state (start|success\error)
+            console.log('UserStateItemView is onRender');
         },
 
         check: function () {
@@ -76,13 +99,6 @@ define(function(require){
                 }
             );
         },
-
-        //onRender: function () {
-        //    //find current model state (start|success\error)
-        //    var state = this.model.get('state');
-        //    $(this.el).html(this.templates[state](this.model.toJSON()));
-        //    return this;
-        //},
 
         keyPressEventHandler: function(event){
             if (event.keyCode == 13){

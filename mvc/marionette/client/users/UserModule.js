@@ -38,8 +38,7 @@ define(function(require){
                 model: appStateModel,
                 collection: usersCollection
             });
-            //usersLayoutView.contentRegion.currentView
-            appStateModel.bind('change', usersLayoutView.render);
+            usersLayoutView.render();
 
             //bind model change with navigation - it's needed for changing hash tag in URL
             //I don't know most correct place for binding model and controller - so I've put it here
@@ -53,8 +52,6 @@ define(function(require){
                 }
             });
 
-            //fire 'change' event on model to represent data because model was created before view
-            appStateModel.trigger('change');
         }
     });
 });

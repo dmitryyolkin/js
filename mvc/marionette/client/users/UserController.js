@@ -7,6 +7,12 @@ define(function(require){
     var Marionette = require('marionette');
 
     return Marionette.Controller.extend({
+
+        initialize: function(options){
+            //set model to this.model
+            _.extend(this, options);
+        },
+
         start: function () {
             this.model.set({
                 'state': 'start'

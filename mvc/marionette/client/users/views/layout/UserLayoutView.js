@@ -16,13 +16,20 @@ define(function(require){
         },
 
         initialize: function(options){
-            //map region to view
+            console.log('UserlayoutView is initialize');
             this.showChildView('block', new UserStateItemView(options));
         },
 
-        onBeforeShow: function() {
+        onShow: function() {
+            //we can put some code here that will be invoked on show
+            //A common use case for the onShow method is to use it to add children views.
+            console.log('UserLayoutView is onShow');
+        },
+
+        onRender: function() {
             //we can put some code here that will be invoked before
             //this layoutView will be rendered
+            console.log('UserLayoutView is onRender');
         }
 
     });

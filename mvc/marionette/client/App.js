@@ -19,7 +19,7 @@ define(function(require) {
     });
 
     //add some handlers
-    App.on('initialize:after', function(options){
+    App.on('start', function(options){
         if (Backbone.history){
             Backbone.history.start();
         }
