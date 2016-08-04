@@ -36,21 +36,10 @@ define(function(require){
 
             var usersLayoutView = new UserLayoutView({
                 model: appStateModel,
-                collection: usersCollection
+                collection: usersCollection,
+                router: router
             });
             usersLayoutView.render();
-
-            //bind model change with navigation - it's needed for changing hash tag in URL
-            //I don't know most correct place for binding model and controller - so I've put it here
-            appStateModel.bind('change:state', function(){
-                var state = appStateModel.get('state');
-                if (state == 'start'){
-                    // false потому, что нам не надо вызывать обработчик у Router
-                    router.navigate('!/', false);
-                }else{
-                    router.navigate('!/' + state, false);
-                }
-            });
 
         }
     });

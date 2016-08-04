@@ -477,6 +477,12 @@ define('users/UserRouter',['require','marionette'],function(require){
             _.extend(this, options);
         },
 
+        modelEvent: 'changeUrl',
+
+        changeUrl: function(){
+            console.log('Router chnage url');
+        },
+
         //ставит в соответсвие hash-tag и обработчик
         appRoutes: {
             "": "start", //Пустой hash-тег
@@ -623,7 +629,7 @@ define('users/views/layout/UserStateItemView',['require','marionette','underscor
 
         modelEvents: {
             //it's the same as this.listenTo(this.model, 'change:state', this.render, this);
-            'change:state' : 'render'
+            'change:state' : 'render changeUrl'
         },
 
         onRender: function () {
@@ -631,13 +637,19 @@ define('users/views/layout/UserStateItemView',['require','marionette','underscor
             console.log('UserStateItemView is onRender');
         },
 
+        changeUrl: function(){
+            var state = this.model.get('state');
+            if (state == 'start'){
+                // false потому, что нам не надо вызывать обработчик у Router
+                this.router.navigate('!/', false);
+            }else{
+                this.router.navigate('!/' + state, false);
+            }
+        },
+
         check: function () {
             //if I write this.el.find() then I'ill get an error $(this.el).find is not a function
             //it happens because my DOM structure is initialized before assigning el to $('start')
-            //Ideally we have to assign el to jquery value after DOM is initialized
-            //OR use something like $(this.el) or this.$el every time
-            //For details please see http://stackoverflow.com/questions/5554865/Backbone-js-el-is-not-working
-
             var username = $(this.el).find('input:text').val();
 
             //add user asynchronously
@@ -793,21 +805,21 @@ define('users/UserModule',['require','marionette','./UserRouter','./UserControll
 
             var usersLayoutView = new UserLayoutView({
                 model: appStateModel,
-                collection: usersCollection
+                collection: usersCollection,
+                router: router
             });
             usersLayoutView.render();
 
-            //bind model change with navigation - it's needed for changing hash tag in URL
-            //I don't know most correct place for binding model and controller - so I've put it here
-            appStateModel.bind('change:state', function(){
-                var state = appStateModel.get('state');
-                if (state == 'start'){
-                    // false потому, что нам не надо вызывать обработчик у Router
-                    router.navigate('!/', false);
-                }else{
-                    router.navigate('!/' + state, false);
-                }
-            });
+            ////bind model change with navigation - it's needed for changing hash tag in URL
+            //appStateModel.bind('change:state', function(){
+            //    var state = appStateModel.get('state');
+            //    if (state == 'start'){
+            //        // false потому, что нам не надо вызывать обработчик у Router
+            //        router.navigate('!/', false);
+            //    }else{
+            //        router.navigate('!/' + state, false);
+            //    }
+            //});
 
         }
     });

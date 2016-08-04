@@ -51,7 +51,7 @@ define(function(require){
 
         modelEvents: {
             //it's the same as this.listenTo(this.model, 'change:state', this.render, this);
-            'change:state' : 'render'
+            'change:state' : 'render changeUrl'
         },
 
         onRender: function () {
@@ -59,13 +59,19 @@ define(function(require){
             console.log('UserStateItemView is onRender');
         },
 
+        changeUrl: function(){
+            var state = this.model.get('state');
+            if (state == 'start'){
+                // false потому, что нам не надо вызывать обработчик у Router
+                this.router.navigate('!/', false);
+            }else{
+                this.router.navigate('!/' + state, false);
+            }
+        },
+
         check: function () {
             //if I write this.el.find() then I'ill get an error $(this.el).find is not a function
             //it happens because my DOM structure is initialized before assigning el to $('start')
-            //Ideally we have to assign el to jquery value after DOM is initialized
-            //OR use something like $(this.el) or this.$el every time
-            //For details please see http://stackoverflow.com/questions/5554865/Backbone-js-el-is-not-working
-
             var username = $(this.el).find('input:text').val();
 
             //add user asynchronously
