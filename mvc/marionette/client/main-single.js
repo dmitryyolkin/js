@@ -477,12 +477,6 @@ define('users/UserRouter',['require','marionette'],function(require){
             _.extend(this, options);
         },
 
-        modelEvent: 'changeUrl',
-
-        changeUrl: function(){
-            console.log('Router chnage url');
-        },
-
         //ставит в соответсвие hash-tag и обработчик
         appRoutes: {
             "": "start", //Пустой hash-тег
@@ -542,37 +536,8 @@ define('users/UsersCollection',['require','backbone'],function(require){
         initialize: function(options){
             //_,extend копирует все св-ва (в частности model) из destination = options в source = this
             _.extend(this, options);
-        },
-
-        checkUser: function(username, model){
-            //fetch is used for Lazy loading
-            //and results are returned asynchroniously
-
-            //check is done on clietn side what can be extremelly long
-            this.fetch({
-                success: function(collection, response){
-                    var foundUser = _.find(collection.models, function(user){
-                        //it's a bit strange if I compare user.username then this check is always false
-                        return user.get('username') == username;
-                    });
-
-                    //set state
-                    model.set({
-                        'state': foundUser != null ? 'success' : 'error',
-                        'username': username
-                    });
-                    return true;
-                },
-                error: function(collection, response){
-                    console.error(response.status);
-                    model.set({
-                        'state': 'error',
-                        'username': username
-                    });
-                    return false;
-                }
-            });
         }
+
     });
 
 });
@@ -809,17 +774,6 @@ define('users/UserModule',['require','marionette','./UserRouter','./UserControll
                 router: router
             });
             usersLayoutView.render();
-
-            ////bind model change with navigation - it's needed for changing hash tag in URL
-            //appStateModel.bind('change:state', function(){
-            //    var state = appStateModel.get('state');
-            //    if (state == 'start'){
-            //        // false потому, что нам не надо вызывать обработчик у Router
-            //        router.navigate('!/', false);
-            //    }else{
-            //        router.navigate('!/' + state, false);
-            //    }
-            //});
 
         }
     });
