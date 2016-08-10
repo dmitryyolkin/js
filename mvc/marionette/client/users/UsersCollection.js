@@ -3,16 +3,13 @@
  */
 'use strict';
 
-define(function(require){
-    var Backbone = require('backbone');
+var Backbone = require('backbone');
 
-    return Backbone.Collection.extend({
+module.exports = Backbone.Collection.extend({
 
-        initialize: function(options){
-            //_,extend копирует все св-ва (в частности model) из destination = options в source = this
-            _.extend(this, options);
-        }
-
-    });
+    initialize: function(options){
+        //_,extend копирует все св-ва (в частности model) из destination = options в source = this
+        _.extend(this, options);
+    }
 
 });

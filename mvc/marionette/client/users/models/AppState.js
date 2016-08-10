@@ -3,14 +3,11 @@
  */
 'use strict';
 
-define(function(require){
-
-    var Backbone = require('backbone');
-    return Backbone.Model.extend({
-        defaults: {
-            state: 'start',
-            username: ''
-        }
-    });
-
+var Backbone = require('backbone');
+module.exports = Backbone.Model.extend({
+    defaults: {
+        state: 'start',
+        username: ''
+    }
 });
+

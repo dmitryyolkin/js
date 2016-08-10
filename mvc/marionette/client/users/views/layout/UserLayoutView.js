@@ -3,34 +3,32 @@
  */
 'use strict';
 
-define(function(require){
-    var Marionette = require('marionette');
-    var UserStateItemView = require('./UserStateItemView');
-    var _ = require('underscore');
+var Marionette = require('marionette');
+var UserStateItemView = require('./UserStateItemView');
+var _ = require('underscore');
 
-    return Marionette.LayoutView.extend({
-        el: 'body',
+module.exports = Marionette.LayoutView.extend({
+    el: 'body',
 
-        regions: {
-            block: '#block'
-        },
+    regions: {
+        block: '#block'
+    },
 
-        initialize: function(options){
-            console.log('UserlayoutView is initialize');
-            this.showChildView('block', new UserStateItemView(options));
-        },
+    initialize: function(options){
+        console.log('UserlayoutView is initialize');
+        this.showChildView('block', new UserStateItemView(options));
+    },
 
-        onShow: function() {
-            //we can put some code here that will be invoked on show
-            //A common use case for the onShow method is to use it to add children views.
-            console.log('UserLayoutView is onShow');
-        },
+    onShow: function() {
+        //we can put some code here that will be invoked on show
+        //A common use case for the onShow method is to use it to add children views.
+        console.log('UserLayoutView is onShow');
+    },
 
-        onRender: function() {
-            //we can put some code here that will be invoked before
-            //this layoutView will be rendered
-            console.log('UserLayoutView is onRender');
-        }
+    onRender: function() {
+        //we can put some code here that will be invoked before
+        //this layoutView will be rendered
+        console.log('UserLayoutView is onRender');
+    }
 
-    });
 });

@@ -6,13 +6,11 @@
 //I splitted out AppState and User because logically it's two different models
 //  User saves all info regarding user profile
 //  AppState - it's state for BlockView
-define(function(require){
-    var Backbone = require('backbone');
+var Backbone = require('backbone');
 
-    return Backbone.Model.extend({
-        idAttribute: "id",
-        defaults: {
-            username: ''
-        }
-    });
+module.exports = Backbone.Model.extend({
+    idAttribute: "id",
+    defaults: {
+        username: ''
+    }
 });
