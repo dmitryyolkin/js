@@ -40,4 +40,12 @@
 </script>
 
 <!-- run scripts -->
+<script src="./components/cajon/cajon.js"></script>
 <script src="./main-single.js"></script>
+<script>
+    //if we don't call that explicitly then main->module.exports.functions is not invoked()
+    //we invoke main after DOM model is built
+    require(["jquery", "main"], function ($, main) {
+        $(document).ready(main);
+    })
+</script>

@@ -22,8 +22,19 @@ module.exports = function(grunt) {
                 mainConfigFile: srcDir + 'config.js',
                 out: buildDir + 'main-single.js',
 
-                optimize: 'none'
+                optimize: 'none',
                 //'optimize': 'uglify2',
+
+
+                //================ cajon specific =============================
+                //================ cajon allows Node style in client js =======
+
+                //Instruct the r.js optimizer to
+                //convert commonjs-looking code
+                //to AMD style, which is needed for
+                //the optimizer to properly trace
+                //dependencies.
+                cjsTranslate: true
             },
             centralized: {
                 //if we use modules option (see examples in my github https://github.com/dmitryyolkin/js/tree/master/requirejs)
