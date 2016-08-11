@@ -1,0 +1,25 @@
+{
+  "name": "cajon_almond_requirejs_grunt",
+  "description": "",
+  "main": "",
+  "authors": [
+    "Dmitry Yolkin <dmitry.yolkin@maxifier.com>"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/dmitryyolkin/js",
+  "moduleType": [],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "static/components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "almond": "~0.3.2",
+    "cajon": "^0.3.0",
+    "jquery": "^3.1.0",
+    "underscore": "^1.8.3"
+  }
+}
