@@ -1,8 +1,104 @@
+/*
+  some basic rules were taken from
+  http://jgthms.com/web-design-in-4-minutes
+*/
+
 body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  /* Setting a limit of characters per line greatly enhances the readability and appeal of a wall of text.*/
+  margin: 0 auto;
+  max-width: 50em;
+
+  /* Switching to a sans-serif font like "Helvetica" or "Arial" can vastly improve the look of your page. */
+  font-family: "Helvetica", "Arial", sans-serif;
+
+  /* When a page looks "broken" to a user, it's usually a spacing issue. Providing space both around and within your content can increase the appeal of your page.*/
+  line-height: 1.5;
+  padding: 4em 1em;
+
+  /* Black text on a white background can be harsh on the eyes. Opting for a softer shade of black for body text makes the page more comfortable to read. */
+  color: #566b78;
 }
 
+
+/* enhance our header with a nice background image */
+/* header */
+header {
+  background-color: #263d36;
+  background-image: url("../images/header.png");
+  background-position: center top;
+  background-repeat: no-repeat;
+  background-size: cover;
+  line-height: 1.2;
+  padding: 10vw 2em;
+  text-align: center;
+}
+
+header img {
+  display: inline-block;
+  height: 120px;
+  vertical-align: top;
+  width: 120px;
+}
+
+header h1 {
+  color: white;
+  font-size: 2.5em;
+  font-weight: 300;
+}
+
+header a {
+  border: 1px solid #e81c4f;
+  border-radius: 290486px;
+  color: white;
+  font-size: 0.6em;
+  letter-spacing: 0.2em;
+  padding: 1em 2em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: none 200ms ease-out;
+  transition-property: color, background;
+}
+
+header a:hover {
+  background:  #e81c4f;
+  color: white;
+}
+
+
+/* And in order to keep a decent level of contrast, let's pick a darker shade for important words */
+h1,
+h2,
+strong {
+  color: #333;
+}
+
+h2 {
+  margin-top: 1em;
+  padding-top: 1em;
+}
+
+/* correct the balance of the page: */
+code,
+pre {
+  background: #f5f7f9;
+  border-bottom: 1px solid #d8dee9;
+  color: #a7adba;
+}
+
+code {
+  padding: 2px 4px;
+  vertical-align: text-bottom;
+}
+
+pre {
+  padding: 1em;
+  border-left: 2px solid #69c;
+}
+
+/*
+ Primary color
+ Most brands have a primary color that acts as a visual accent. On a website, this accent can be used to provide emphasis on interactive elements, like links.
+*/
 a {
-  color: #00B7FF;
+  color: #e81c4f;
 }
