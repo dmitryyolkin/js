@@ -8,7 +8,9 @@ require.config({
     baseUrl: '.',
     paths: {
         'jquery': '../static/components/jquery/dist/jquery.min',
-        'underscore': '../static/components/underscore/underscore-min'
+        'underscore': '../static/components/underscore/underscore-min',
+        'backbone': '../static/components/backbone/backbone-min',
+        'marionette': "../static/components/backbone.marionette/lib/backbone.marionette.min"
     },
 
     //для поддержки сторонних модулей описанных не через define
@@ -19,7 +21,7 @@ require.config({
         underscore: {
             exports: '_'
         },
-        Backbone: {
+        backbone: {
             deps: ["underscore", "jquery"],
             exports: "Backbone"
         }
