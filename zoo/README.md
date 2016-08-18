@@ -48,5 +48,4 @@ Cage
 5. Zoo
 [] Animal
 [] User
-[] Schedule
 
