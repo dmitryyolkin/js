@@ -45,11 +45,7 @@ Cage
 4. Cage
 [] Animal
 
-5. Schedule
-User
-[] Animal
-
-6. Zoo
+5. Zoo
 [] Animal
 [] User
 [] Schedule
