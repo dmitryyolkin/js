@@ -1,6 +1,9 @@
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
+
+//todo Morgan is default logger provided by idea
+//it's better to use log4js
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
