@@ -27,6 +27,10 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 //Lets you use HTTP verbs such as PUT or DELETE in places where the client doesn't support it.
 //https://github.com/expressjs/method-override
+
+//Причиной этому является тот факт, что мы не можем полагаться на браузер в вопросах определения HTTP-методов (например, таких как DELETE).
+//Но мы можем использовать некоторое соглашение, чтобы обойти эту проблему: формы могут использовать скрытые поля,
+//которые Express будет интерпретировать как “настоящий” HTTP-метод.
 app.use(methodOverride());
 app.use(cookieParser());
 
