@@ -1,17 +1,24 @@
-var express = require('express');
-var path = require('path');
-var favicon = require('serve-favicon');
+'use strict';
 
-//todo Morgan is default logger provided by idea
-//it's better to use log4js
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
-var methodOverride = require('method-override');
+var express = require('express'),
+    expressSession = require('express-session'),
+    path = require('path'),
+    favicon = require('serve-favicon'),
 
-var routes = require('./routes/index');
-var users = require('./routes/users');
-var animals = require('./routes/animals');
+    //todo Morgan is default logger provided by idea
+    //it's better to use log4js
+    logger = require('morgan'),
+    cookieParser = require('cookie-parser'),
+    bodyParser = require('body-parser'),
+    methodOverride = require('method-override'),
+    mongoStore = require('connect-mongodb'),
+    mongoose = require('mongoose'),
+
+    defaults = require('./defaults'),
+
+    routes = require('./routes/index'),
+    users = require('./routes/users'),
+    animals = require('./routes/animals');
 
 var app = express();
 
@@ -24,6 +31,30 @@ app.use(favicon(path.join(__dirname, '../static/images/', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cookieParser());
+
+//configure mongoConnection
+app.set('db-uri', defaults['db-uri']);
+mongoose.connect(app.set('db-uri'));
+var db = mongoose.connection;
+
+//it allows to have req.session variable
+app.use(expressSession({
+  store: mongoStore({
+    dbname: db.db.databaseName,
+    host: db.db.serverConfig.host,
+    port: db.db.serverConfig.port,
+    username: db.user,
+    password: db.pass
+  }),
+
+  secret: 'zoosecret', //some secret phrase to sign Session Id
+  resave: false, //don't save session in MongoStore if it's not changed
+  saveUninitialized: true, //save uninitialized session to mongo (uninitialized session is when it's new). True is usefule for login dialog
+  cookie: {
+    maxAge: 30 * 60 * 1000 //period when session is expired
+  }
+}));
 
 //Lets you use HTTP verbs such as PUT or DELETE in places where the client doesn't support it.
 //https://github.com/expressjs/method-override
@@ -32,7 +63,6 @@ app.use(bodyParser.urlencoded({ extended: false }));
 //Но мы можем использовать некоторое соглашение, чтобы обойти эту проблему: формы могут использовать скрытые поля,
 //которые Express будет интерпретировать как “настоящий” HTTP-метод.
 app.use(methodOverride());
-app.use(cookieParser());
 
 app.use(express.static(path.join(__dirname, '../static')));
 app.use(express.static(path.join(__dirname, '../client')));
