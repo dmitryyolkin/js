@@ -36,7 +36,7 @@ router.post('/sessions', function(req, res) {
     //});
 });
 
-router.delete('/sessions', auth.loadUser, function(req, res) {
+router.delete('/sessions', auth.isUserLoggedIn, function(req, res) {
     //if (req.session) {
     //    LoginToken.remove({ email: req.currentUser.email }, function() {});
     //    res.clearCookie('logintoken');

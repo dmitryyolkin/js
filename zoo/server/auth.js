@@ -6,7 +6,7 @@
 module.exports = {
 
     //load user
-    loadUser: function(req, res, next) {
+    isUserLoggedIn: function(req, res, next) {
         //todo it looks like there is no prop user_id and req current User
         if (req.session.user_id) {
             User.findById(req.session.user_id, function (user) {
