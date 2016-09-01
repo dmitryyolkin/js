@@ -5,16 +5,17 @@
 
 var express = require('express');
 var auth = require('../auth');
+//var User = require('../schema/User');
 
 var router = express.Router();
 
-router.get('/sessions/new', function(req, res) {
-    //res.render('sessions/new.jade', {
-    //    locals: { user: new User() }
-    //});
+router.get('/new', function(req, res) {
+    res.render('sessions/new.hbs', {
+        //user: new User()
+    });
 });
 
-router.post('/sessions', function(req, res) {
+router.post('/', function(req, res) {
     //User.findOne({ email: req.body.user.email }, function(err, user) {
     //    if (user && user.authenticate(req.body.user.password)) {
     //        req.session.user_id = user.id;
@@ -36,7 +37,7 @@ router.post('/sessions', function(req, res) {
     //});
 });
 
-router.delete('/sessions', auth.isUserLoggedIn, function(req, res) {
+router.delete('/', auth.isUserLoggedIn, function(req, res) {
     //if (req.session) {
     //    LoginToken.remove({ email: req.currentUser.email }, function() {});
     //    res.clearCookie('logintoken');
