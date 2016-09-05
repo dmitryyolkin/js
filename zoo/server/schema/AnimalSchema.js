@@ -28,7 +28,7 @@ module.exports = new Schema({
     keeper: {
         type: Schema.Types.ObjectId,
         required: true,
-        ref: './User'
+        ref: './UserSchema'
     },
 
     cage: {

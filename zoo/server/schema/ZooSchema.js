@@ -8,13 +8,13 @@ var Schema = mongoose.Schema;
 
 module.exports = new Schema({
     users: [{
-        type: Schema.Type.ObjectId,
+        type: Schema.Types.ObjectId,
         required: true,
-        ref: './User'
+        ref: './UserSchema'
     }],
 
     animals: [{
-        type: Schema.Type.ObjectId,
+        type: Schema.Types.ObjectId,
         required: true,
         ref: './Animal'
     }]

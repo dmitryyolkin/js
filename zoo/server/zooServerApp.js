@@ -13,9 +13,15 @@ var express = require('express'),
     methodOverride = require('method-override'),
     mongoStore = require('connect-mongodb'),
     mongoose = require('mongoose'),
-
     defaults = require('./defaults'),
 
+    //schemas
+    UserSchema = require('./schema/UserSchema'),
+    AnimalSchema = require('./schema/AnimalSchema'),
+    CageSchema = require('./schema/CageSchema'),
+    ZooSchema = require('./schema/ZooSchema'),
+
+    //routes
     routes = require('./routes/index'),
     users = require('./routes/users'),
     animals = require('./routes/animals'),
@@ -35,11 +41,14 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 //configure mongoConnection
-app.set('db-uri', defaults['db-uri']);
-mongoose.connect(app.set('db-uri'));
-var db = mongoose.connection;
+var User = mongoose.model('User', UserSchema);
+var Animal = mongoose.model('Animal', AnimalSchema);
+var Cage = mongoose.model('Cage', CageSchema);
+var Zoo = mongoose.model('Zoo', ZooSchema);
+mongoose.connect(defaults['db-uri']);
 
 //it allows to have req.session variable
+var db = mongoose.connection;
 app.use(expressSession({
   store: mongoStore({
     dbname: db.db.databaseName,
@@ -57,9 +66,7 @@ app.use(expressSession({
   }
 }));
 
-//Lets you use HTTP verbs such as PUT or DELETE in places where the client doesn't support it.
 //https://github.com/expressjs/method-override
-
 //Причиной этому является тот факт, что мы не можем полагаться на браузер в вопросах определения HTTP-методов (например, таких как DELETE).
 //Но мы можем использовать некоторое соглашение, чтобы обойти эту проблему: формы могут использовать скрытые поля,
 //которые Express будет интерпретировать как “настоящий” HTTP-метод.

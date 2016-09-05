@@ -8,7 +8,7 @@ var Schema = mongoose.Schema;
 
 module.exports = new Schema({
     animals: [{
-        type: Schema.Type.ObjectId,
+        type: Schema.Types.ObjectId,
         required: false,
         ref: './Animal'
     }]
