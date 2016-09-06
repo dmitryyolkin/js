@@ -31,7 +31,11 @@ var UserSchema = new Schema({
     },
     login: {
         type: String,
-        required: true
+        required: true,
+        validate: [validate, 'login is required'],
+        index: {
+            unique: true
+        }
     },
     passwordHash: {
         type: String,
