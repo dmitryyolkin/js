@@ -22,7 +22,7 @@ var express = require('express'),
     ZooSchema = require('./schema/ZooSchema'),
 
     //routes
-    routes = require('./routes/index'),
+    index = require('./routes/index'),
     users = require('./routes/users'),
     animals = require('./routes/animals'),
     sessions = require('./routes/sessions');
@@ -75,7 +75,7 @@ app.use(methodOverride());
 app.use(express.static(path.join(__dirname, '../static')));
 app.use(express.static(path.join(__dirname, '../client')));
 
-app.use('/', routes);
+app.use('/', index);
 app.use('/users', users);
 app.use('/animals', animals);
 app.use('/sessions', sessions);
