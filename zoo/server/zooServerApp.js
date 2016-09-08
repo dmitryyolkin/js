@@ -1,31 +1,33 @@
 'use strict';
 
-var express = require('express'),
-    expressSession = require('express-session'),
-    path = require('path'),
-    favicon = require('serve-favicon'),
+var express = require('express');
+var expressSession = require('express-session');
+var path = require('path');
+var favicon = require('serve-favicon');
 
-    //todo Morgan is default logger provided by idea
-    //it's better to use log4js
-    logger = require('morgan'),
-    cookieParser = require('cookie-parser'),
-    bodyParser = require('body-parser'),
-    methodOverride = require('method-override'),
-    mongoStore = require('connect-mongodb'),
-    mongoose = require('mongoose'),
-    defaults = require('./defaults'),
+//todo Morgan is default logger provided by idea
+//it's better to use log4js
+var logger = require('morgan');
+var cookieParser = require('cookie-parser');
+var bodyParser = require('body-parser');
+var methodOverride = require('method-override');
+
+var mongoStore = require('connect-mongodb');
+var mongoose = require('mongoose');
+
+var defaults = require('./defaults');
 
     //schemas
-    UserSchema = require('./schema/UserSchema'),
-    AnimalSchema = require('./schema/AnimalSchema'),
-    CageSchema = require('./schema/CageSchema'),
-    ZooSchema = require('./schema/ZooSchema'),
+var UserSchema = require('./schema/UserSchema');
+var AnimalSchema = require('./schema/AnimalSchema');
+var CageSchema = require('./schema/CageSchema');
+var ZooSchema = require('./schema/ZooSchema');
 
     //routes
-    index = require('./routes/index'),
-    users = require('./routes/users'),
-    animals = require('./routes/animals'),
-    sessions = require('./routes/sessions');
+var index = require('./routes/index');
+var users = require('./routes/users');
+var animals = require('./routes/animals');
+var sessions = require('./routes/sessions');
 
 var app = express();
 

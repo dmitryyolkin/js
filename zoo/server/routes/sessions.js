@@ -5,14 +5,31 @@
 
 var express = require('express');
 var auth = require('../auth');
-//var User = require('../schema/User');
+
+var mongoose = require('mongoose');
+var UserSchema = require('../schema/UserSchema');
 
 var router = express.Router();
+var User = mongoose.model('User', UserSchema);
 
 router.get('/new', function(req, res) {
-    res.render('sessions/new.hbs', {
-        //user: new User()
-    });
+    function renderSessionNew(user) {
+        res.render('index', {
+            data: {
+                requireLogin: true,
+                user: user
+            }
+        });
+    }
+
+    var userId = req.session.user_id;
+    if (userId){
+        User.findById(userId, function(err, user){
+            renderSessionNew(user | new User());
+        });
+    }else{
+        renderSessionNew(new User());
+    }
 });
 
 router.post('/', function(req, res) {
