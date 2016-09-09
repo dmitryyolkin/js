@@ -5,9 +5,9 @@ var expressSession = require('express-session');
 var path = require('path');
 var favicon = require('serve-favicon');
 
-//todo Morgan is default logger provided by idea
-//it's better to use log4js
-var logger = require('morgan');
+var logger = require('./logger');
+var log4js = require('log4js');
+
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var methodOverride = require('method-override');
@@ -17,7 +17,7 @@ var mongoose = require('mongoose');
 
 var defaults = require('./defaults');
 
-    //schemas
+//schemas
 var UserSchema = require('./schema/UserSchema');
 var AnimalSchema = require('./schema/AnimalSchema');
 var CageSchema = require('./schema/CageSchema');
@@ -37,7 +37,10 @@ app.set('view engine', 'hbs');
 
 // uncomment after placing your favicon in ../static
 app.use(favicon(path.join(__dirname, '../static/images/', 'favicon.ico')));
-app.use(logger('dev'));
+app.use(log4js.connectLogger(
+    log4js.getLogger('access'),
+    { level: 'auto' })
+);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
@@ -113,5 +116,5 @@ app.use(function(err, req, res, next) {
   });
 });
 
-
+logger.info('Zoo application is run');
 module.exports = app;
