@@ -511,33 +511,51 @@ module.exports = Marionette.AppRouter.extend({
 
     //set corresponddence between routes and controller's methods
     appRoutes: {
-        "": "login",
-        "/login": "login",
-        "/animals": "animals"
+        "": "showAnimals",
+        "/animals": "showAnimals",
+        "/login": "login"
     }
 });
 
 });
 
-define('AppController',['require','exports','module','marionette'],function (require, exports, module) {/**
+define('AppController',['require','exports','module','marionette','jquery'],function (require, exports, module) {/**
  * Created by dmitry on 19.08.16.
  */
 
 
 var Marionette = require('marionette');
+var $ = require('jquery');
+
 module.exports = Marionette.Controller.extend({
 
-    initialize: function(options){
+    initialize: function (options) {
         //set some external params to this controller instance
         _.extend(this, options);
     },
 
-    login: function(){
+    login: function () {
         console.log('AppController: login is invoked');
     },
 
-    animals: function(){
-        console.log('AppController: amimals is invoked');
+    showAnimals: function () {
+        console.log('AppController: showAnimals is invoked');
+        $.ajax({
+            url: '/sessions/check',
+            type: 'GET',
+            dataType: 'json',
+
+            success: function(data, textStatus, jqXHR){
+                console.log('sessions/check - success');
+                //this.navigate('showAnimals', true);
+            },
+
+            error: function(jqXHR, textStatus) {
+                console.log('sessions/check - error: ' + jqXHR.responseText);
+                this.navigate('login', true);
+            }
+        });
+
     }
 
 });

@@ -12,6 +12,29 @@ var UserSchema = require('../schema/UserSchema');
 var router = express.Router();
 var User = mongoose.model('User', UserSchema);
 
+router.get('/check', function(req, res) {
+    var userId = req.session.user_id;
+    if (userId) {
+        User.findById(userId, function (user) {
+            if (user) {
+                req.currentUser = user;
+                res
+                    .status(200)
+                    .send({});
+            } else {
+                res
+                    .status(401)
+                    .send("User is not found: " + userId);
+            }
+        });
+    } else {
+        res
+            .status(401)
+            .send('User is not specified in coockie')
+    }
+});
+
+//todo maybe it's not nessesary anymore
 router.get('/new', function(req, res) {
     function renderSessionNew(user) {
         res.render('index', {
