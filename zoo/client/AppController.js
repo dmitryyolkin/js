@@ -4,7 +4,31 @@
 'use strict';
 
 var Marionette = require('marionette');
+
 var $ = require('jquery');
+var _ = require('underscore');
+
+function checkAndNavigate(source) {
+    $.ajax({
+        url: '/sessions/check',
+        type: 'GET',
+        dataType: 'json',
+
+        success: _.bind(function (data, textStatus, jqXHR) {
+            console.log('sessions/check - success');
+            this.model.set({
+                'state': source
+            });
+        }, this),
+
+        error: _.bind(function (jqXHR, textStatus) {
+            console.log('sessions/check - error: ' + jqXHR.responseText);
+            this.model.set({
+                'state': 'login'
+            });
+        }, this)
+    });
+}
 
 module.exports = Marionette.Controller.extend({
 
@@ -19,24 +43,7 @@ module.exports = Marionette.Controller.extend({
 
     showAnimals: function () {
         console.log('AppController: showAnimals is invoked');
-        $.ajax({
-            url: '/sessions/check',
-            type: 'GET',
-            dataType: 'json',
-
-            success: function(data, textStatus, jqXHR){
-                console.log('sessions/check - success');
-                //this.navigate('showAnimals', true);
-            },
-
-            error: function(jqXHR, textStatus) {
-                console.log('sessions/check - error: ' + jqXHR.responseText);
-                //todo перейти на нужный стейт
-                //возможно все делать через модель и ее state - там наверное лучше чем navigate
-                this.navigate('login', true);
-            }
-        });
-
+        checkAndNavigate.call(this, 'animals');
     }
 
 });

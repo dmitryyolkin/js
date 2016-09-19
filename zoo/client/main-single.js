@@ -519,13 +519,37 @@ module.exports = Marionette.AppRouter.extend({
 
 });
 
-define('AppController',['require','exports','module','marionette','jquery'],function (require, exports, module) {/**
+define('AppController',['require','exports','module','marionette','jquery','underscore'],function (require, exports, module) {/**
  * Created by dmitry on 19.08.16.
  */
 
 
 var Marionette = require('marionette');
+
 var $ = require('jquery');
+var _ = require('underscore');
+
+function checkAndNavigate(source) {
+    $.ajax({
+        url: '/sessions/check',
+        type: 'GET',
+        dataType: 'json',
+
+        success: _.bind(function (data, textStatus, jqXHR) {
+            console.log('sessions/check - success');
+            this.model.set({
+                'state': source
+            });
+        }, this),
+
+        error: _.bind(function (jqXHR, textStatus) {
+            console.log('sessions/check - error: ' + jqXHR.responseText);
+            this.model.set({
+                'state': 'login'
+            });
+        }, this)
+    });
+}
 
 module.exports = Marionette.Controller.extend({
 
@@ -540,29 +564,29 @@ module.exports = Marionette.Controller.extend({
 
     showAnimals: function () {
         console.log('AppController: showAnimals is invoked');
-        $.ajax({
-            url: '/sessions/check',
-            type: 'GET',
-            dataType: 'json',
-
-            success: function(data, textStatus, jqXHR){
-                console.log('sessions/check - success');
-                //this.navigate('showAnimals', true);
-            },
-
-            error: function(jqXHR, textStatus) {
-                console.log('sessions/check - error: ' + jqXHR.responseText);
-                this.navigate('login', true);
-            }
-        });
-
+        checkAndNavigate.call(this, 'animals');
     }
 
 });
 
 });
 
-define('App',['require','exports','module','backbone','marionette','./admin/AdminModule','./animals/AnimalsModule','./AppRouter','./AppController'],function (require, exports, module) {/**
+define('models/AppState',['require','exports','module','backbone'],function (require, exports, module) {/**
+ * Created by dmitry on 19.09.16.
+ */
+
+
+var Backbone = require('backbone');
+module.exports = Backbone.Model.extend({
+    defaults: {
+        state: 'login'
+    }
+});
+
+
+});
+
+define('App',['require','exports','module','backbone','marionette','./admin/AdminModule','./animals/AnimalsModule','./AppRouter','./AppController','./models/AppState'],function (require, exports, module) {/**
  * Created by dmitry on 19.08.16.
  */
 
@@ -572,10 +596,12 @@ var Backbone = require('backbone');
 var Marionette = require('marionette');
 
 //modules & routers
-var AdminModule = require('./admin/AdminModule'),
-    AnimalsModule = require('./animals/AnimalsModule'),
-    AppRouter = require('./AppRouter'),
-    AppController = require('./AppController');
+var AdminModule = require('./admin/AdminModule');
+var AnimalsModule = require('./animals/AnimalsModule');
+var AppRouter = require('./AppRouter');
+var AppController = require('./AppController');
+
+var AppState = require('./models/AppState');
 
 //init
 var App = new Marionette.Application();
@@ -591,7 +617,13 @@ App.addInitializer(function(options){
 App.on('start', function(options){
     console.log('App.onStart is invoked with options: ' + options);
 
-    var appController = new AppController();
+    //create models
+    var appStateModel = new AppState();
+
+    //init controller and router
+    var appController = new AppController({
+        model: appStateModel
+    });
     var appRouter = new AppRouter({
         controller: appController
     });
