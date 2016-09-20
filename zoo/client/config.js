@@ -10,7 +10,19 @@ require.config({
         'jquery': '../static/components/jquery/dist/jquery.min',
         'underscore': '../static/components/underscore/underscore-min',
         'backbone': '../static/components/backbone/backbone-min',
-        'marionette': "../static/components/backbone.marionette/lib/backbone.marionette.min"
+        'marionette': "../static/components/backbone.marionette/lib/backbone.marionette.min",
+
+        // Handlerbars plugins
+        hbs: "../static/components/hbs/hbs"
+
+    },
+
+    hbs: {
+        helperDirectory: 'templates/helpers/',
+        i18nDirectory: 'templates/i18n',
+        templateExtension: "hbs",
+        disableI18n: true,
+        disableHelpers: false
     },
 
     //для поддержки сторонних модулей описанных не через define
