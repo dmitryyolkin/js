@@ -13,8 +13,10 @@ require.config({
         'marionette': "../static/components/backbone.marionette/lib/backbone.marionette.min",
 
         // Handlerbars plugins
-        hbs: "../static/components/hbs/hbs"
+        hbs: "../static/components/hbs/hbs",
 
+        // Marionette application
+        App: "./App"
     },
 
     hbs: {

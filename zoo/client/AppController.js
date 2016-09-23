@@ -4,6 +4,7 @@
 'use strict';
 
 var Marionette = require('marionette');
+var LoginView = require('./login/LoginView');
 
 var $ = require('jquery');
 var _ = require('underscore');
@@ -35,15 +36,23 @@ module.exports = Marionette.Controller.extend({
     initialize: function (options) {
         //set some external params to this controller instance
         _.extend(this, options);
+
+        //create views
+        var loginView = new LoginView({
+            model: this.model
+        });
+        loginView.render();
     },
 
     login: function () {
         console.log('AppController: login is invoked');
+        this.model.set({
+            'state': 'login'
+        });
     },
 
     showAnimals: function () {
         console.log('AppController: showAnimals is invoked');
         checkAndNavigate.call(this, 'animals');
     }
-
 });

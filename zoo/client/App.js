@@ -10,6 +10,7 @@ var Marionette = require('marionette');
 //modules & routers
 var AdminModule = require('./admin/AdminModule');
 var AnimalsModule = require('./animals/AnimalsModule');
+
 var AppRouter = require('./AppRouter');
 var AppController = require('./AppController');
 
@@ -43,7 +44,12 @@ App.on('start', function(options){
     if (Backbone.history){
         Backbone.history.start();
     }
-
 });
+
+//navigation
+App.navigate = function (route, options) {
+    options = options || {};
+    Backbone.history.navigate(route, options);
+};
 
 module.exports = App;
