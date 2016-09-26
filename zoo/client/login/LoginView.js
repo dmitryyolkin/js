@@ -11,6 +11,8 @@ var LoginTemplate = require("hbs!templates/login");
 var _ = require('underscore');
 
 module.exports = Marionette.ItemView.extend({
+    el: 'body',
+
     initialize: function (options) {
         //copy controller, model, state to this.controller, model, state
         _.extend(this, options);

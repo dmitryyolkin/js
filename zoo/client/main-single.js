@@ -512,8 +512,8 @@ module.exports = Marionette.AppRouter.extend({
     //set corresponddence between routes and controller's methods
     appRoutes: {
         "": "showAnimals",
-        "/animals": "showAnimals",
-        "/login": "login"
+        "animals": "showAnimals",
+        "login": "login"
     }
 });
 
@@ -6724,9 +6724,9 @@ var t = Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(de
     var stack1;
 
   return "<div class=\"#login\">\n    <h2>Log in</h2>\n    <div class=\"userplace\">\n        <label for=\"username\">User name:</label>\n        <input type=\"text\" id=\"username\" value="
-    + this.escapeExpression(this.lambda(((stack1 = ((stack1 = (depth0 != null ? depth0.data : depth0)) != null ? stack1.user : stack1)) != null ? stack1.login : stack1), depth0))
+    + this.escapeExpression(this.lambda(((stack1 = (depth0 != null ? depth0.user : depth0)) != null ? stack1.login : stack1), depth0))
     + ">\n    </div>\n    <div class=\"userplace\">\n        <label for=\"pass\">Password:</label>\n        <input type=\"text\" id=\"pass\" value="
-    + this.escapeExpression(this.lambda(((stack1 = ((stack1 = (depth0 != null ? depth0.data : depth0)) != null ? stack1.user : stack1)) != null ? stack1.password : stack1), depth0))
+    + this.escapeExpression(this.lambda(((stack1 = (depth0 != null ? depth0.user : depth0)) != null ? stack1.password : stack1), depth0))
     + ">\n    </div>\n    <div class=\"buttonplace\">\n        <input type=\"button\" value=\"Log in\">\n    </div>\n</div>\n";
 },"useData":true});
 Handlebars.registerPartial('templates/login', t);
@@ -6747,6 +6747,8 @@ var LoginTemplate = require("hbs!templates/login");
 var _ = require('underscore');
 
 module.exports = Marionette.ItemView.extend({
+    el: 'body',
+
     initialize: function (options) {
         //copy controller, model, state to this.controller, model, state
         _.extend(this, options);
@@ -6756,7 +6758,6 @@ module.exports = Marionette.ItemView.extend({
         if (this.model && this.model.get('state') == 'login'){
             return LoginTemplate;
         }
-
         return false; //no template - use current page
     },
 
@@ -6809,7 +6810,10 @@ function checkAndNavigate(source) {
         error: _.bind(function (jqXHR, textStatus) {
             console.log('sessions/check - error: ' + jqXHR.responseText);
             this.model.set({
-                'state': 'login'
+                'state': 'login',
+                'user': {
+                    login: 'test'
+                } //todo
             });
         }, this)
     });
@@ -6831,15 +6835,15 @@ module.exports = Marionette.Controller.extend({
     login: function () {
         console.log('AppController: login is invoked');
         this.model.set({
-            'state': 'login'
+            'state': 'login',
+            'user': {} //todo
         });
     },
 
     showAnimals: function () {
         console.log('AppController: showAnimals is invoked');
-        _.bind(checkAndNavigate.call(this, 'animals'), this);
+        checkAndNavigate.call(this, 'animals');
     }
-
 });
 
 });

@@ -25,7 +25,8 @@ function checkAndNavigate(source) {
         error: _.bind(function (jqXHR, textStatus) {
             console.log('sessions/check - error: ' + jqXHR.responseText);
             this.model.set({
-                'state': 'login'
+                'state': 'login',
+                'user': {} //todo
             });
         }, this)
     });
@@ -47,7 +48,8 @@ module.exports = Marionette.Controller.extend({
     login: function () {
         console.log('AppController: login is invoked');
         this.model.set({
-            'state': 'login'
+            'state': 'login',
+            'user': {} //todo
         });
     },
 
