@@ -6723,18 +6723,18 @@ define('hbs!templates/login',['hbs','hbs/handlebars'], function( hbs, Handlebars
 var t = Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
     var stack1;
 
-  return "<div class=\"#login\">\n    <h2>Log in</h2>\n    <div class=\"userplace\">\n        <label for=\"username\">User name:</label>\n        <input type=\"text\" id=\"username\" value="
+  return "<div class=\"#login\">\n    <h2>Log in</h2>\n    <div class=\"userplace\">\n        <label for=\"login\">User name:</label>\n        <input type=\"text\" id=\"login\" value="
     + this.escapeExpression(this.lambda(((stack1 = (depth0 != null ? depth0.user : depth0)) != null ? stack1.login : stack1), depth0))
     + ">\n    </div>\n    <div class=\"userplace\">\n        <label for=\"pass\">Password:</label>\n        <input type=\"text\" id=\"pass\" value="
     + this.escapeExpression(this.lambda(((stack1 = (depth0 != null ? depth0.user : depth0)) != null ? stack1.password : stack1), depth0))
-    + ">\n    </div>\n    <div class=\"buttonplace\">\n        <input type=\"button\" value=\"Log in\">\n    </div>\n</div>\n";
+    + ">\n    </div>\n    <div class=\"buttonplace\">\n        <input type=\"button\" id=\"loginBtn\" value=\"Log in\">\n    </div>\n</div>\n";
 },"useData":true});
 Handlebars.registerPartial('templates/login', t);
 return t;
 });
 /* END_TEMPLATE */
 ;
-define('login/LoginView',['require','exports','module','backbone','marionette','hbs!templates/login','underscore'],function (require, exports, module) {/**
+define('login/LoginView',['require','exports','module','backbone','marionette','hbs!templates/login','underscore','jquery'],function (require, exports, module) {/**
  * Created by dmitry on 19.09.16.
  */
 
@@ -6745,6 +6745,7 @@ var Marionette = require('marionette');
 var LoginTemplate = require("hbs!templates/login");
 
 var _ = require('underscore');
+var $ = require('jquery');
 
 module.exports = Marionette.ItemView.extend({
     el: 'body',
@@ -6759,6 +6760,11 @@ module.exports = Marionette.ItemView.extend({
             return LoginTemplate;
         }
         return false; //no template - use current page
+    },
+
+    events: {
+        'click input:button': 'login',  //Обработчик клика на кнопке "Log in"
+        'keyup input#pass': 'keyPressEventHandler' //Обработчик нажатия enter в тексовом поле
     },
 
     modelEvents: {
@@ -6777,8 +6783,19 @@ module.exports = Marionette.ItemView.extend({
         //we can put some code here that will be invoked before
         //this layoutView will be rendered
         console.log('LoginView is onRender');
-    }
+    },
 
+    login: function(){
+        console.log('LoginView is login');
+    },
+
+    keyPressEventHandler: function(event){
+        if (event.keyCode == 13){
+            //it's interesting if I invoke this.render() then method above is executed
+            //but data is not updated in UI
+            $('input:button').click();
+        }
+    }
 
 });
 });
@@ -6811,9 +6828,7 @@ function checkAndNavigate(source) {
             console.log('sessions/check - error: ' + jqXHR.responseText);
             this.model.set({
                 'state': 'login',
-                'user': {
-                    login: 'test'
-                } //todo
+                'user': {} //todo
             });
         }, this)
     });
