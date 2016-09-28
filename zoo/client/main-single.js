@@ -6751,38 +6751,14 @@ module.exports = Marionette.ItemView.extend({
     el: 'body',
 
     initialize: function (options) {
-        //copy controller, model, state to this.controller, model, state
         _.extend(this, options);
+        Backbone.history.navigate('login');
     },
 
-    getTemplate: function(){
-        if (this.model && this.model.get('state') == 'login'){
-            return LoginTemplate;
-        }
-        return false; //no template - use current page
-    },
-
+    template: LoginTemplate,
     events: {
         'click input:button': 'login',  //Обработчик клика на кнопке "Log in"
         'keyup input#pass': 'keyPressEventHandler' //Обработчик нажатия enter в тексовом поле
-    },
-
-    modelEvents: {
-        //it's the same as this.listenTo(this.model, 'change:state', this.render, this);
-        'change:state' : 'render changeUrl'
-    },
-
-    changeUrl: function(){
-        var state = this.model.get('state');
-        if (state == 'login'){
-            Backbone.history.navigate('login');
-        }
-    },
-
-    onRender: function() {
-        //we can put some code here that will be invoked before
-        //this layoutView will be rendered
-        console.log('LoginView is onRender');
     },
 
     login: function(){
@@ -6795,43 +6771,73 @@ module.exports = Marionette.ItemView.extend({
             //but data is not updated in UI
             $('input:button').click();
         }
+    },
+
+    onRender: function() {
+        //we can put some code here that will be invoked before
+        //this layoutView will be rendered
+        console.log('LoginView is onRender');
+    },
+
+    //it's required to show data in hbs template
+    serializeData: function () {
+        return {
+            user: this.model.user
+        };
     }
 
 });
 });
 
-define('AppController',['require','exports','module','marionette','./login/LoginView','jquery','underscore'],function (require, exports, module) {/**
+define('animals/AnimalsView',['require','exports','module','marionette'],function (require, exports, module) {/**
+ * Created by dmitry on 28.09.16.
+ */
+
+
+var Marionette = require('marionette');
+
+module.exports = Marionette.ItemView.extend({
+
+});
+
+
+});
+
+define('models/LoginModel',['require','exports','module','backbone'],function (require, exports, module) {/**
+ * Created by dmitry on 27.09.16.
+ */
+
+
+var Backbone = require('backbone');
+module.exports = Backbone.Model.extend({
+    user: {
+        login: 'test',
+        password: ''
+    },
+    url: '/login'
+});
+
+
+});
+
+define('AppController',['require','exports','module','marionette','./login/LoginView','./animals/AnimalsView','./models/LoginModel','underscore'],function (require, exports, module) {/**
  * Created by dmitry on 19.08.16.
  */
 
 
 var Marionette = require('marionette');
-var LoginView = require('./login/LoginView');
 
-var $ = require('jquery');
+var LoginView = require('./login/LoginView');
+var AnimalsView = require('./animals/AnimalsView');
+var LoginModel = require('./models/LoginModel');
+
 var _ = require('underscore');
 
-function checkAndNavigate(source) {
-    $.ajax({
-        url: '/sessions/check',
-        type: 'GET',
-        dataType: 'json',
-
-        success: _.bind(function (data, textStatus, jqXHR) {
-            console.log('sessions/check - success');
-            this.model.set({
-                'state': source
-            });
-        }, this),
-
-        error: _.bind(function (jqXHR, textStatus) {
-            console.log('sessions/check - error: ' + jqXHR.responseText);
-            this.model.set({
-                'state': 'login',
-                'user': {} //todo
-            });
-        }, this)
+function showloginView(loginModel) {
+    var loginView = new LoginView({
+        model: loginModel
     });
+    loginView.render();
 }
 
 module.exports = Marionette.Controller.extend({
@@ -6839,46 +6845,38 @@ module.exports = Marionette.Controller.extend({
     initialize: function (options) {
         //set some external params to this controller instance
         _.extend(this, options);
-
-        //create views
-        var loginView = new LoginView({
-            model: this.model
-        });
-        loginView.render();
     },
 
     login: function () {
         console.log('AppController: login is invoked');
-        this.model.set({
-            'state': 'login',
-            'user': {} //todo
-        });
+        showloginView(new LoginModel())
     },
 
     showAnimals: function () {
         console.log('AppController: showAnimals is invoked');
-        checkAndNavigate.call(this, 'animals');
+        var loginModel = new LoginModel();
+        loginModel.fetch(
+            {
+                success: function (model, response, options) {
+                    console.log('login/check - success');
+                    var animalsView = new AnimalsView({
+                        model: some_model //todo
+                    });
+                    animalsView.render();
+                },
+
+                error: function (model, response, options) {
+                    console.log('login/check - error: ' + response.responseText);
+                    showloginView(loginModel);
+                }
+            }
+        );
     }
 });
 
 });
 
-define('models/AppState',['require','exports','module','backbone'],function (require, exports, module) {/**
- * Created by dmitry on 19.09.16.
- */
-
-
-var Backbone = require('backbone');
-module.exports = Backbone.Model.extend({
-    defaults: {
-        state: 'start'
-    }
-});
-
-
-});
-
-define('App',['require','exports','module','backbone','marionette','./admin/AdminModule','./animals/AnimalsModule','./AppRouter','./AppController','./models/AppState'],function (require, exports, module) {/**
+define('App',['require','exports','module','backbone','marionette','./admin/AdminModule','./animals/AnimalsModule','./AppRouter','./AppController'],function (require, exports, module) {/**
  * Created by dmitry on 19.08.16.
  */
 
@@ -6894,8 +6892,6 @@ var AnimalsModule = require('./animals/AnimalsModule');
 var AppRouter = require('./AppRouter');
 var AppController = require('./AppController');
 
-var AppState = require('./models/AppState');
-
 //init
 var App = new Marionette.Application();
 App.module('admin', AdminModule);
@@ -6910,13 +6906,8 @@ App.addInitializer(function(options){
 App.on('start', function(options){
     console.log('App.onStart is invoked with options: ' + options);
 
-    //create models
-    var appStateModel = new AppState();
-
     //init controller and router
-    var appController = new AppController({
-        model: appStateModel
-    });
+    var appController = new AppController();
     var appRouter = new AppRouter({
         controller: appController
     });

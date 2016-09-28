@@ -14,8 +14,6 @@ var AnimalsModule = require('./animals/AnimalsModule');
 var AppRouter = require('./AppRouter');
 var AppController = require('./AppController');
 
-var AppState = require('./models/AppState');
-
 //init
 var App = new Marionette.Application();
 App.module('admin', AdminModule);
@@ -30,13 +28,8 @@ App.addInitializer(function(options){
 App.on('start', function(options){
     console.log('App.onStart is invoked with options: ' + options);
 
-    //create models
-    var appStateModel = new AppState();
-
     //init controller and router
-    var appController = new AppController({
-        model: appStateModel
-    });
+    var appController = new AppController();
     var appRouter = new AppRouter({
         controller: appController
     });

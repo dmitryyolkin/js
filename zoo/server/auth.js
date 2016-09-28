@@ -14,11 +14,11 @@ module.exports = {
                     req.currentUser = user;
                     next();
                 } else {
-                    res.redirect('/sessions/new');
+                    res.redirect('/login');
                 }
             });
         } else {
-            res.redirect('/sessions/new');
+            res.redirect('/login');
         }
     }
 };

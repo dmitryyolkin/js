@@ -4,32 +4,18 @@
 'use strict';
 
 var Marionette = require('marionette');
-var LoginView = require('./login/LoginView');
 
-var $ = require('jquery');
+var LoginView = require('./login/LoginView');
+var AnimalsView = require('./animals/AnimalsView');
+var LoginModel = require('./models/LoginModel');
+
 var _ = require('underscore');
 
-function checkAndNavigate(source) {
-    $.ajax({
-        url: '/sessions/check',
-        type: 'GET',
-        dataType: 'json',
-
-        success: _.bind(function (data, textStatus, jqXHR) {
-            console.log('sessions/check - success');
-            this.model.set({
-                'state': source
-            });
-        }, this),
-
-        error: _.bind(function (jqXHR, textStatus) {
-            console.log('sessions/check - error: ' + jqXHR.responseText);
-            this.model.set({
-                'state': 'login',
-                'user': {} //todo
-            });
-        }, this)
+function showloginView(loginModel) {
+    var loginView = new LoginView({
+        model: loginModel
     });
+    loginView.render();
 }
 
 module.exports = Marionette.Controller.extend({
@@ -37,24 +23,31 @@ module.exports = Marionette.Controller.extend({
     initialize: function (options) {
         //set some external params to this controller instance
         _.extend(this, options);
-
-        //create views
-        var loginView = new LoginView({
-            model: this.model
-        });
-        loginView.render();
     },
 
     login: function () {
         console.log('AppController: login is invoked');
-        this.model.set({
-            'state': 'login',
-            'user': {} //todo
-        });
+        showloginView(new LoginModel())
     },
 
     showAnimals: function () {
         console.log('AppController: showAnimals is invoked');
-        checkAndNavigate.call(this, 'animals');
+        var loginModel = new LoginModel();
+        loginModel.fetch(
+            {
+                success: function (model, response, options) {
+                    console.log('login/check - success');
+                    var animalsView = new AnimalsView({
+                        model: some_model //todo
+                    });
+                    animalsView.render();
+                },
+
+                error: function (model, response, options) {
+                    console.log('login/check - error: ' + response.responseText);
+                    showloginView(loginModel);
+                }
+            }
+        );
     }
 });

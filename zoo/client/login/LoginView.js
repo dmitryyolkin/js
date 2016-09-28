@@ -15,32 +15,14 @@ module.exports = Marionette.ItemView.extend({
     el: 'body',
 
     initialize: function (options) {
-        //copy controller, model, state to this.controller, model, state
         _.extend(this, options);
+        Backbone.history.navigate('login');
     },
 
-    getTemplate: function(){
-        if (this.model && this.model.get('state') == 'login'){
-            return LoginTemplate;
-        }
-        return false; //no template - use current page
-    },
-
+    template: LoginTemplate,
     events: {
         'click input:button': 'login',  //Обработчик клика на кнопке "Log in"
         'keyup input#pass': 'keyPressEventHandler' //Обработчик нажатия enter в тексовом поле
-    },
-
-    modelEvents: {
-        //it's the same as this.listenTo(this.model, 'change:state', this.render, this);
-        'change:state' : 'render changeUrl'
-    },
-
-    changeUrl: function(){
-        var state = this.model.get('state');
-        if (state == 'login'){
-            Backbone.history.navigate('login');
-        }
     },
 
     login: function(){
@@ -59,6 +41,13 @@ module.exports = Marionette.ItemView.extend({
         //we can put some code here that will be invoked before
         //this layoutView will be rendered
         console.log('LoginView is onRender');
+    },
+
+    //it's required to show data in hbs template
+    serializeData: function () {
+        return {
+            user: this.model.user
+        };
     }
 
 });
