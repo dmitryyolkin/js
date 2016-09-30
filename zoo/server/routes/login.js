@@ -35,18 +35,20 @@ router.get('/', function(req, res) {
 });
 
 router.post('/', function(req, res) {
-    User.findOne({ email: req.body.user.email }, function(err, user) {
+    User.findOne({ login: req.body.user.login }, function(err, user) {
         if (user && user.authenticate(req.body.user.password)) {
             req.session.user_id = user.id;
 
             // Remember me
-            if (req.body.remember_me) {
+            if (req.body.rememberMe) {
                 var loginToken = new LoginToken({ email: user.email });
                 loginToken.save(function() {
                     res.cookie('logintoken', loginToken.cookieValue, { expires: new Date(Date.now() + 2 * 604800000), path: '/' });
+                    //todo don't redirec  but return user with permissions
                     res.redirect('/documents');
                 });
             } else {
+                //todo don't redirec  but return user with permissions
                 res.redirect('/documents');
             }
         } else {

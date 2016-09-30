@@ -23,7 +23,7 @@ var AnimalSchema = require('./schema/AnimalSchema');
 var CageSchema = require('./schema/CageSchema');
 var ZooSchema = require('./schema/ZooSchema');
 
-    //routes
+//routes
 var index = require('./routes/index');
 var users = require('./routes/users');
 var animals = require('./routes/animals');
@@ -50,6 +50,31 @@ var User = mongoose.model('User', UserSchema);
 var Animal = mongoose.model('Animal', AnimalSchema);
 var Cage = mongoose.model('Cage', CageSchema);
 var Zoo = mongoose.model('Zoo', ZooSchema);
+
+//create test user
+User.findOne(
+    {login: 'admin'},
+    function(err, admin){
+      if (err || !admin){
+        new User({
+          name: 'Unknown',
+          email: 'dmitry.yolkin@gmail.com',
+          login: 'admin',
+          password: 'admin',
+          roles: ['ADMIN']
+        }).save(function(err){
+          if (err){
+            logger.error(err);
+          }
+        })
+      }
+    }
+);
+
+//line below is required not to get line below
+//Mongoose: mpromise (mongoose's default promise library) is deprecated,
+//plug in your own promise library instead: http://mongoosejs.com/docs/promises.html
+mongoose.Promise = global.Promise;
 mongoose.connect(defaults['db-uri']);
 
 //it allows to have req.session variable

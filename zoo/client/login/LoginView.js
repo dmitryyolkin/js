@@ -27,6 +27,27 @@ module.exports = Marionette.ItemView.extend({
 
     login: function(){
         console.log('LoginView is login');
+
+        this.model.save(
+            {
+                user: {
+                    login: $(this.el).find('input#login').val(),
+                    //todo pass should be encrypted on client before sending
+                    password: $(this.el).find('input#pass').val()
+                },
+                rememberMe: $(this.el).find('input#rememberMe').val() == 'on'
+            },
+            {
+                success: function(model, response, options){
+                    console.log('login was done successfuly');
+                    //redirect to somewhere
+                },
+
+                error: function(model, xhr, options){
+                    console.log('login was failed: ');
+                }
+            }
+        )
     },
 
     keyPressEventHandler: function(event){
