@@ -14,14 +14,9 @@ var methodOverride = require('method-override');
 
 var mongoStore = require('connect-mongodb');
 var mongoose = require('mongoose');
+var mongoModels = require('./schema/MongoModels');
 
 var defaults = require('./defaults');
-
-//schemas
-var UserSchema = require('./schema/UserSchema');
-var AnimalSchema = require('./schema/AnimalSchema');
-var CageSchema = require('./schema/CageSchema');
-var ZooSchema = require('./schema/ZooSchema');
 
 //routes
 var index = require('./routes/index');
@@ -45,14 +40,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-//configure mongoConnection
-var User = mongoose.model('User', UserSchema);
-var Animal = mongoose.model('Animal', AnimalSchema);
-var Cage = mongoose.model('Cage', CageSchema);
-var Zoo = mongoose.model('Zoo', ZooSchema);
-
 //create test user
-User.findOne(
+mongoModels.User.findOne(
     {login: 'admin'},
     function(err, admin){
       if (err || !admin){

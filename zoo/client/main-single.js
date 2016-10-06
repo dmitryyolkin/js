@@ -6767,8 +6767,8 @@ module.exports = Marionette.ItemView.extend({
         this.model.save(
             {
                 user: {
-                    login: $(this.el).find('input#login').val(),
                     //todo pass should be encrypted on client before sending
+                    login: $(this.el).find('input#login').val(),
                     password: $(this.el).find('input#pass').val()
                 },
                 rememberMe: $(this.el).find('input#rememberMe').val() == 'on'
@@ -6780,7 +6780,7 @@ module.exports = Marionette.ItemView.extend({
                 },
 
                 error: function(model, xhr, options){
-                    console.log('login was failed: ');
+                    console.log('login was failed: ' + xhr.responseText);
                 }
             }
         )

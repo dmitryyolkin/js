@@ -4,15 +4,14 @@
 'use strict';
 
 var express = require('express');
-var auth = require('../auth');
+var MongoModels = require('../schema/MongoModels');
 
-var mongoose = require('mongoose');
-var UserSchema = require('../schema/UserSchema');
+var User = MongoModels.User;
+var LoginToken = MongoModels.LoginToken;
 
 var router = express.Router();
-var User = mongoose.model('User', UserSchema);
 
-router.get('/', function(req, res) {
+router.get('/', function (req, res) {
     var userId = req.session.user_id;
     if (userId) {
         User.findById(userId, function (user) {
@@ -27,6 +26,8 @@ router.get('/', function(req, res) {
                     .send("User is not found: " + userId);
             }
         });
+    } else if (req.cookies.loginToken) {
+        authenticateFromLoginToken(req, res);
     } else {
         res
             .status(401)
@@ -34,38 +35,89 @@ router.get('/', function(req, res) {
     }
 });
 
-router.post('/', function(req, res) {
-    User.findOne({ login: req.body.user.login }, function(err, user) {
+router.post('/', function (req, res) {
+    User.findOne({login: req.body.user.login}, function (err, user) {
         if (user && user.authenticate(req.body.user.password)) {
             req.session.user_id = user.id;
 
             // Remember me
             if (req.body.rememberMe) {
-                var loginToken = new LoginToken({ email: user.email });
-                loginToken.save(function() {
-                    res.cookie('logintoken', loginToken.cookieValue, { expires: new Date(Date.now() + 2 * 604800000), path: '/' });
-                    //todo don't redirec  but return user with permissions
-                    res.redirect('/documents');
-                });
+                saveLoginToken(
+                    new LoginToken({login: user.login}),
+                    req, res, user
+                );
             } else {
-                //todo don't redirec  but return user with permissions
-                res.redirect('/documents');
+                //don't save in rememeber me and return user with 200
+                sendUser(user, res)
             }
         } else {
-            req.flash('error', 'Incorrect credentials');
-            res.redirect('/login/new');
+            res
+                .status(401)
+                .send('User is specified but credentials are not correct')
         }
     });
 });
 
-router.delete('/', auth.isUserLoggedIn, function(req, res) {
-    //if (req.session) {
-    //    LoginToken.remove({ email: req.currentUser.email }, function() {});
-    //    res.clearCookie('logintoken');
-    //    req.session.destroy(function() {});
-    //}
-    //res.redirect('/login/new');
-});
+/**
+ * If user decides to keep him/her logged in then
+ * System saves info about him/her in cookie in shape of loginToken
+ */
+function authenticateFromLoginToken(req, res) {
+    var cookieLoginToken = JSON.parse(req.cookies.loginToken);
+    LoginToken.findOne({
+        login: cookieLoginToken.login,
+        series: cookieLoginToken.series,
+        token: cookieLoginToken.token
+    }, (function (err, token) {
+        if (!token) {
+            res
+                .status(401)
+                .send("Login token is specified for login: " + cookieLoginToken.login);
+            return;
+        }
 
+        User.findOne({login: token.login}, function (err, user) {
+            if (user) {
+                req.session.user_id = user.id;
+                req.currentUser = user;
+
+                token.token = token.randomToken();
+                saveLoginToken(
+                    token,
+                    req, res, user
+                )
+            } else {
+                res
+                    .status(401)
+                    .send(
+                        "Login Token exists but user is not found. Login: "
+                        + cookieLoginToken.login + ", userId: " + token.login
+                    );
+            }
+        });
+    }));
+}
+
+function saveLoginToken(loginToken, req, res, user) {
+    loginToken.save(function () {
+        res.cookie('loginToken', loginToken.cookieValue, {
+            expires: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000), //expires in two days
+            path: '/'
+        });
+        sendUser(req, res, user);
+    });
+}
+
+function sendUser(req, res, user) {
+    res
+        .status(200)
+        .send({
+            name: user.name,
+            surname: user.surname,
+            email: user.email,
+            roles: user.roles,
+            animals: user.animals
+        });
+}
 
 module.exports = router;
