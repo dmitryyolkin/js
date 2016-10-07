@@ -13,8 +13,8 @@ module.exports = Marionette.AppRouter.extend({
 
     //set corresponddence between routes and controller's methods
     appRoutes: {
-        "": "showAnimals",
-        "animals": "showAnimals",
+        "": "animals",
+        "animals": "animals",
         "login": "login"
     }
 });

@@ -511,8 +511,8 @@ module.exports = Marionette.AppRouter.extend({
 
     //set corresponddence between routes and controller's methods
     appRoutes: {
-        "": "showAnimals",
-        "animals": "showAnimals",
+        "": "animals",
+        "animals": "animals",
         "login": "login"
     }
 });
@@ -6776,7 +6776,7 @@ module.exports = Marionette.ItemView.extend({
             {
                 success: function(model, response, options){
                     console.log('login was done successfuly - user details: ' + JSON.stringify(response.user));
-                    Backbone.history.navigate('showAnimals');
+                    Backbone.history.navigate('animals');
                 },
 
                 error: function(model, xhr, options){
@@ -6874,8 +6874,8 @@ module.exports = Marionette.Controller.extend({
         showloginView(new LoginModel())
     },
 
-    showAnimals: function () {
-        console.log('AppController: showAnimals is invoked');
+    animals: function () {
+        console.log('AppController: animals is invoked');
         var loginModel = new LoginModel();
         loginModel.fetch(
             {

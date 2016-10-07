@@ -40,7 +40,7 @@ module.exports = Marionette.ItemView.extend({
             {
                 success: function(model, response, options){
                     console.log('login was done successfuly - user details: ' + JSON.stringify(response.user));
-                    Backbone.history.navigate('showAnimals');
+                    Backbone.history.navigate('animals');
                 },
 
                 error: function(model, xhr, options){

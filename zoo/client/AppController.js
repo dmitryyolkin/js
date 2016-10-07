@@ -30,8 +30,8 @@ module.exports = Marionette.Controller.extend({
         showloginView(new LoginModel())
     },
 
-    showAnimals: function () {
-        console.log('AppController: showAnimals is invoked');
+    animals: function () {
+        console.log('AppController: animals is invoked');
         var loginModel = new LoginModel();
         loginModel.fetch(
             {
