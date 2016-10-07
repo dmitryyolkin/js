@@ -112,11 +112,13 @@ function sendUser(req, res, user) {
     res
         .status(200)
         .send({
-            name: user.name,
-            surname: user.surname,
-            email: user.email,
-            roles: user.roles,
-            animals: user.animals
+            user :{
+                name: user.name,
+                surname: user.surname,
+                email: user.email,
+                roles: user.roles,
+                animals: user.animals
+            }
         });
 }
 

@@ -36,9 +36,9 @@ module.exports = Marionette.Controller.extend({
         loginModel.fetch(
             {
                 success: function (model, response, options) {
-                    console.log('login/check - success');
+                    console.log('login/check - success. user.details: ' + JSON.stringify(response.user));
                     var animalsView = new AnimalsView({
-                        model: some_model //todo
+                        model: response.user
                     });
                     animalsView.render();
                 },

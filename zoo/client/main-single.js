@@ -6775,12 +6775,13 @@ module.exports = Marionette.ItemView.extend({
             },
             {
                 success: function(model, response, options){
-                    console.log('login was done successfuly');
-                    //redirect to somewhere
+                    console.log('login was done successfuly - user details: ' + JSON.stringify(response.user));
+                    Backbone.history.navigate('showAnimals');
                 },
 
                 error: function(model, xhr, options){
-                    console.log('login was failed: ' + xhr.responseText);
+                    console.log('login is failed: ' + xhr.responseText);
+                    alert(xhr.responseText);
                 }
             }
         )
@@ -6879,9 +6880,9 @@ module.exports = Marionette.Controller.extend({
         loginModel.fetch(
             {
                 success: function (model, response, options) {
-                    console.log('login/check - success');
+                    console.log('login/check - success. user.details: ' + JSON.stringify(response.user));
                     var animalsView = new AnimalsView({
-                        model: some_model //todo
+                        model: response.user
                     });
                     animalsView.render();
                 },
