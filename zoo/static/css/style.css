@@ -102,3 +102,9 @@ pre {
 a {
   color: #e81c4f;
 }
+
+#loginFailed {
+  display: none;
+  color: red;
+  font-size: 0.8em
+}

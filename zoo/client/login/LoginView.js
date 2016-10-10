@@ -11,6 +11,8 @@ var LoginTemplate = require("hbs!templates/login");
 var _ = require('underscore');
 var $ = require('jquery');
 
+var loginFailedId = '#loginFailed';
+
 module.exports = Marionette.ItemView.extend({
     el: 'body',
 
@@ -22,7 +24,8 @@ module.exports = Marionette.ItemView.extend({
     template: LoginTemplate,
     events: {
         'click input:button': 'login',  //Обработчик клика на кнопке "Log in"
-        'keyup input#pass': 'keyPressEventHandler' //Обработчик нажатия enter в тексовом поле
+        'keyup input#pass': 'keyPressEventHandler', //Обработчик нажатия enter в тексовом поле
+        'keyup input#login, input#pass': 'hideLoginFailedMsg' //скрываем login failed message
     },
 
     login: function(){
@@ -44,8 +47,7 @@ module.exports = Marionette.ItemView.extend({
                 },
 
                 error: function(model, xhr, options){
-                    console.log('login is failed: ' + xhr.responseText);
-                    alert(xhr.responseText);
+                    $(loginFailedId).text(xhr.responseText).show();
                 }
             }
         )
@@ -56,6 +58,13 @@ module.exports = Marionette.ItemView.extend({
             //it's interesting if I invoke this.render() then method above is executed
             //but data is not updated in UI
             $('input:button').click();
+        }
+    },
+
+    hideLoginFailedMsg: function(){
+        var $loginFailedEl = $(loginFailedId);
+        if ($loginFailedEl.is(':visible')){
+            $loginFailedEl.hide();
         }
     },
 

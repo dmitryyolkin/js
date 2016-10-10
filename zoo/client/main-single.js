@@ -6723,7 +6723,7 @@ define('hbs!templates/login',['hbs','hbs/handlebars'], function( hbs, Handlebars
 var t = Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
     var stack1;
 
-  return "<div class=\"#login\">\n    <h2>Log in</h2>\n    <div class=\"userplace\">\n        <label for=\"login\">User name:</label>\n        <input type=\"text\" id=\"login\" value="
+  return "<div class=\"#login\">\n    <h2>Log in</h2>\n    <div id=\"loginFailed\"></div>\n    <div class=\"userplace\">\n        <label for=\"login\">User name:</label>\n        <input type=\"text\" id=\"login\" value="
     + this.escapeExpression(this.lambda(((stack1 = (depth0 != null ? depth0.user : depth0)) != null ? stack1.login : stack1), depth0))
     + ">\n    </div>\n    <div class=\"userplace\">\n        <label for=\"pass\">Password:</label>\n        <input type=\"text\" id=\"pass\" value="
     + this.escapeExpression(this.lambda(((stack1 = (depth0 != null ? depth0.user : depth0)) != null ? stack1.password : stack1), depth0))
@@ -6747,6 +6747,8 @@ var LoginTemplate = require("hbs!templates/login");
 var _ = require('underscore');
 var $ = require('jquery');
 
+var loginFailedId = '#loginFailed';
+
 module.exports = Marionette.ItemView.extend({
     el: 'body',
 
@@ -6758,7 +6760,8 @@ module.exports = Marionette.ItemView.extend({
     template: LoginTemplate,
     events: {
         'click input:button': 'login',  //Обработчик клика на кнопке "Log in"
-        'keyup input#pass': 'keyPressEventHandler' //Обработчик нажатия enter в тексовом поле
+        'keyup input#pass': 'keyPressEventHandler', //Обработчик нажатия enter в тексовом поле
+        'keyup input#login, input#pass': 'hideLoginFailedMsg' //скрываем login failed message
     },
 
     login: function(){
@@ -6780,8 +6783,7 @@ module.exports = Marionette.ItemView.extend({
                 },
 
                 error: function(model, xhr, options){
-                    console.log('login is failed: ' + xhr.responseText);
-                    alert(xhr.responseText);
+                    $(loginFailedId).text(xhr.responseText).show();
                 }
             }
         )
@@ -6792,6 +6794,13 @@ module.exports = Marionette.ItemView.extend({
             //it's interesting if I invoke this.render() then method above is executed
             //but data is not updated in UI
             $('input:button').click();
+        }
+    },
+
+    hideLoginFailedMsg: function(){
+        var $loginFailedEl = $(loginFailedId);
+        if ($loginFailedEl.is(':visible')){
+            $loginFailedEl.hide();
         }
     },
 
