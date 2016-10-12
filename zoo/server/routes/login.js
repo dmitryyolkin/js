@@ -12,14 +12,13 @@ var LoginToken = MongoModels.LoginToken;
 var router = express.Router();
 
 router.get('/', function (req, res) {
+    //todo clarify why we need session.user_id - probably it's extra now
     var userId = req.session.user_id;
     if (userId) {
         User.findById(userId, function (user) {
             if (user) {
                 req.currentUser = user;
-                res
-                    .status(200)
-                    .send({});
+                sendUser(req, res, user);
             } else {
                 res
                     .status(401)
@@ -99,6 +98,10 @@ function authenticateFromLoginToken(req, res) {
 }
 
 function saveLoginToken(loginToken, req, res, user) {
+
+    //cookie set this way can not be read with JS on client
+    //of we want to make it available we have to set 'httpOnly = false' cookie option
+    //see http://stackoverflow.com/questions/17508027/cant-access-cookies-from-document-cookie-in-js-but-browser-shows-cookies-exist
     loginToken.save(function () {
         res.cookie('loginToken', loginToken.cookieValue, {
             expires: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000), //expires in two days
