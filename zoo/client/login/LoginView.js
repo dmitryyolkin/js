@@ -43,6 +43,9 @@ module.exports = Marionette.ItemView.extend({
             {
                 success: function(model, response, options){
                     console.log('login was done successfuly - user details: ' + JSON.stringify(response.user));
+
+                    //if we don't stringify then object will be saved in localStorage incorrectly
+                    localStorage.user = JSON.stringify(response.user);
                     Backbone.history.navigate('animals');
                 },
 

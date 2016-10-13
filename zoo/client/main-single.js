@@ -6779,6 +6779,9 @@ module.exports = Marionette.ItemView.extend({
             {
                 success: function(model, response, options){
                     console.log('login was done successfuly - user details: ' + JSON.stringify(response.user));
+
+                    //if we don't stringify then object will be saved in localStorage incorrectly
+                    localStorage.user = JSON.stringify(response.user);
                     Backbone.history.navigate('animals');
                 },
 
@@ -6865,10 +6868,19 @@ var LoginModel = require('./models/LoginModel');
 var _ = require('underscore');
 
 function showloginView(loginModel) {
+    //check user in localstorage
+    //and set login if it exists
+    if (localStorage.user && localStorage.user != 'undefined'){
+        var user = JSON.parse(localStorage.user);
+        if (user){
+            loginModel.user.login = user.login;
+        }
+
+    }
+
     var loginView = new LoginView({
         model: loginModel
-    });
-    loginView.render();
+    }).render();
 }
 
 module.exports = Marionette.Controller.extend({
@@ -6886,10 +6898,15 @@ module.exports = Marionette.Controller.extend({
     animals: function () {
         console.log('AppController: animals is invoked');
         var loginModel = new LoginModel();
-        loginModel.fetch(
+        loginModel.sync(
+            'GET',
+            loginModel,
             {
                 success: function (model, response, options) {
                     console.log('login/check - success. user.details: ' + JSON.stringify(response.user));
+
+                    //if we don't stringify then object will be saved in localStorage incorrectly
+                    localStorage.user = JSON.stringify(response.user);
                     var animalsView = new AnimalsView({
                         model: response.user
                     });

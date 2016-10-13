@@ -12,10 +12,9 @@ var LoginToken = MongoModels.LoginToken;
 var router = express.Router();
 
 router.get('/', function (req, res) {
-    //todo clarify why we need session.user_id - probably it's extra now
     var userId = req.session.user_id;
     if (userId) {
-        User.findById(userId, function (user) {
+        User.findById(userId, function (error, user) {
             if (user) {
                 req.currentUser = user;
                 sendUser(req, res, user);
@@ -77,6 +76,7 @@ function authenticateFromLoginToken(req, res) {
 
         User.findOne({login: token.login}, function (err, user) {
             if (user) {
+                //we save user id in session to avoid token verification within the one session
                 req.session.user_id = user.id;
                 req.currentUser = user;
 
@@ -116,6 +116,7 @@ function sendUser(req, res, user) {
         .status(200)
         .send({
             user :{
+                login: user.login,
                 name: user.name,
                 surname: user.surname,
                 email: user.email,
