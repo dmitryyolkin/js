@@ -6782,7 +6782,13 @@ module.exports = Marionette.ItemView.extend({
 
                     //if we don't stringify then object will be saved in localStorage incorrectly
                     localStorage.user = JSON.stringify(response.user);
-                    Backbone.history.navigate('animals');
+                    Backbone.history.navigate(
+                        'animals',
+                        {
+                            //we have to invoke 'animals' handler
+                            trigger: true
+                        }
+                    );
                 },
 
                 error: function(model, xhr, options){
@@ -6875,7 +6881,6 @@ function showloginView(loginModel) {
         if (user){
             loginModel.user.login = user.login;
         }
-
     }
 
     var loginView = new LoginView({
