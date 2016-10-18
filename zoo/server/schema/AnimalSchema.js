@@ -14,7 +14,7 @@ module.exports = new Schema({
         dropDups: true //to ensure dropping duplicate records in your schemas
     },
 
-    kind: {
+    species: {
         type: String,
         default: 'Predator',
         enum: ['Bird', 'Fish', 'Herbivorous', 'Predator']

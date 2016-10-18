@@ -7,7 +7,10 @@ var Marionette = require('marionette');
 
 var LoginView = require('./login/LoginView');
 var AnimalsView = require('./animals/AnimalsView');
+
+//models
 var LoginModel = require('./models/LoginModel');
+var AnimalsCollection = require('./models/AnimalsCollection');
 
 var _ = require('underscore');
 
@@ -51,7 +54,7 @@ module.exports = Marionette.Controller.extend({
                     //if we don't stringify then object will be saved in localStorage incorrectly
                     localStorage.user = JSON.stringify(response.user);
                     var animalsView = new AnimalsView({
-                        model: response.user
+                        collection: new AnimalsCollection()
                     });
                     animalsView.render();
                 },

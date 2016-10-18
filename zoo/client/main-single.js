@@ -6723,7 +6723,7 @@ define('hbs!templates/login',['hbs','hbs/handlebars'], function( hbs, Handlebars
 var t = Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
     var stack1;
 
-  return "<div class=\"#login\">\n    <h2>Log in</h2>\n    <div id=\"loginFailed\"></div>\n    <div class=\"userplace\">\n        <label for=\"login\">User name:</label>\n        <input type=\"text\" id=\"login\" value="
+  return "<div class=\"login\">\n    <h2>Log in</h2>\n    <div id=\"loginFailed\"></div>\n    <div class=\"userplace\">\n        <label for=\"login\">User name:</label>\n        <input type=\"text\" id=\"login\" value="
     + this.escapeExpression(this.lambda(((stack1 = (depth0 != null ? depth0.user : depth0)) != null ? stack1.login : stack1), depth0))
     + ">\n    </div>\n    <div class=\"userplace\">\n        <label for=\"pass\">Password:</label>\n        <input type=\"text\" id=\"pass\" value="
     + this.escapeExpression(this.lambda(((stack1 = (depth0 != null ? depth0.user : depth0)) != null ? stack1.password : stack1), depth0))
@@ -6829,14 +6829,62 @@ module.exports = Marionette.ItemView.extend({
 });
 });
 
-define('animals/AnimalsView',['require','exports','module','marionette'],function (require, exports, module) {/**
+
+/* START_TEMPLATE */
+define('hbs!templates/animals',['hbs','hbs/handlebars'], function( hbs, Handlebars ){ 
+var t = Handlebars.template({"1":function(depth0,helpers,partials,data) {
+    var helper;
+
+  return "        <td>"
+    + this.escapeExpression(((helper = (helper = helpers.order || (depth0 != null ? depth0.order : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0,{"name":"order","hash":{},"data":data}) : helper)))
+    + "</td>\n        <td>"
+    + this.escapeExpression(((helper = (helper = helpers.name || (depth0 != null ? depth0.name : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0,{"name":"name","hash":{},"data":data}) : helper)))
+    + "</td>\n        <td>"
+    + this.escapeExpression(((helper = (helper = helpers.species || (depth0 != null ? depth0.species : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0,{"name":"species","hash":{},"data":data}) : helper)))
+    + "</td>\n        <td>"
+    + this.escapeExpression(((helper = (helper = helpers.age || (depth0 != null ? depth0.age : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0,{"name":"age","hash":{},"data":data}) : helper)))
+    + "</td>\n        <td>"
+    + this.escapeExpression(((helper = (helper = helpers.cage || (depth0 != null ? depth0.cage : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0,{"name":"cage","hash":{},"data":data}) : helper)))
+    + "</td>\n        <td>"
+    + this.escapeExpression(((helper = (helper = helpers.keeper || (depth0 != null ? depth0.keeper : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0,{"name":"keeper","hash":{},"data":data}) : helper)))
+    + "</td>\n";
+},"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
+    var stack1, helper, options, buffer = 
+  "<div id=\"animals\">\n    <tr class=\"animalsHeader\">\n        <th>Order</th>\n        <th>Name</th>\n        <th>Species</th>\n        <th>Age</th>\n        <th>Cage</th>\n        <th>Keeper</th>\n    </tr>\n";
+  stack1 = ((helper = (helper = helpers.animals || (depth0 != null ? depth0.animals : depth0)) != null ? helper : helpers.helperMissing),(options={"name":"animals","hash":{},"fn":this.program(1, data, 0),"inverse":this.noop,"data":data}),(typeof helper === "function" ? helper.call(depth0,options) : helper));
+  if (!helpers.animals) { stack1 = helpers.blockHelperMissing.call(depth0,stack1,options)}
+  if (stack1 != null) { buffer += stack1; }
+  return buffer + "</div>";
+},"useData":true});
+Handlebars.registerPartial('templates/animals', t);
+return t;
+});
+/* END_TEMPLATE */
+;
+define('animals/AnimalsView',['require','exports','module','marionette','hbs!templates/animals'],function (require, exports, module) {/**
  * Created by dmitry on 28.09.16.
  */
 
 
 var Marionette = require('marionette');
+var AnimalsTemplate = require("hbs!templates/animals");
 
 module.exports = Marionette.ItemView.extend({
+    el: 'body',
+
+    initialize: function (options) {
+        _.extend(this, options);
+        Backbone.history.navigate('animals');
+    },
+
+    template: AnimalsTemplate,
+
+    //it's required to show data in hbs template
+    serializeData: function () {
+        return {
+            animals: this.collection
+        };
+    }
 
 });
 
@@ -6860,7 +6908,46 @@ module.exports = Backbone.Model.extend({
 
 });
 
-define('AppController',['require','exports','module','marionette','./login/LoginView','./animals/AnimalsView','./models/LoginModel','underscore'],function (require, exports, module) {/**
+define('models/AnimalModel',['require','exports','module','backbone'],function (require, exports, module) {/**
+ * Created by dmitry on 17.10.16.
+ */
+
+
+var Backbone = require('backbone');
+
+module.exports = Backbone.Model.extend({
+    defaults: {
+        order: null,
+        name: 'undefined',
+        species: "undefined",
+        age: null,
+        cage: null,
+        keeper: 'undefined'
+    }
+});
+
+});
+
+define('models/AnimalsCollection',['require','exports','module','backbone','./AnimalModel'],function (require, exports, module) {/**
+ * Created by dmitry on 17.10.16.
+ */
+
+
+var Backbone = require('backbone');
+var AnimalModel = require('./AnimalModel');
+
+module.exports = Backbone.Collection.extend({
+    model: AnimalModel,
+    url: '/animals',
+
+    initialize: function(options){
+        _.extend(this, options);
+    }
+
+});
+});
+
+define('AppController',['require','exports','module','marionette','./login/LoginView','./animals/AnimalsView','./models/LoginModel','./models/AnimalsCollection','underscore'],function (require, exports, module) {/**
  * Created by dmitry on 19.08.16.
  */
 
@@ -6869,7 +6956,10 @@ var Marionette = require('marionette');
 
 var LoginView = require('./login/LoginView');
 var AnimalsView = require('./animals/AnimalsView');
+
+//models
 var LoginModel = require('./models/LoginModel');
+var AnimalsCollection = require('./models/AnimalsCollection');
 
 var _ = require('underscore');
 
@@ -6913,7 +7003,7 @@ module.exports = Marionette.Controller.extend({
                     //if we don't stringify then object will be saved in localStorage incorrectly
                     localStorage.user = JSON.stringify(response.user);
                     var animalsView = new AnimalsView({
-                        model: response.user
+                        collection: new AnimalsCollection()
                     });
                     animalsView.render();
                 },
