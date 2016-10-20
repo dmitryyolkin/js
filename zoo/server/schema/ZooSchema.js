@@ -10,13 +10,13 @@ module.exports = new Schema({
     users: [{
         type: Schema.Types.ObjectId,
         required: true,
-        ref: './UserSchema'
+        ref: 'User'
     }],
 
     animals: [{
         type: Schema.Types.ObjectId,
         required: true,
-        ref: './Animal'
+        ref: 'Animal'
     }]
 
 });

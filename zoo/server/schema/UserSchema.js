@@ -58,7 +58,7 @@ var UserSchema = new Schema({
     animals: [{
         type: Schema.Types.ObjectId,
         required: false, //admin or zoologist don't contain anumals
-        ref: './Animal'
+        ref: 'Animal'
     }]
 
 });

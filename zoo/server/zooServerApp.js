@@ -14,7 +14,7 @@ var methodOverride = require('method-override');
 
 var mongoStore = require('connect-mongodb');
 var mongoose = require('mongoose');
-var mongoModels = require('./schema/MongoModels');
+var testDataProvider = require('./testDataProvider');
 
 var defaults = require('./defaults');
 
@@ -40,25 +40,9 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-//create test user
-mongoModels.User.findOne(
-    {login: 'admin'},
-    function(err, admin){
-      if (err || !admin){
-        new User({
-          name: 'Unknown',
-          email: 'dmitry.yolkin@gmail.com',
-          login: 'admin',
-          password: 'admin',
-          roles: ['ADMIN']
-        }).save(function(err){
-          if (err){
-            logger.error(err);
-          }
-        })
-      }
-    }
-);
+//init test data
+testDataProvider.createAdmin();
+testDataProvider.createZoo();
 
 //line below is required not to get line below
 //Mongoose: mpromise (mongoose's default promise library) is deprecated,

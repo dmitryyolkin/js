@@ -28,13 +28,13 @@ module.exports = new Schema({
     keeper: {
         type: Schema.Types.ObjectId,
         required: true,
-        ref: './UserSchema'
+        ref: 'User'
     },
 
     cage: {
         type: Schema.Types.ObjectId,
         required: true,
-        ref: './Cage'
+        ref: 'Cage'
     }
 
 });
