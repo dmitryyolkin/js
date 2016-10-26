@@ -20,7 +20,7 @@ function saveInstances(newInstances, conditionFunc, mongoModel) {
                     //there is no such instance
                     instance.save(function (err) {
                         if (err) {
-                            logger.error(err);
+                            logger.error('Error within saving instance: ' + JSON.stringify(instance, null, "\t") + '\n error: ' + err);
                             return;
                         }
                         logger.info('Instance of model ' + mongoModel.modelName + ' is saved successfully:' + JSON.stringify(instance, null, "\t"));
@@ -120,9 +120,9 @@ module.exports = {
             });
         }
 
-        function checkAnimalsInCage(cages, cage) {
-            if (cage.animals.length == 0) {
-                cages.push(cage);
+        function checkAnimalsInCage(elements, animalHolder) {
+            if (animalHolder.animals.length == 0) {
+                elements.push(animalHolder);
             }
         }
 
@@ -143,22 +143,56 @@ module.exports = {
             })
         }
 
+        //users
+        var keepers = [];
+        checkAnimalsInCage(keepers, keeper1);
+        checkAnimalsInCage(keepers, keeper2);
+        for (var i = 0; i < keepers.length; i++) {
+            var keeper = keepers[i];
+            for (var j = 0; j < animals.length; j++) {
+                var animal = animals[j];
+                if (animal.keeper == keeper._id){
+                    if (keeper.animals.length == 0){
+                        keeper.animals = [];
+                    }
+                    keeper.animals.push(animal);
+                }
+            }
+
+            //save
+            keeper.save(function(err, doc){
+                if (err){
+                    logger.error(err);
+                    return;
+                }
+                logger.info('Keeper was updated: ' + JSON.stringify(doc, null, "\t"));
+            });
+
+        }
+
 
         //create Zoo
-        //Zoo.findOne(
-        //    {},
-        //    function(err, zoo){
-        //        if (err || !zoo){
-        //            new Zoo({
-        //
-        //            }).save(function(err){
-        //                if (err){
-        //                    logger.error(err);
-        //                }
-        //            })
-        //        }
-        //    }
-        //);
+        Zoo.findOne(
+            {},
+            function(err, zoo){
+                if (err){
+                    logger.error(err);
+                    return;
+                }
+
+                if (!zoo){
+                    new Zoo({
+                        users: [keeper1, keeper2, zoologist1],
+                        animals: animals
+                    }).save(function(err, zoo){
+                        if (err){
+                            logger.error(err);
+                        }
+                        logger.info('Zoo was saved: ' + JSON.stringify(zoo, null, "\t"));
+                    })
+                }
+            }
+        );
 
 
     }
