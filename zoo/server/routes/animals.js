@@ -4,13 +4,30 @@
 'use strict';
 
 var express = require('express');
+var mongoModels = require('../schema/MongoModels');
+var logger = require('../logger');
 
 var router = express.Router();
+var Animal = mongoModels.Animal;
 
 //get all animals
 router.get('/', function(req, res, next){
     console.log('get /animals');
-    //todo
+    Animal.find(
+        {},
+        function (err, anumals){
+            if (err){
+                logger.error(err);
+                res
+                    .status(500)
+                    .send(err);
+            }else{
+                res
+                    .status(200)
+                    .send(anumals);
+            }
+        }
+    );
 });
 
 //get animal by id

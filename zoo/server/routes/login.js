@@ -100,7 +100,7 @@ function authenticateFromLoginToken(req, res) {
 function saveLoginToken(loginToken, req, res, user) {
 
     //cookie set this way can not be read with JS on client
-    //of we want to make it available we have to set 'httpOnly = false' cookie option
+    //if we want to make it available we have to set 'httpOnly = false' cookie option
     //see http://stackoverflow.com/questions/17508027/cant-access-cookies-from-document-cookie-in-js-but-browser-shows-cookies-exist
     loginToken.save(function () {
         res.cookie('loginToken', loginToken.cookieValue, {
