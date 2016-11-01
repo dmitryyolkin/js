@@ -6,7 +6,7 @@
 var Marionette = require('marionette');
 
 var LoginView = require('./login/LoginView');
-var AnimalsView = require('./animals/AnimalsView');
+var AnimalsView = require('./animals/AnimalsTableView');
 
 //models
 var LoginModel = require('./models/LoginModel');
@@ -53,10 +53,14 @@ module.exports = Marionette.Controller.extend({
 
                     //if we don't stringify then object will be saved in localStorage incorrectly
                     localStorage.user = JSON.stringify(response.user);
+
+                    //details how collection can be shown
+                    //http://stackoverflow.com/questions/27673371/backbone-js-collection-view-example-using-marionette-template
                     var animalsView = new AnimalsView({
                         collection: new AnimalsCollection()
                     });
                     animalsView.render();
+                    document.body.appendChild(animalsView.el);
                 },
 
                 error: function (model, response, options) {

@@ -12,6 +12,15 @@ module.exports = Backbone.Collection.extend({
 
     initialize: function(options){
         _.extend(this, options);
+
+        //initialize collection from back-end
+        //otherwise it will be empty
+        var animals = this;
+        animals.fetch().done(function() {
+            animals.each(function(item){
+                console.log(item.get('name'));
+            });
+        });
     }
 
 });

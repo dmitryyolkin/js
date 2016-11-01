@@ -11,33 +11,35 @@ var router = express.Router();
 var Animal = mongoModels.Animal;
 
 //get all animals
-router.get('/', function(req, res, next){
+router.get('/', function (req, res, next) {
     console.log('get /animals');
-    Animal.find(
-        {},
-        function (err, anumals){
-            if (err){
+    Animal
+        .find({})
+        .populate('keeper')
+        .populate('cage')
+        .exec(function (err, anumals) {
+            if (err) {
                 logger.error(err);
                 res
                     .status(500)
                     .send(err);
-            }else{
+            } else {
                 res
                     .status(200)
                     .send(anumals);
             }
-        }
-    );
+        })
+
 });
 
 //get animal by id
-router.get('/:id', function(req, res, next){
+router.get('/:id', function (req, res, next) {
     console.log('get /animals/:id ' + req.params.id);
     //todo
 });
 
 //update animal by id
-router.post('/:id', function(req, res, next){
+router.post('/:id', function (req, res, next) {
     console.log('post /animals/:id ' + req.params.id);
     //todo
 });
