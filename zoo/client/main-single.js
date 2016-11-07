@@ -7045,10 +7045,7 @@ module.exports = Marionette.Controller.extend({
             loginModel,
             {
                 success: function (model, response, options) {
-                    console.log('login/check - success. user.details: ' + JSON.stringify(response.user));
-
-                    //if we don't stringify then object will be saved in localStorage incorrectly
-                    localStorage.user = JSON.stringify(response.user);
+                    console.log('login/check - success)');
 
                     //details how collection can be shown
                     //http://stackoverflow.com/questions/27673371/backbone-js-collection-view-example-using-marionette-template
