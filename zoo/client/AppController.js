@@ -60,7 +60,6 @@ module.exports = Marionette.Controller.extend({
                         collection: new AnimalsCollection()
                     });
                     animalsView.render();
-                    document.body.appendChild(animalsView.el);
                 },
 
                 error: function (model, response, options) {

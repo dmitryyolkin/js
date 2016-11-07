@@ -6907,7 +6907,10 @@ var Marionette = require('marionette');
 var AnimalsTemplate = require("hbs!templates/animals");
 var AnimalRowView = require("./AnimalRowView");
 
+//Details http://marionettejs.com/docs/master/marionette.collectionview.html#rendering-tables
 module.exports = Marionette.CompositeView.extend({
+    //parent element used to attach our template
+    el: "body",
     //all template's content will be wrapped with 'table' tag
     tagName: 'table',
     className: 'animalsTable table-hover',
@@ -6920,13 +6923,6 @@ module.exports = Marionette.CompositeView.extend({
         _.extend(this, options);
         Backbone.history.navigate('animals');
     }
-
-    //we can pass params to child view with help of childViewOptions literals below
-    //childViewOptions: function(model, index) {
-    //    return {
-    //        model: model
-    //    }
-    //}
 
 });
 
@@ -7060,7 +7056,6 @@ module.exports = Marionette.Controller.extend({
                         collection: new AnimalsCollection()
                     });
                     animalsView.render();
-                    document.body.appendChild(animalsView.el);
                 },
 
                 error: function (model, response, options) {
