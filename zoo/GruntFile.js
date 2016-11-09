@@ -2,7 +2,7 @@
  * Created by dmitry on 06.07.16.
  */
 /*global module:false*/
-module.exports = function(grunt) {
+module.exports = function (grunt) {
     'use strict';
 
     //variables
@@ -52,6 +52,18 @@ module.exports = function(grunt) {
                     name: '../static/components/almond/almond'
                 }
             }
+        },
+
+        less: {
+            production: {
+                //https://github.com/gruntjs/grunt-contrib-less
+                options: {
+                    compress: true
+                },
+                files: {
+                    "static/less/styles.min.css": "static/less/styles.less"
+                }
+            }
         }
 
     });
@@ -62,6 +74,6 @@ module.exports = function(grunt) {
 
     // Default task.
     //grunt.registerTask('default', ['clean', 'requirejs:centralized']);
-    grunt.registerTask('default', ['requirejs:centralized']);
+    grunt.registerTask('default', ['less', 'requirejs:centralized']);
 };
 

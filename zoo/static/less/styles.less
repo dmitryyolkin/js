@@ -1,3 +1,5 @@
+@import "variables.less";
+
 /*
   some basic rules were taken from
   http://jgthms.com/web-design-in-4-minutes
@@ -9,22 +11,22 @@ body {
   max-width: 50em;
 
   /* Switching to a sans-serif font like "Helvetica" or "Arial" can vastly improve the look of your page. */
-  font-family: "Helvetica", "Arial", sans-serif;
+  font-family: @body-font;
 
   /* When a page looks "broken" to a user, it's usually a spacing issue. Providing space both around and within your content can increase the appeal of your page.*/
   line-height: 1.5;
   padding: 4em 1em;
 
   /* Black text on a white background can be harsh on the eyes. Opting for a softer shade of black for body text makes the page more comfortable to read. */
-  color: #566b78;
+  color: @body-color;
 }
 
 
 /* enhance our header with a nice background image */
 /* header */
 header {
-  background-color: #263d36;
-  background-image: url("../images/header.png");
+  background-color: @header-bg-color;
+  background-image: @header-bg-img;
   background-position: center top;
   background-repeat: no-repeat;
   background-size: cover;
@@ -47,7 +49,7 @@ header h1 {
 }
 
 header a {
-  border: 1px solid #e81c4f;
+  border: 1px solid @header-a-color;
   border-radius: 290486px;
   color: white;
   font-size: 0.6em;
@@ -60,8 +62,8 @@ header a {
 }
 
 header a:hover {
-  background:  #e81c4f;
-  color: white;
+  background:  @header-a-color;
+  color: @header-a-color-hover;
 }
 
 
@@ -69,7 +71,7 @@ header a:hover {
 h1,
 h2,
 strong {
-  color: #333;
+  color: @h1-color;
 }
 
 h2 {
@@ -80,9 +82,9 @@ h2 {
 /* correct the balance of the page: */
 code,
 pre {
-  background: #f5f7f9;
-  border-bottom: 1px solid #d8dee9;
-  color: #a7adba;
+  background: @code-bg-color;
+  border-bottom: 1px solid @code-border-btn;
+  color: @code-color;
 }
 
 code {
@@ -92,7 +94,7 @@ code {
 
 pre {
   padding: 1em;
-  border-left: 2px solid #69c;
+  border-left: 2px solid @pre-border;
 }
 
 /*
@@ -100,7 +102,7 @@ pre {
  Most brands have a primary color that acts as a visual accent. On a website, this accent can be used to provide emphasis on interactive elements, like links.
 */
 a {
-  color: #e81c4f;
+  color: @a-color;
 }
 
 #loginFailed {
