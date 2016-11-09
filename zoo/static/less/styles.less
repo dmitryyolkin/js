@@ -1,8 +1,14 @@
 @import "variables.less";
 
+//components
+@import "login.less";
+
 /*
   some basic rules were taken from
   http://jgthms.com/web-design-in-4-minutes
+
+  Also good article about styles is
+  https://github.com/jareware/css-architecture#3-use-consistent-class-namespacing
 */
 
 body {
@@ -103,10 +109,4 @@ pre {
 */
 a {
   color: @a-color;
-}
-
-#loginFailed {
-  display: none;
-  color: red;
-  font-size: 0.8em
 }

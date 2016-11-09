@@ -11,7 +11,7 @@ var LoginTemplate = require("hbs!templates/login");
 var _ = require('underscore');
 var $ = require('jquery');
 
-var loginFailedId = '#loginFailed';
+var loginFailedClass = '.loginFailed';
 
 module.exports = Marionette.ItemView.extend({
     el: 'body',
@@ -56,7 +56,7 @@ module.exports = Marionette.ItemView.extend({
                 },
 
                 error: function(model, xhr, options){
-                    $(loginFailedId).text(xhr.responseText).show();
+                    $(loginFailedClass).text(xhr.responseText).show();
                 }
             }
         )
@@ -71,7 +71,7 @@ module.exports = Marionette.ItemView.extend({
     },
 
     hideLoginFailedMsg: function(){
-        var $loginFailedEl = $(loginFailedId);
+        var $loginFailedEl = $(loginFailedClass);
         if ($loginFailedEl.is(':visible')){
             $loginFailedEl.hide();
         }
