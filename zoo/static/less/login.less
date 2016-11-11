@@ -1,10 +1,25 @@
 @import "variables.less";
 
 .login {
+  width: 300px; /* Ширина элемента в пикселах */
+  height: 200px; /* Высота элемента в пикселах */
+  margin: auto; /* Выравниваем по центру */
 
   > .loginFailed {
     display: none;
     color: red;
     font-size: 0.8em
   }
+
+  /* Выровняем содержимое каждого дива по правому краю и назначим ему обновление потока.*/
+  > .user-place {
+    clear: both;
+    text-align: right;
+    line-height: 20px; /* зададим отступ между заголовком и полем */
+
+    > label {
+      float: left;
+    }
+  }
+
 }

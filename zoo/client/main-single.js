@@ -6723,11 +6723,11 @@ define('hbs!templates/login',['hbs','hbs/handlebars'], function( hbs, Handlebars
 var t = Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
     var stack1;
 
-  return "<div class=\"login\">\n    <h2>Log in</h2>\n    <div class=\"loginFailed\"></div>\n    <div class=\"userplace\">\n        <label for=\"login\">User name:</label>\n        <input type=\"text\" id=\"login\" value="
+  return "<div class=\"login\">\n    <h2>Log in</h2>\n    <div class=\"loginFailed\"></div>\n    <div class=\"user-place\">\n        <label for=\"login\">User name:</label>\n        <input type=\"text\" id=\"login\" value="
     + this.escapeExpression(this.lambda(((stack1 = (depth0 != null ? depth0.user : depth0)) != null ? stack1.login : stack1), depth0))
-    + ">\n    </div>\n    <div class=\"userplace\">\n        <label for=\"pass\">Password:</label>\n        <input type=\"text\" id=\"pass\" value="
+    + ">\n    </div>\n    <div class=\"user-place\">\n        <label for=\"pass\">Password:</label>\n        <input type=\"text\" id=\"pass\" value="
     + this.escapeExpression(this.lambda(((stack1 = (depth0 != null ? depth0.user : depth0)) != null ? stack1.password : stack1), depth0))
-    + ">\n    </div>\n\n    <div id=\"login_info\">\n        <!-- todo отображать login в одну строчку -->\n        <a id=\"regiter_new_user\" href=\"#admin/new\">register</a>\n        <div class=\"userplace\">\n            <label for=\"rememberMe\">Keep me logged in</label>\n            <input type=\"checkbox\" id=\"rememberMe\" checked>\n        </div>\n        <div class=\"buttonplace\">\n            <input type=\"button\" id=\"loginBtn\" value=\"Log in\">\n        </div>\n    </div>\n</div>\n";
+    + ">\n    </div>\n\n    <div id=\"login_info\">\n        <!-- todo отображать login в одну строчку -->\n        <a id=\"regiter_new_user\" href=\"#admin/new\">register</a>\n        <div class=\"rememberMe-place\">\n            <label for=\"rememberMe\">Keep me logged in</label>\n            <input type=\"checkbox\" id=\"rememberMe\" checked>\n        </div>\n        <div class=\"button-place\">\n            <input type=\"button\" id=\"loginBtn\" value=\"Log in\">\n        </div>\n    </div>\n</div>\n";
 },"useData":true});
 Handlebars.registerPartial('templates/login', t);
 return t;
