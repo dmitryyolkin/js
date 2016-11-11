@@ -1,10 +1,48 @@
 @import "variables.less";
 
 .login {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 300px;
+  height: 200px;
+  margin: -15% 0 0 -10%; /* Выравниваем по центру */
 
   > .loginFailed {
     display: none;
     color: red;
     font-size: 0.8em
   }
+
+  //место для ввода login/password
+  > .credentials-place {
+    clear: both;
+    text-align: right;
+    line-height: 20px; /* зададим отступ между заголовком и полем */
+
+    > label {
+      float: left;
+    }
+  }
+
+  //нижняя часть конролов (sign up/log in)
+  > .loginControl {
+
+    > .signup-place {
+      clear: both;
+      text-align: right;
+      line-height: 20px; /* зададим отступ между заголовком и полем */
+
+      > .signup-new-user {
+        float: left;
+      }
+
+    }
+
+    > .button-place {
+      //выравнивание по правому краю
+      text-align: right;
+    }
+  }
+
 }

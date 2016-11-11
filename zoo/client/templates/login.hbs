@@ -1,24 +1,25 @@
 <div class="login">
     <h2>Log in</h2>
     <div class="loginFailed"></div>
-    <div class="userplace">
+    <div class="credentials-place">
         <label for="login">User name:</label>
         <input type="text" id="login" value={{user.login}}>
     </div>
-    <div class="userplace">
+    <div class="credentials-place">
         <label for="pass">Password:</label>
         <input type="text" id="pass" value={{user.password}}>
     </div>
 
-    <div id="login_info">
+    <div class="loginControl">
         <!-- todo отображать login в одну строчку -->
-        <a id="regiter_new_user" href="#admin/new">register</a>
-        <div class="userplace">
+        <div class="signup-place">
+            <a class="signup-new-user" href="#admin/new">New user</a>
             <label for="rememberMe">Keep me logged in</label>
             <input type="checkbox" id="rememberMe" checked>
         </div>
-        <div class="buttonplace">
-            <input type="button" id="loginBtn" value="Log in">
+
+        <div class="button-place">
+            <input type="button" id="loginBtn" value="Lig in">
         </div>
     </div>
 </div>
