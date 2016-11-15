@@ -25,6 +25,14 @@ body {
 
   /* Black text on a white background can be harsh on the eyes. Opting for a softer shade of black for body text makes the page more comfortable to read. */
   color: @body-color;
+
+  background: @body-bg-img;
+
+  /* растягиваем изображение на весь экран */
+  -moz-background-size: 100%; /* Firefox 3.6+ */
+  -webkit-background-size: 100%; /* Safari 3.1+ и Chrome 4.0+ */
+  -o-background-size: 100%; /* Opera 9.6+ */
+  background-size: 100%;
 }
 
 
