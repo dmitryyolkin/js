@@ -4,7 +4,7 @@
 'use strict';
 
 var Marionette = require('marionette');
-var AnimalsTemplate = require("hbs!templates/animals");
+var AnimalsTemplate = require("hbs!templates/animalsTable");
 var AnimalRowView = require("./AnimalRowView");
 
 //Details http://marionettejs.com/docs/master/marionette.collectionview.html#rendering-tables
@@ -12,8 +12,6 @@ module.exports = Marionette.CompositeView.extend({
     //parent element used to attach our template
     el: "body",
     //all template's content will be wrapped with 'table' tag
-    tagName: 'table',
-    className: 'animalsTable table-hover',
     template: AnimalsTemplate,
 
     childView: AnimalRowView,

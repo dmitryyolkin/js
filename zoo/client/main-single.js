@@ -6831,11 +6831,11 @@ module.exports = Marionette.ItemView.extend({
 
 
 /* START_TEMPLATE */
-define('hbs!templates/animals',['hbs','hbs/handlebars'], function( hbs, Handlebars ){ 
+define('hbs!templates/animalsTable',['hbs','hbs/handlebars'], function( hbs, Handlebars ){ 
 var t = Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
-    return "<thead>\n<tr>\n    <th>Name</th>\n    <th>Species</th>\n    <th>Age</th>\n    <th>Cage</th>\n    <th>Keeper</th>\n</tr>\n</thead>\n<tbody></tbody>\n";
+    return "<table class=\"animals-table\">\n    <thead>\n        <tr>\n            <th>Name</th>\n            <th>Species</th>\n            <th>Age</th>\n            <th>Cage</th>\n            <th>Keeper</th>\n        </tr>\n    </thead>\n\n    <!-- insert data -->\n    <tbody></tbody>\n    <tfoot>\n        <tr>\n            <td colspan=\"5\">Animals table footer</td>\n        </tr>\n    </tfoot>\n</table>";
 },"useData":true});
-Handlebars.registerPartial('templates/animals', t);
+Handlebars.registerPartial('templates/animalsTable', t);
 return t;
 });
 /* END_TEMPLATE */
@@ -6876,6 +6876,7 @@ var AnimalRowTemplate = require("hbs!templates/animalRow");
 module.exports = Marionette.ItemView.extend({
     //all template's content will be wrapped with 'tr' tag
     tagName: "tr",
+    className: 'animals-table-row',
     template: AnimalRowTemplate,
 
     initialize: function (options) {
@@ -6898,13 +6899,13 @@ module.exports = Marionette.ItemView.extend({
 
 });
 
-define('animals/AnimalsTableView',['require','exports','module','marionette','hbs!templates/animals','./AnimalRowView'],function (require, exports, module) {/**
+define('animals/AnimalsTableView',['require','exports','module','marionette','hbs!templates/animalsTable','./AnimalRowView'],function (require, exports, module) {/**
  * Created by dmitry on 28.09.16.
  */
 
 
 var Marionette = require('marionette');
-var AnimalsTemplate = require("hbs!templates/animals");
+var AnimalsTemplate = require("hbs!templates/animalsTable");
 var AnimalRowView = require("./AnimalRowView");
 
 //Details http://marionettejs.com/docs/master/marionette.collectionview.html#rendering-tables
@@ -6912,8 +6913,6 @@ module.exports = Marionette.CompositeView.extend({
     //parent element used to attach our template
     el: "body",
     //all template's content will be wrapped with 'table' tag
-    tagName: 'table',
-    className: 'animalsTable table-hover',
     template: AnimalsTemplate,
 
     childView: AnimalRowView,
