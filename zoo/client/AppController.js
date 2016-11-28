@@ -5,8 +5,8 @@
 
 var Marionette = require('marionette');
 
-var LoginView = require('./login/LoginView');
-var AnimalsView = require('./animals/AnimalsTableView');
+var LoginView = require('./views/login/LoginView');
+var AnimalsView = require('./views/animals/AnimalsTableView');
 
 //models
 var LoginModel = require('./models/LoginModel');

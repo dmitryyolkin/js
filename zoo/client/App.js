@@ -8,8 +8,8 @@ var Backbone = require('backbone');
 var Marionette = require('marionette');
 
 //modules & routers
-var AdminModule = require('./admin/AdminModule');
-var AnimalsModule = require('./animals/AnimalsModule');
+var AdminModule = require('./views/admin/AdminModule');
+var AnimalsModule = require('./views/animals/AnimalsModule');
 
 var AppRouter = require('./AppRouter');
 var AppController = require('./AppController');
