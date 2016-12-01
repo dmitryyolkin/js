@@ -13,7 +13,7 @@ var $ = require('jquery');
 
 var loginFailedClass = '.loginFailed';
 
-module.exports = Marionette.ItemView.extend({
+module.exports = Marionette.View.extend({
     el: 'body',
 
     initialize: function (options) {

@@ -13,7 +13,8 @@ var $ = require('jquery');
 module.exports = function(){
     console.log('main is started');
 
-    //just in case to pass something in Marionetter application
-    var options = {};
-    App.start(options)
+
+    new App({
+        //just in case to pass something in Marionetter application
+    }).start();
 };

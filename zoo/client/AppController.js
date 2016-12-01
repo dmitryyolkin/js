@@ -29,7 +29,8 @@ function showloginView(loginModel) {
     }).render();
 }
 
-module.exports = Marionette.Controller.extend({
+//Started with marionette 3.0 Marionette.Object should be used instead of Marionette.Controller
+module.exports = Marionette.Object.extend({
 
     initialize: function (options) {
         //set some external params to this controller instance

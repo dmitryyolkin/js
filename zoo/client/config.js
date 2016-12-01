@@ -10,6 +10,7 @@ require.config({
         'jquery': '../static/components/jquery/dist/jquery.min',
         'underscore': '../static/components/underscore/underscore-min',
         'backbone': '../static/components/backbone/backbone-min',
+        'backbone.radio': '../static/components/backbone.radio/build/backbone.radio.min',
         'marionette': "../static/components/backbone.marionette/lib/backbone.marionette.min",
 
         // Handlerbars plugins

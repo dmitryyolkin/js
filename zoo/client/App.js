@@ -7,42 +7,30 @@
 var Backbone = require('backbone');
 var Marionette = require('marionette');
 
-//modules & routers
-var AdminModule = require('./views/admin/AdminModule');
-var AnimalsModule = require('./views/animals/AnimalsModule');
-
+//routers
 var AppRouter = require('./AppRouter');
 var AppController = require('./AppController');
 
 //init
-var App = new Marionette.Application();
-App.module('admin', AdminModule);
-App.module('animals', AnimalsModule);
+module.exports = Marionette.Application.extend({
+    initialize: function(options) {
+        //some initializers can be added here
+        //keep it just in case as an example
+        console.log('App.initialize is invoked with options: ' + options);
+    },
 
-App.addInitializer(function(options){
-    //some initializers can be added here
-    //keep it just in case as an example
-});
+    onStart: function() {
 
-//add some handlers
-App.on('start', function(options){
-    console.log('App.onStart is invoked with options: ' + options);
 
-    //init controller and router
-    var appController = new AppController();
-    var appRouter = new AppRouter({
-        controller: appController
-    });
+        //init controller and router
+        var appController = new AppController();
+        var appRouter = new AppRouter({
+            controller: appController
+        });
 
-    if (Backbone.history){
-        Backbone.history.start();
+        if (Backbone.history){
+            Backbone.history.start();
+        }
     }
+
 });
-
-//navigation
-App.navigate = function (route, options) {
-    options = options || {};
-    Backbone.history.navigate(route, options);
-};
-
-module.exports = App;

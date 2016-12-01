@@ -6,7 +6,7 @@
 var Marionette = require('marionette');
 var AnimalRowTemplate = require("hbs!templates/animalRow");
 
-module.exports = Marionette.ItemView.extend({
+module.exports = Marionette.View.extend({
     //all template's content will be wrapped with 'tr' tag
     tagName: "tr",
     className: 'animals-table-row',
