@@ -8083,28 +8083,54 @@ module.exports = Marionette.View.extend({
 
 });
 
-define('views/animals/AnimalsTableView',['require','exports','module','marionette','hbs!templates/animalsTable','./AnimalRowView'],function (require, exports, module) {/**
+define('views/animals/AnimalTableBodyView',['require','exports','module','marionette','./AnimalRowView'],function (require, exports, module) {/**
+ * Created by dmitry on 02.12.16.
+ */
+
+
+var Marionette = require('marionette');
+var AnimalRowView = require("./AnimalRowView");
+
+module.exports = Marionette.CollectionView.extend({
+    tagName: 'tbody',
+    childView: AnimalRowView
+});
+
+});
+
+define('views/animals/AnimalsTableView',['require','exports','module','marionette','hbs!templates/animalsTable','./AnimalTableBodyView'],function (require, exports, module) {/**
  * Created by dmitry on 28.09.16.
  */
 
 
 var Marionette = require('marionette');
 var AnimalsTemplate = require("hbs!templates/animalsTable");
-var AnimalRowView = require("./AnimalRowView");
+var AnimalTableBodyView = require("./AnimalTableBodyView");
 
-//Details http://marionettejs.com/docs/master/marionette.collectionview.html#rendering-tables
-module.exports = Marionette.CompositeView.extend({
+
+//Details http://marionettejs.com/docs/v3.0.0/marionette.collectionview.html#rendering-tables
+module.exports = Marionette.View.extend({
     //parent element used to attach our template
     el: "body",
     //all template's content will be wrapped with 'table' tag
     template: AnimalsTemplate,
 
-    childView: AnimalRowView,
-    childViewContainer: 'tbody',
+    regions: {
+        body: {
+            el: 'tbody',
+            replaceElement: true
+        }
+    },
 
     initialize: function (options) {
         _.extend(this, options);
         Backbone.history.navigate('animals');
+    },
+
+    onRender: function(){
+        this.showChildView('body', new AnimalTableBodyView({
+            collection: this.collection
+        }));
     }
 
 });
