@@ -10,8 +10,6 @@ var AnimalTableBodyView = require("./AnimalTableBodyView");
 
 //Details http://marionettejs.com/docs/v3.0.0/marionette.collectionview.html#rendering-tables
 module.exports = Marionette.View.extend({
-    //parent element used to attach our template
-    el: "body",
     //all template's content will be wrapped with 'table' tag
     template: AnimalsTemplate,
 

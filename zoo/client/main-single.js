@@ -7911,7 +7911,7 @@ var t = Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(de
     + this.escapeExpression(this.lambda(((stack1 = (depth0 != null ? depth0.user : depth0)) != null ? stack1.login : stack1), depth0))
     + ">\n    </div>\n    <div class=\"credentials-place\">\n        <label for=\"pass\">Password:</label>\n        <input type=\"text\" id=\"pass\" value="
     + this.escapeExpression(this.lambda(((stack1 = (depth0 != null ? depth0.user : depth0)) != null ? stack1.password : stack1), depth0))
-    + ">\n    </div>\n\n    <div class=\"loginControl\">\n        <!-- todo отображать login в одну строчку -->\n        <div class=\"signup-place\">\n            <a class=\"signup-new-user\" href=\"#admin/new\">New user</a>\n            <label for=\"rememberMe\">Keep me logged in</label>\n            <input type=\"checkbox\" id=\"rememberMe\" checked>\n        </div>\n\n        <div class=\"button-place\">\n            <input type=\"button\" id=\"loginBtn\" value=\"Lig in\">\n        </div>\n    </div>\n</div>\n";
+    + ">\n    </div>\n\n    <div class=\"loginControl\">\n        <!-- todo отображать login в одну строчку -->\n        <div class=\"signup-place\">\n            <a class=\"signup-new-user\" href=\"#admin/new\">New user</a>\n            <label for=\"rememberMe\">Keep me logged in</label>\n            <input type=\"checkbox\" id=\"rememberMe\" checked>\n        </div>\n\n        <div class=\"button-place\">\n            <input type=\"button\" id=\"loginBtn\" value=\"Log in\">\n        </div>\n    </div>\n</div>\n";
 },"useData":true});
 Handlebars.registerPartial('templates/login', t);
 return t;
@@ -8015,6 +8015,51 @@ module.exports = Marionette.View.extend({
 
 
 /* START_TEMPLATE */
+define('hbs!templates/zooMainScreen',['hbs','hbs/handlebars'], function( hbs, Handlebars ){ 
+var t = Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
+    return "<div id=\"zoo-animals\">\n    <div id=\"zoo-header\"></div>\n    <div id=\"zoo-main\"></div>\n</div>";
+},"useData":true});
+Handlebars.registerPartial('templates/zooMainScreen', t);
+return t;
+});
+/* END_TEMPLATE */
+;
+
+/* START_TEMPLATE */
+define('hbs!templates/zooHeader',['hbs','hbs/handlebars'], function( hbs, Handlebars ){ 
+var t = Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
+    return "<button>Log out</button>";
+},"useData":true});
+Handlebars.registerPartial('templates/zooHeader', t);
+return t;
+});
+/* END_TEMPLATE */
+;
+define('views/ZooHeaderView',['require','exports','module','marionette','hbs!templates/zooHeader'],function (require, exports, module) {/**
+ * Created by dmitry on 28.09.16.
+ */
+
+
+var Marionette = require('marionette');
+var ZooHeaderTemplate = require("hbs!templates/zooHeader");
+
+module.exports = Marionette.View.extend({
+    template: ZooHeaderTemplate,
+
+    initialize: function(options){
+        _.extend(this, options);
+    },
+
+    onRender: function(){
+        console.log("ZooHeaderView onRender");
+    }
+
+});
+
+});
+
+
+/* START_TEMPLATE */
 define('hbs!templates/animalsTable',['hbs','hbs/handlebars'], function( hbs, Handlebars ){ 
 var t = Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
     return "<table class=\"animals-table\">\n    <thead>\n        <tr>\n            <th>Name</th>\n            <th>Species</th>\n            <th>Age</th>\n            <th>Cage</th>\n            <th>Keeper</th>\n        </tr>\n    </thead>\n\n    <!-- insert data -->\n    <tbody></tbody>\n    <tfoot>\n        <tr>\n            <td colspan=\"5\">Animals table footer</td>\n        </tr>\n    </tfoot>\n</table>";
@@ -8110,8 +8155,6 @@ var AnimalTableBodyView = require("./AnimalTableBodyView");
 
 //Details http://marionettejs.com/docs/v3.0.0/marionette.collectionview.html#rendering-tables
 module.exports = Marionette.View.extend({
-    //parent element used to attach our template
-    el: "body",
     //all template's content will be wrapped with 'table' tag
     template: AnimalsTemplate,
 
@@ -8131,6 +8174,44 @@ module.exports = Marionette.View.extend({
         this.showChildView('body', new AnimalTableBodyView({
             collection: this.collection
         }));
+    }
+
+});
+
+
+});
+
+define('views/ZooMainView',['require','exports','module','marionette','hbs!templates/zooMainScreen','./ZooHeaderView','./animals/AnimalsTableView'],function (require, exports, module) {/**
+ * Created by dmitry on 28.09.16.
+ */
+
+
+var Marionette = require('marionette');
+var ZooMainTemplate = require("hbs!templates/zooMainScreen");
+
+var ZooHeaderView = require("./ZooHeaderView");
+var AnimalsTableView = require("./animals/AnimalsTableView");
+
+module.exports = Marionette.View.extend({
+    el: "body",
+    template: ZooMainTemplate,
+
+    regions: {
+        header: "#zoo-header",
+        main: "#zoo-main"
+    },
+
+    initialize: function (options) {
+        _.extend(this, options);
+    },
+
+    onRender: function(){
+        this.showChildView('header', new ZooHeaderView());
+        this.showChildView('main', new AnimalsTableView({
+            collection: this.collection
+        }));
+
+        console.log("ZooMainView onRender");
     }
 
 });
@@ -8203,7 +8284,7 @@ module.exports = Backbone.Collection.extend({
 });
 });
 
-define('AppController',['require','exports','module','marionette','./views/login/LoginView','./views/animals/AnimalsTableView','./models/LoginModel','./models/AnimalsCollection','underscore'],function (require, exports, module) {/**
+define('AppController',['require','exports','module','marionette','./views/login/LoginView','./views/ZooMainView','./models/LoginModel','./models/AnimalsCollection','underscore'],function (require, exports, module) {/**
  * Created by dmitry on 19.08.16.
  */
 
@@ -8211,7 +8292,7 @@ define('AppController',['require','exports','module','marionette','./views/login
 var Marionette = require('marionette');
 
 var LoginView = require('./views/login/LoginView');
-var AnimalsView = require('./views/animals/AnimalsTableView');
+var ZooMainView = require('./views/ZooMainView');
 
 //models
 var LoginModel = require('./models/LoginModel');
@@ -8259,10 +8340,10 @@ module.exports = Marionette.Object.extend({
 
                     //details how collection can be shown
                     //http://stackoverflow.com/questions/27673371/backbone-js-collection-view-example-using-marionette-template
-                    var animalsView = new AnimalsView({
+                    var zooMainView = new ZooMainView({
                         collection: new AnimalsCollection()
                     });
-                    animalsView.render();
+                    zooMainView.render();
                 },
 
                 error: function (model, response, options) {
