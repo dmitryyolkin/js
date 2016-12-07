@@ -1,0 +1,28 @@
+@import "variables.less";
+
+#zoo-main{
+  padding: 4em 1em;
+
+  //max-width: 50em;
+  position: absolute;
+  top: 40%;
+  left: 40%;
+
+  //width percent of body
+  width: 50%;
+  margin: -15% 0 0 -10%; /* Выравниваем по центру */
+
+  .animals-table {
+    width: 80%;
+    text-align: center;
+    border-collapse: collapse; /* Убираем двойные линии между ячейками */
+
+    td, th {
+      padding: 3px; /* Поля вокруг содержимого таблицы */
+      border: 1px solid black; /* Параметры рамки */
+    }
+    th {
+      background: #b0e0e6; /* Цвет фона */
+    }
+  }
+}
