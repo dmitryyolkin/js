@@ -8028,7 +8028,7 @@ return t;
 /* START_TEMPLATE */
 define('hbs!templates/zooHeader',['hbs','hbs/handlebars'], function( hbs, Handlebars ){ 
 var t = Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
-    return "<header>\n    <button>Log out</button>\n</header>\n";
+    return "<header>\n    <div class=\"log-out\" >\n        <a href=\"#login\">Log out</a>\n    </div>\n</header>\n";
 },"useData":true});
 Handlebars.registerPartial('templates/zooHeader', t);
 return t;

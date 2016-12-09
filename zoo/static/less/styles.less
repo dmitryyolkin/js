@@ -38,23 +38,17 @@ body {
 /* enhance our header with a nice background image */
 /* header */
 header {
-  background-color: @header-bg-color;
+  background-color: @header-bg-color; //inherit; transparent
   background-position: center top;
   background-repeat: no-repeat;
   background-size: cover;
   line-height: 1.2;
   text-align: center;
-}
 
-header img {
-  display: inline-block;
-  height: 120px;
-  vertical-align: top;
-  width: 120px;
+  color: white;
 }
 
 header h1 {
-  color: white;
   font-size: 2.5em;
   font-weight: 300;
 }
@@ -65,7 +59,7 @@ header a {
   color: white;
   font-size: 0.6em;
   letter-spacing: 0.2em;
-  padding: 1em 2em;
+  padding: 0.3em 2em;
   text-transform: uppercase;
   text-decoration: none;
   transition: none 200ms ease-out;
