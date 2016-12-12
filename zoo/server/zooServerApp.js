@@ -23,6 +23,7 @@ var index = require('./routes/index');
 var users = require('./routes/users');
 var animals = require('./routes/animals');
 var login = require('./routes/login');
+var exporter = require('./routes/exporter');
 
 var app = express();
 
@@ -82,6 +83,7 @@ app.use('/', index);
 app.use('/users', users);
 app.use('/animals', animals);
 app.use('/login', login);
+app.use('/export', exporter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
