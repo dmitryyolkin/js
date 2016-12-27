@@ -29,7 +29,43 @@ function exportAnimals(exportCallback) {
         })
 }
 
-//get all animals
+function mapAnimalsSchema2SimpleJson(animals) {
+    return animals.map(function (animal) {
+        return {
+            name: animal.name,
+            species: animal.species,
+            age: animal.age,
+            keeper: animal.keeper.name,
+            cage: animal.cage.name
+        }
+    });
+}
+
+//get all animals (json)
+router.get('/json/', function (req, res, next) {
+    console.log('get /export/json');
+    exportAnimals(function (animals) {
+
+        var animalsJson = mapAnimalsSchema2SimpleJson(animals);
+
+        //set content type
+        res.set({
+            'Content-Type': 'application/json', //will be saved as file
+            'Content-Length': animalsJson.length, //appx file length
+
+            // set file nemae without showing Save dialog
+            //if we need to show Save dialog then 'attachment' should be used instead of 'inline'
+            'Content-Disposition': "attachment; filename='animals.json'"
+        });
+
+        res
+            .status(200)
+            .send(JSON.stringify(animalsJson));
+    });
+
+});
+
+//get all animals (csv)
 router.get('/csv/', function (req, res, next) {
     console.log('get /export/csv');
     exportAnimals(function (animals) {
@@ -74,6 +110,7 @@ router.get('/csv/', function (req, res, next) {
 
 });
 
+//get all animals (excel)
 router.get('/excel/', function (req, res, next) {
     console.log('get /export/excel');
     exportAnimals(function (animals) {
@@ -149,29 +186,24 @@ router.get('/excel/', function (req, res, next) {
             }
         };
 
-        // The data set should have the following shape (Array of Objects)
-        // The order of the keys is irrelevant, it is also irrelevant if the
-        // dataset contains more fields as the report is build based on the
-        // specification provided above. But you should have all the fields
-        // that are listed in the report specification
-        var dataset = animals.map(function(animal){
-            return {
-                name: animal.name,
-                species: animal.species,
-                age: animal.age,
-                keeper: animal.keeper.name,
-                cage: animal.cage.name
-            }
-        });
-
         // Create the excel report.
         // This function will return Buffer
         var report = excel.buildExport(
             [ // <- Notice that this is an array. Pass multiple sheets to create multi sheet report
                 {
-                    name: 'Animals', // <- Specify sheet name (optional)
-                    specification: specification, // <- Report specification
-                    data: dataset // <-- Report data
+                    // <- Specify sheet name (optional)
+                    name: 'Animals',
+
+                    // <- Report specification
+                    specification: specification,
+
+                    // <-- Report data
+                    // The data set should have the following shape (Array of Objects)
+                    // The order of the keys is irrelevant, it is also irrelevant if the
+                    // dataset contains more fields as the report is build based on the
+                    // specification provided above. But you should have all the fields
+                    // that are listed in the report specification
+                    data: mapAnimalsSchema2SimpleJson(animals)
                 }
             ]
         );
