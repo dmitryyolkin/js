@@ -12,7 +12,7 @@ var Animal = mongoModels.Animal;
 
 //get all animals
 router.get('/', function (req, res, next) {
-    console.log('get /animals');
+    logger.log('get /animals');
     Animal
         .find({})
         .populate('keeper')
@@ -34,14 +34,26 @@ router.get('/', function (req, res, next) {
 
 //get animal by id
 router.get('/:id', function (req, res, next) {
-    console.log('get /animals/:id ' + req.params.id);
-    //todo
-});
+    logger.log('get /animals/:id ' + req.params.id);
+    Animal
+        .find({
+            _id: req.params.id
+        })
+        .populate('keeper')
+        .populate('cage')
+        .exec(function (err, anumals) {
+            if (err) {
+                logger.error(err);
+                res
+                    .status(500)
+                    .send(err);
+            } else {
+                res
+                    .status(200)
+                    .send(anumals);
+            }
+        })
 
-//update animal by id
-router.post('/:id', function (req, res, next) {
-    console.log('post /animals/:id ' + req.params.id);
-    //todo
 });
 
 module.exports = router;
