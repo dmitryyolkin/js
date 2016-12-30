@@ -1697,7 +1697,8 @@ module.exports = Marionette.AppRouter.extend({
     appRoutes: {
         "": "animals",
         "animals": "animals",
-        "login": "login"
+        "login": "login",
+        "admin": "admin"
     }
 });
 
@@ -8028,7 +8029,7 @@ return t;
 /* START_TEMPLATE */
 define('hbs!templates/mainMenu',['hbs','hbs/handlebars'], function( hbs, Handlebars ){ 
 var t = Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
-    return "<header>\n    <ul>\n        <li><a href=\"#\">Home</a></li>\n        <li class=\"export\">\n            <a href=\"javascript:void(0)\" class=\"dropbtn\">Export</a>\n            <div class=\"export-dropdown\">\n                <a href=\"/export/json\">JSON</a>\n                <a href=\"/export/csv\">CSV</a>\n                <a href=\"/export/excel\">Excel</a>\n            </div>\n        </li>\n        <li class=\"log-out\">\n            <a href=\"#login\">Log out</a>\n        </li>\n    </ul>\n</header>\n";
+    return "<header>\n    <ul>\n        <li><a href=\"#\">Home</a></li>\n        <li class=\"export\">\n            <a href=\"javascript:void(0)\" class=\"dropbtn\">Export</a>\n            <div class=\"export-dropdown\">\n                <a href=\"/export/json\">JSON</a>\n                <a href=\"/export/csv\">CSV</a>\n                <a href=\"/export/excel\">Excel</a>\n            </div>\n        </li>\n        <!-- todo this option should be shown only if there is Admin permissions-->\n        <li><a href=\"#admin\">Admin</a></li>\n        <li class=\"log-out\">\n            <a href=\"#login\">Log out</a>\n        </li>\n    </ul>\n</header>\n";
 },"useData":true});
 Handlebars.registerPartial('templates/mainMenu', t);
 return t;
@@ -8041,10 +8042,10 @@ define('views/MainMenuView',['require','exports','module','marionette','hbs!temp
 
 
 var Marionette = require('marionette');
-var ZooHeaderTemplate = require("hbs!templates/mainMenu");
+var MainMenuTemplate = require("hbs!templates/mainMenu");
 
 module.exports = Marionette.View.extend({
-    template: ZooHeaderTemplate,
+    template: MainMenuTemplate,
 
     initialize: function(options){
         _.extend(this, options);
@@ -8187,14 +8188,14 @@ define('views/animals/AnimalsView',['require','exports','module','marionette','h
 
 
 var Marionette = require('marionette');
-var ZooMainTemplate = require("hbs!templates/animalsScreen");
+var AnimalsScreenTemplate = require("hbs!templates/animalsScreen");
 
 var MainMenuView = require("./../MainMenuView");
 var AnimalsTableView = require("./AnimalsTableView");
 
 module.exports = Marionette.View.extend({
     el: "body",
-    template: ZooMainTemplate,
+    template: AnimalsScreenTemplate,
 
     regions: {
         header: "#mainMenu",
@@ -8219,6 +8220,89 @@ module.exports = Marionette.View.extend({
 
 });
 
+
+/* START_TEMPLATE */
+define('hbs!templates/adminScreen',['hbs','hbs/handlebars'], function( hbs, Handlebars ){ 
+var t = Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
+    return "<div id=\"adminScreen\">\n    <div id=\"mainMenu\"></div>\n    <div id=\"admin\"></div>\n</div>";
+},"useData":true});
+Handlebars.registerPartial('templates/adminScreen', t);
+return t;
+});
+/* END_TEMPLATE */
+;
+
+/* START_TEMPLATE */
+define('hbs!templates/adminEditor',['hbs','hbs/handlebars'], function( hbs, Handlebars ){ 
+var t = Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
+    return "<h1>Admin Editor</h1>";
+},"useData":true});
+Handlebars.registerPartial('templates/adminEditor', t);
+return t;
+});
+/* END_TEMPLATE */
+;
+define('views/admin/AdminEditorView',['require','exports','module','marionette','hbs!templates/adminEditor'],function (require, exports, module) {/**
+ * Created by dmitry on 30.12.16.
+ */
+
+
+var Marionette = require('marionette');
+var AdminEditorTemplate = require("hbs!templates/adminEditor");
+
+module.exports = Marionette.View.extend({
+    template: AdminEditorTemplate,
+
+    initialize: function(options){
+        _.extend(this, options);
+    },
+
+    onRender: function(){
+        console.log("AdminEditor onRender");
+    }
+
+});
+
+
+});
+
+define('views/admin/AdminView',['require','exports','module','marionette','hbs!templates/adminScreen','./../MainMenuView','./AdminEditorView'],function (require, exports, module) {/**
+ * Created by dmitry on 30.12.16.
+ */
+
+
+var Marionette = require('marionette');
+var AdminScreenTemplate = require("hbs!templates/adminScreen");
+
+var MainMenuView = require("./../MainMenuView");
+var AdminEditorView = require("./AdminEditorView");
+
+module.exports = Marionette.View.extend({
+    el: "body",
+    template: AdminScreenTemplate,
+
+    regions: {
+        header: "#mainMenu",
+        main: "#admin"
+    },
+
+    initialize: function (options) {
+        _.extend(this, options);
+    },
+
+    onRender: function(){
+        this.showChildView('header', new MainMenuView());
+        this.showChildView('main', new AdminEditorView());
+
+        console.log("AdminView onRender");
+    }
+
+});
+
+
+
+});
+
 define('models/LoginModel',['require','exports','module','backbone'],function (require, exports, module) {/**
  * Created by dmitry on 27.09.16.
  */
@@ -8231,6 +8315,27 @@ module.exports = Backbone.Model.extend({
         password: ''
     },
     url: '/login'
+});
+
+
+});
+
+define('models/UserModel',['require','exports','module','backbone'],function (require, exports, module) {/**
+ * Created by dmitry on 30.12.16.
+ */
+
+
+var Backbone = require('backbone');
+module.exports = Backbone.Model.extend({
+    user: {
+        name: null,
+        surname: null,
+        email: null,
+        login: null,
+        roles: [],
+        animals: []
+    },
+    url: '/user'
 });
 
 
@@ -8284,7 +8389,7 @@ module.exports = Backbone.Collection.extend({
 });
 });
 
-define('AppController',['require','exports','module','marionette','./views/login/LoginView','./views/animals/AnimalsView','./models/LoginModel','./models/AnimalsCollection','underscore'],function (require, exports, module) {/**
+define('AppController',['require','exports','module','marionette','./views/login/LoginView','./views/animals/AnimalsView','./views/admin/AdminView','./models/LoginModel','./models/UserModel','./models/AnimalsCollection','underscore'],function (require, exports, module) {/**
  * Created by dmitry on 19.08.16.
  */
 
@@ -8293,9 +8398,11 @@ var Marionette = require('marionette');
 
 var LoginView = require('./views/login/LoginView');
 var AnimalsView = require('./views/animals/AnimalsView');
+var AdminView = require('./views/admin/AdminView');
 
 //models
 var LoginModel = require('./models/LoginModel');
+var UserModel = require('./models/UserModel');
 var AnimalsCollection = require('./models/AnimalsCollection');
 
 var _ = require('underscore');
@@ -8303,9 +8410,9 @@ var _ = require('underscore');
 function showloginView(loginModel) {
     //check user in localstorage
     //and set login if it exists
-    if (localStorage.user && localStorage.user != 'undefined'){
+    if (localStorage.user && localStorage.user != 'undefined') {
         var user = JSON.parse(localStorage.user);
-        if (user){
+        if (user) {
             loginModel.user.login = user.login;
         }
     }
@@ -8351,7 +8458,46 @@ module.exports = Marionette.Object.extend({
                     showloginView(loginModel);
                 }
             }
-        );
+        )
+    },
+
+    admin: function () {
+        console.log('AppController: admin is invoked');
+        var loginModel = new LoginModel();
+        loginModel.sync(
+            'GET',
+            loginModel,
+            {
+                success: function (model, response, options) {
+                    console.log('login/check - success)');
+                    var user = model.user;
+                    if (user.roles && user.roles.indexOf('ADMIN') != -1) {
+                        var animalsView = new AdminView({
+                            model: new UserModel({
+                                name: user.name,
+                                surname: user.surname,
+                                email: user.email,
+                                login: user.login,
+                                roles: user.roles,
+                                animals: user.animals
+                            })
+                        });
+                        animalsView.render();
+                    } else {
+                        console.error("user dosn't have admin permissions");
+                        //todo надо показывать какую-то error page
+                    }
+
+                },
+
+                error: function (model, response, options) {
+                    //todo надо показывать какую-то error page
+                    console.log('login/check - error: ' + response.responseText);
+                    showloginView(loginModel);
+                }
+            }
+        )
+
     }
 });
 

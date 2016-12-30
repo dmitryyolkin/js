@@ -1,21 +1,21 @@
 /**
- * Created by dmitry on 28.09.16.
+ * Created by dmitry on 30.12.16.
  */
 'use strict';
 
 var Marionette = require('marionette');
-var AnimalsScreenTemplate = require("hbs!templates/animalsScreen");
+var AdminScreenTemplate = require("hbs!templates/adminScreen");
 
 var MainMenuView = require("./../MainMenuView");
-var AnimalsTableView = require("./AnimalsTableView");
+var AdminEditorView = require("./AdminEditorView");
 
 module.exports = Marionette.View.extend({
     el: "body",
-    template: AnimalsScreenTemplate,
+    template: AdminScreenTemplate,
 
     regions: {
         header: "#mainMenu",
-        main: "#animals"
+        main: "#admin"
     },
 
     initialize: function (options) {
@@ -24,12 +24,11 @@ module.exports = Marionette.View.extend({
 
     onRender: function(){
         this.showChildView('header', new MainMenuView());
-        this.showChildView('main', new AnimalsTableView({
-            collection: this.collection
-        }));
+        this.showChildView('main', new AdminEditorView());
 
-        console.log("AnimalsView onRender");
+        console.log("AdminView onRender");
     }
 
 });
+
 

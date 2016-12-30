@@ -15,6 +15,7 @@ module.exports = Marionette.AppRouter.extend({
     appRoutes: {
         "": "animals",
         "animals": "animals",
-        "login": "login"
+        "login": "login",
+        "admin": "admin"
     }
 });
