@@ -4,10 +4,10 @@
 'use strict';
 
 var Marionette = require('marionette');
-var ZooMainTemplate = require("hbs!templates/zooMainScreen");
+var ZooMainTemplate = require("hbs!templates/animalsScreen");
 
-var ZooHeaderView = require("./ZooHeaderView");
-var AnimalsTableView = require("./animals/AnimalsTableView");
+var MainMenuView = require("./../MainMenuView");
+var AnimalsTableView = require("./AnimalsTableView");
 
 module.exports = Marionette.View.extend({
     el: "body",
@@ -23,12 +23,12 @@ module.exports = Marionette.View.extend({
     },
 
     onRender: function(){
-        this.showChildView('header', new ZooHeaderView());
+        this.showChildView('header', new MainMenuView());
         this.showChildView('main', new AnimalsTableView({
             collection: this.collection
         }));
 
-        console.log("ZooMainView onRender");
+        console.log("AnimalsView onRender");
     }
 
 });

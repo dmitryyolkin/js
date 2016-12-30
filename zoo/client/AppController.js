@@ -6,7 +6,7 @@
 var Marionette = require('marionette');
 
 var LoginView = require('./views/login/LoginView');
-var ZooMainView = require('./views/ZooMainView');
+var AnimalsView = require('./views/animals/AnimalsView');
 
 //models
 var LoginModel = require('./models/LoginModel');
@@ -54,10 +54,10 @@ module.exports = Marionette.Object.extend({
 
                     //details how collection can be shown
                     //http://stackoverflow.com/questions/27673371/backbone-js-collection-view-example-using-marionette-template
-                    var zooMainView = new ZooMainView({
+                    var animalsView = new AnimalsView({
                         collection: new AnimalsCollection()
                     });
-                    zooMainView.render();
+                    animalsView.render();
                 },
 
                 error: function (model, response, options) {

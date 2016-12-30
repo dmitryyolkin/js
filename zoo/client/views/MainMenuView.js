@@ -4,7 +4,7 @@
 'use strict';
 
 var Marionette = require('marionette');
-var ZooHeaderTemplate = require("hbs!templates/zooHeader");
+var ZooHeaderTemplate = require("hbs!templates/mainMenu");
 
 module.exports = Marionette.View.extend({
     template: ZooHeaderTemplate,
@@ -14,7 +14,7 @@ module.exports = Marionette.View.extend({
     },
 
     onRender: function(){
-        console.log("ZooHeaderView onRender");
+        console.log("MainMenuView onRender");
     }
 
 });
