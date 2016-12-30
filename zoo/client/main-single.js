@@ -8017,7 +8017,7 @@ module.exports = Marionette.View.extend({
 /* START_TEMPLATE */
 define('hbs!templates/animalsScreen',['hbs','hbs/handlebars'], function( hbs, Handlebars ){ 
 var t = Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
-    return "<div id=\"zoo-animals\">\n    <div id=\"zoo-header\"></div>\n    <div id=\"zoo-main\"></div>\n</div>";
+    return "<div id=\"animalsScreen\">\n    <div id=\"mainMenu\"></div>\n    <div id=\"animals\"></div>\n</div>";
 },"useData":true});
 Handlebars.registerPartial('templates/animalsScreen', t);
 return t;
@@ -8197,8 +8197,8 @@ module.exports = Marionette.View.extend({
     template: ZooMainTemplate,
 
     regions: {
-        header: "#zoo-header",
-        main: "#zoo-main"
+        header: "#mainMenu",
+        main: "#animals"
     },
 
     initialize: function (options) {

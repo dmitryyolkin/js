@@ -14,8 +14,8 @@ module.exports = Marionette.View.extend({
     template: ZooMainTemplate,
 
     regions: {
-        header: "#zoo-header",
-        main: "#zoo-main"
+        header: "#mainMenu",
+        main: "#animals"
     },
 
     initialize: function (options) {
