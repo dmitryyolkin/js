@@ -4,10 +4,11 @@
 'use strict';
 
 var Marionette = require('marionette');
-var AdminScreenTemplate = require("hbs!templates/adminScreen");
+var AdminScreenTemplate = require("hbs!templates/admin/adminScreen");
 
 var MainMenuView = require("./../MainMenuView");
-var AdminEditorView = require("./AdminEditorView");
+var AdminUserEditorView = require("./AdminUserEditorView");
+var AdminUserTableView = require("./AdminUserTableView");
 
 module.exports = Marionette.View.extend({
     el: "body",
@@ -15,16 +16,22 @@ module.exports = Marionette.View.extend({
 
     regions: {
         header: "#mainMenu",
-        main: "#admin"
+        userTable: "#user-table",
+        userEditor: "#user-editor"
     },
 
     initialize: function (options) {
         _.extend(this, options);
     },
 
-    onRender: function(){
+    onRender: function () {
         this.showChildView('header', new MainMenuView());
-        this.showChildView('main', new AdminEditorView());
+        this.showChildView('userTable', new AdminUserTableView({
+            collection: this.collection
+        }));
+
+        //todo comment this view
+        this.showChildView('userEditor', new AdminUserEditorView());
 
         console.log("AdminView onRender");
     }

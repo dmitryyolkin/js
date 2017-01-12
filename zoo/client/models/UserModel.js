@@ -5,14 +5,13 @@
 
 var Backbone = require('backbone');
 module.exports = Backbone.Model.extend({
-    user: {
+    defaults: {
         name: null,
         surname: null,
         email: null,
         login: null,
         roles: [],
         animals: []
-    },
-    url: '/user'
+    }
 });
 

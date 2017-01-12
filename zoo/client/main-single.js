@@ -8222,33 +8222,33 @@ module.exports = Marionette.View.extend({
 
 
 /* START_TEMPLATE */
-define('hbs!templates/adminScreen',['hbs','hbs/handlebars'], function( hbs, Handlebars ){ 
+define('hbs!templates/admin/adminScreen',['hbs','hbs/handlebars'], function( hbs, Handlebars ){ 
 var t = Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
-    return "<div id=\"adminScreen\">\n    <div id=\"mainMenu\"></div>\n    <div id=\"admin\"></div>\n</div>";
+    return "<div id=\"adminScreen\">\n    <div id=\"mainMenu\"></div>\n    <div id=\"user-table\"></div>\n    <div id=\"user-editor\"></div>\n</div>";
 },"useData":true});
-Handlebars.registerPartial('templates/adminScreen', t);
+Handlebars.registerPartial('templates/admin/adminScreen', t);
 return t;
 });
 /* END_TEMPLATE */
 ;
 
 /* START_TEMPLATE */
-define('hbs!templates/adminEditor',['hbs','hbs/handlebars'], function( hbs, Handlebars ){ 
+define('hbs!templates/admin/adminEditor',['hbs','hbs/handlebars'], function( hbs, Handlebars ){ 
 var t = Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
     return "<h1>Admin Editor</h1>";
 },"useData":true});
-Handlebars.registerPartial('templates/adminEditor', t);
+Handlebars.registerPartial('templates/admin/adminEditor', t);
 return t;
 });
 /* END_TEMPLATE */
 ;
-define('views/admin/AdminEditorView',['require','exports','module','marionette','hbs!templates/adminEditor'],function (require, exports, module) {/**
+define('views/admin/AdminUserEditorView',['require','exports','module','marionette','hbs!templates/admin/adminEditor'],function (require, exports, module) {/**
  * Created by dmitry on 30.12.16.
  */
 
 
 var Marionette = require('marionette');
-var AdminEditorTemplate = require("hbs!templates/adminEditor");
+var AdminEditorTemplate = require("hbs!templates/admin/adminEditor");
 
 module.exports = Marionette.View.extend({
     template: AdminEditorTemplate,
@@ -8266,16 +8266,140 @@ module.exports = Marionette.View.extend({
 
 });
 
-define('views/admin/AdminView',['require','exports','module','marionette','hbs!templates/adminScreen','./../MainMenuView','./AdminEditorView'],function (require, exports, module) {/**
+
+/* START_TEMPLATE */
+define('hbs!templates/admin/adminUserTable',['hbs','hbs/handlebars'], function( hbs, Handlebars ){ 
+var t = Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
+    return "<table class=\"users-table\">\n    <thead>\n    <tr>\n        <th>Name</th>\n        <th>Surname</th>\n        <th>Email</th>\n        <th>Login</th>\n        <th>Roles</th>\n        <th>Animals</th>\n    </tr>\n    </thead>\n\n    <!-- insert data -->\n    <tbody></tbody>\n</table>";
+},"useData":true});
+Handlebars.registerPartial('templates/admin/adminUserTable', t);
+return t;
+});
+/* END_TEMPLATE */
+;
+
+/* START_TEMPLATE */
+define('hbs!templates/admin/adminUserTableRow',['hbs','hbs/handlebars'], function( hbs, Handlebars ){ 
+var t = Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
+    var helper;
+
+  return "<td>"
+    + this.escapeExpression(((helper = (helper = helpers.name || (depth0 != null ? depth0.name : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0,{"name":"name","hash":{},"data":data}) : helper)))
+    + "</td>\n<td>"
+    + this.escapeExpression(((helper = (helper = helpers.surname || (depth0 != null ? depth0.surname : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0,{"name":"surname","hash":{},"data":data}) : helper)))
+    + "</td>\n<td>"
+    + this.escapeExpression(((helper = (helper = helpers.email || (depth0 != null ? depth0.email : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0,{"name":"email","hash":{},"data":data}) : helper)))
+    + "</td>\n<td>"
+    + this.escapeExpression(((helper = (helper = helpers.login || (depth0 != null ? depth0.login : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0,{"name":"login","hash":{},"data":data}) : helper)))
+    + "</td>\n<td>"
+    + this.escapeExpression(((helper = (helper = helpers.roles || (depth0 != null ? depth0.roles : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0,{"name":"roles","hash":{},"data":data}) : helper)))
+    + "</td>\n<td>"
+    + this.escapeExpression(((helper = (helper = helpers.animals || (depth0 != null ? depth0.animals : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0,{"name":"animals","hash":{},"data":data}) : helper)))
+    + "</td>";
+},"useData":true});
+Handlebars.registerPartial('templates/admin/adminUserTableRow', t);
+return t;
+});
+/* END_TEMPLATE */
+;
+define('views/admin/AdminUserTableRowView',['require','exports','module','marionette','hbs!templates/admin/adminUserTableRow'],function (require, exports, module) {/**
  * Created by dmitry on 30.12.16.
  */
 
 
 var Marionette = require('marionette');
-var AdminScreenTemplate = require("hbs!templates/adminScreen");
+var AdminUserTableRowTemplate = require("hbs!templates/admin/adminUserTableRow");
+
+module.exports = Marionette.View.extend({
+    tagName: "tr",
+    className: 'user-table-row',
+    template: AdminUserTableRowTemplate,
+
+    initialize: function (options) {
+        _.extend(this, options);
+    },
+
+    //it's required to show data in hbs template
+    serializeData: function () {
+        var user = this.model.attributes;
+        return {
+            name: user.name,
+            surname: user.surname,
+            email: user.email,
+            login: user.login,
+            roles: user.roles,
+            animals: user.animals
+        };
+    }
+
+});
+
+
+});
+
+define('views/admin/AdminUserTableBodyView',['require','exports','module','marionette','./AdminUserTableRowView'],function (require, exports, module) {/**
+ * Created by dmitry on 12.01.17.
+ */
+
+
+var Marionette = require('marionette');
+var AdminUserTableRowView = require("./AdminUserTableRowView");
+
+module.exports = Marionette.CollectionView.extend({
+    tagName: 'tbody',
+    childView: AdminUserTableRowView
+});
+
+
+});
+
+define('views/admin/AdminUserTableView',['require','exports','module','marionette','hbs!templates/admin/adminUserTable','./AdminUserTableBodyView'],function (require, exports, module) {/**
+ * Created by dmitry on 30.12.16.
+ */
+
+
+var Marionette = require('marionette');
+var AdminUserTableTemplate = require("hbs!templates/admin/adminUserTable");
+var AdminUserTableBodyView = require("./AdminUserTableBodyView");
+
+module.exports = Marionette.View.extend({
+    template: AdminUserTableTemplate,
+
+    regions: {
+        body: {
+            el: 'tbody',
+            replaceElement: true
+        }
+    },
+
+    initialize: function(options){
+        _.extend(this, options);
+    },
+
+    onRender: function(){
+        this.showChildView('body', new AdminUserTableBodyView({
+            collection: this.collection
+        }));
+
+        console.log("AdminEditor onRender");
+    }
+
+});
+
+
+});
+
+define('views/admin/AdminView',['require','exports','module','marionette','hbs!templates/admin/adminScreen','./../MainMenuView','./AdminUserEditorView','./AdminUserTableView'],function (require, exports, module) {/**
+ * Created by dmitry on 30.12.16.
+ */
+
+
+var Marionette = require('marionette');
+var AdminScreenTemplate = require("hbs!templates/admin/adminScreen");
 
 var MainMenuView = require("./../MainMenuView");
-var AdminEditorView = require("./AdminEditorView");
+var AdminUserEditorView = require("./AdminUserEditorView");
+var AdminUserTableView = require("./AdminUserTableView");
 
 module.exports = Marionette.View.extend({
     el: "body",
@@ -8283,16 +8407,22 @@ module.exports = Marionette.View.extend({
 
     regions: {
         header: "#mainMenu",
-        main: "#admin"
+        userTable: "#user-table",
+        userEditor: "#user-editor"
     },
 
     initialize: function (options) {
         _.extend(this, options);
     },
 
-    onRender: function(){
+    onRender: function () {
         this.showChildView('header', new MainMenuView());
-        this.showChildView('main', new AdminEditorView());
+        this.showChildView('userTable', new AdminUserTableView({
+            collection: this.collection
+        }));
+
+        //todo comment this view
+        this.showChildView('userEditor', new AdminUserEditorView());
 
         console.log("AdminView onRender");
     }
@@ -8327,15 +8457,14 @@ define('models/UserModel',['require','exports','module','backbone'],function (re
 
 var Backbone = require('backbone');
 module.exports = Backbone.Model.extend({
-    user: {
+    defaults: {
         name: null,
         surname: null,
         email: null,
         login: null,
         roles: [],
         animals: []
-    },
-    url: '/user'
+    }
 });
 
 
@@ -8389,7 +8518,35 @@ module.exports = Backbone.Collection.extend({
 });
 });
 
-define('AppController',['require','exports','module','marionette','./views/login/LoginView','./views/animals/AnimalsView','./views/admin/AdminView','./models/LoginModel','./models/UserModel','./models/AnimalsCollection','underscore'],function (require, exports, module) {/**
+define('models/UsersCollection',['require','exports','module','backbone','./UserModel'],function (require, exports, module) {/**
+ * Created by dmitry on 17.10.16.
+ */
+
+
+var Backbone = require('backbone');
+var UserModel = require('./UserModel');
+
+module.exports = Backbone.Collection.extend({
+    model: UserModel,
+    url: '/users',
+
+    initialize: function(options){
+        _.extend(this, options);
+
+        //initialize collection from back-end
+        //otherwise it will be empty
+        var users = this;
+        users.fetch().done(function() {
+            users.each(function(item){
+                console.log(item.get('name'));
+            });
+        });
+    }
+
+});
+});
+
+define('AppController',['require','exports','module','marionette','./views/login/LoginView','./views/animals/AnimalsView','./views/admin/AdminView','./models/LoginModel','./models/UserModel','./models/AnimalsCollection','./models/UsersCollection','underscore'],function (require, exports, module) {/**
  * Created by dmitry on 19.08.16.
  */
 
@@ -8404,22 +8561,50 @@ var AdminView = require('./views/admin/AdminView');
 var LoginModel = require('./models/LoginModel');
 var UserModel = require('./models/UserModel');
 var AnimalsCollection = require('./models/AnimalsCollection');
+var UsersCollection = require('./models/UsersCollection');
 
 var _ = require('underscore');
 
-function showloginView(loginModel) {
+function getUserFromLocalStorage() {
+    if (localStorage.user && localStorage.user != 'undefined') {
+        return JSON.parse(localStorage.user);
+    }
+}
+
+function updateLoginModel(loginModel) {
     //check user in localstorage
     //and set login if it exists
-    if (localStorage.user && localStorage.user != 'undefined') {
-        var user = JSON.parse(localStorage.user);
-        if (user) {
-            loginModel.user.login = user.login;
-        }
+    var user = getUserFromLocalStorage();
+    if (user) {
+        loginModel.user.login = user.login;
+    }
+    return loginModel;
+}
+
+function showloginView(loginModel) {
+    var loginView = new LoginView({
+        model: updateLoginModel(loginModel)
+    }).render();
+}
+
+function handleRequest(success, error){
+    var loginModel = updateLoginModel(new LoginModel());
+    if (!loginModel.user.login) {
+        showloginView(loginModel);
     }
 
-    var loginView = new LoginView({
-        model: loginModel
-    }).render();
+    loginModel.sync(
+        'GET',
+        loginModel,
+        {
+            success: success,
+
+            error: error | function (model, response, options) {
+                console.log('login/check - error: ' + response.responseText);
+                showloginView(loginModel);
+            }
+        }
+    )
 }
 
 //Started with marionette 3.0 Marionette.Object should be used instead of Marionette.Controller
@@ -8437,67 +8622,35 @@ module.exports = Marionette.Object.extend({
 
     animals: function () {
         console.log('AppController: animals is invoked');
-        var loginModel = new LoginModel();
-        loginModel.sync(
-            'GET',
-            loginModel,
-            {
-                success: function (model, response, options) {
-                    console.log('login/check - success)');
+        handleRequest(function (model, response, options) {
+            console.log('login/check - success)');
 
-                    //details how collection can be shown
-                    //http://stackoverflow.com/questions/27673371/backbone-js-collection-view-example-using-marionette-template
-                    var animalsView = new AnimalsView({
-                        collection: new AnimalsCollection()
-                    });
-                    animalsView.render();
-                },
+            //details how collection can be shown
+            //http://stackoverflow.com/questions/27673371/backbone-js-collection-view-example-using-marionette-template
+            var animalsView = new AnimalsView({
+                collection: new AnimalsCollection()
+            });
+            animalsView.render();
+        });
 
-                error: function (model, response, options) {
-                    console.log('login/check - error: ' + response.responseText);
-                    showloginView(loginModel);
-                }
-            }
-        )
     },
 
     admin: function () {
         console.log('AppController: admin is invoked');
-        var loginModel = new LoginModel();
-        loginModel.sync(
-            'GET',
-            loginModel,
-            {
-                success: function (model, response, options) {
-                    console.log('login/check - success)');
-                    var user = model.user;
-                    if (user.roles && user.roles.indexOf('ADMIN') != -1) {
-                        var animalsView = new AdminView({
-                            model: new UserModel({
-                                name: user.name,
-                                surname: user.surname,
-                                email: user.email,
-                                login: user.login,
-                                roles: user.roles,
-                                animals: user.animals
-                            })
-                        });
-                        animalsView.render();
-                    } else {
-                        console.error("user dosn't have admin permissions");
-                        //todo надо показывать какую-то error page
-                    }
-
-                },
-
-                error: function (model, response, options) {
-                    //todo надо показывать какую-то error page
-                    console.log('login/check - error: ' + response.responseText);
-                    showloginView(loginModel);
-                }
+        handleRequest(function (model, response, options) {
+            console.log('login/check - success)');
+            var user = model.user;
+            if (user.roles && user.roles.indexOf('ADMIN') != -1) {
+                var animalsView = new AdminView({
+                    collection: new UsersCollection()
+                });
+                animalsView.render();
+            } else {
+                console.error("user dosn't have admin permissions");
+                //todo надо показывать какую-то error page
             }
-        )
 
+        });
     }
 });
 

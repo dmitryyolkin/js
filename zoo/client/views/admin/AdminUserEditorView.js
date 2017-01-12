@@ -4,7 +4,7 @@
 'use strict';
 
 var Marionette = require('marionette');
-var AdminEditorTemplate = require("hbs!templates/adminEditor");
+var AdminEditorTemplate = require("hbs!templates/admin/adminEditor");
 
 module.exports = Marionette.View.extend({
     template: AdminEditorTemplate,
