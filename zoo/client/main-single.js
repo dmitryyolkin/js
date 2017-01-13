@@ -8328,7 +8328,9 @@ module.exports = Marionette.View.extend({
             email: user.email,
             login: user.login,
             roles: user.roles,
-            animals: user.animals
+            animals: user.animals.map(function(animal){
+                return animal.name;
+            })
         };
     }
 
