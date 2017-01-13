@@ -16,8 +16,8 @@ module.exports = Marionette.View.extend({
 
     regions: {
         header: "#mainMenu",
-        userTable: "#user-table",
-        userEditor: "#user-editor"
+        userTable: "#admin-users",
+        userEditor: "#admin-user-editor"
     },
 
     initialize: function (options) {

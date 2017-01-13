@@ -8224,7 +8224,7 @@ module.exports = Marionette.View.extend({
 /* START_TEMPLATE */
 define('hbs!templates/admin/adminScreen',['hbs','hbs/handlebars'], function( hbs, Handlebars ){ 
 var t = Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
-    return "<div id=\"adminScreen\">\n    <div id=\"mainMenu\"></div>\n    <div id=\"user-table\"></div>\n    <div id=\"user-editor\"></div>\n</div>";
+    return "<div id=\"adminScreen\">\n    <div id=\"mainMenu\"></div>\n    <div id=\"admin-users\"></div>\n    <div id=\"admin-user-editor\"></div>\n</div>";
 },"useData":true});
 Handlebars.registerPartial('templates/admin/adminScreen', t);
 return t;
@@ -8270,7 +8270,7 @@ module.exports = Marionette.View.extend({
 /* START_TEMPLATE */
 define('hbs!templates/admin/adminUserTable',['hbs','hbs/handlebars'], function( hbs, Handlebars ){ 
 var t = Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
-    return "<table class=\"users-table\">\n    <thead>\n    <tr>\n        <th>Name</th>\n        <th>Surname</th>\n        <th>Email</th>\n        <th>Login</th>\n        <th>Roles</th>\n        <th>Animals</th>\n    </tr>\n    </thead>\n\n    <!-- insert data -->\n    <tbody></tbody>\n</table>";
+    return "<table class=\"admin-users-table\">\n    <thead>\n    <tr>\n        <th>Name</th>\n        <th>Surname</th>\n        <th>Email</th>\n        <th>Login</th>\n        <th>Roles</th>\n        <th>Animals</th>\n    </tr>\n    </thead>\n\n    <!-- insert data -->\n    <tbody></tbody>\n</table>";
 },"useData":true});
 Handlebars.registerPartial('templates/admin/adminUserTable', t);
 return t;
@@ -8407,8 +8407,8 @@ module.exports = Marionette.View.extend({
 
     regions: {
         header: "#mainMenu",
-        userTable: "#user-table",
-        userEditor: "#user-editor"
+        userTable: "#admin-users",
+        userEditor: "#admin-user-editor"
     },
 
     initialize: function (options) {
