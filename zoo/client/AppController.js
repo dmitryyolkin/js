@@ -51,7 +51,11 @@ function handleRequest(success, error){
         {
             success: success,
 
-            error: error | function (model, response, options) {
+            error: function (model, response, options) {
+                if (error){
+                    return error(model, response, options);
+                }
+
                 console.log('login/check - error: ' + response.responseText);
                 showloginView(loginModel);
             }
