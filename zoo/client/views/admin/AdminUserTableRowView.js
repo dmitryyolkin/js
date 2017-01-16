@@ -19,6 +19,7 @@ module.exports = Marionette.View.extend({
     serializeData: function () {
         var user = this.model.attributes;
         return {
+            id: user._id,
             name: user.name,
             surname: user.surname,
             email: user.email,
