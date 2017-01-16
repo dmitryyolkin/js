@@ -10,6 +10,22 @@ var MainMenuView = require("./../MainMenuView");
 var AdminUserEditorView = require("./AdminUserEditorView");
 var AdminUserTableView = require("./AdminUserTableView");
 
+function getQueryStrParam(name, url) {
+    if (!url) {
+        url = window.location.href;
+    }
+    name = name.replace(/[\[\]]/g, "\\$&");
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+    if (!results) {
+        return null;
+    }
+    if (!results[2]) {
+        return '';
+    }
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
+}
+
 module.exports = Marionette.View.extend({
     el: "body",
     template: AdminScreenTemplate,
@@ -26,12 +42,16 @@ module.exports = Marionette.View.extend({
 
     onRender: function () {
         this.showChildView('header', new MainMenuView());
-        this.showChildView('userTable', new AdminUserTableView({
-            collection: this.collection
-        }));
-
-        //todo comment this view
-        this.showChildView('userEditor', new AdminUserEditorView());
+        var userId = getQueryStrParam('id');
+        if (userId){
+            //show user details
+            this.showChildView('userEditor', new AdminUserEditorView());
+        }else{
+            //show all users
+            this.showChildView('userTable', new AdminUserTableView({
+                collection: this.collection
+            }));
+        }
 
         console.log("AdminView onRender");
     }

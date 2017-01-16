@@ -8283,9 +8283,11 @@ define('hbs!templates/admin/adminUserTableRow',['hbs','hbs/handlebars'], functio
 var t = Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
     var helper;
 
-  return "<td>"
+  return "<td>\n    <a class=\"admin-user-link\" href=\"#admin?id="
+    + this.escapeExpression(((helper = (helper = helpers.id || (depth0 != null ? depth0.id : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0,{"name":"id","hash":{},"data":data}) : helper)))
+    + "\">"
     + this.escapeExpression(((helper = (helper = helpers.name || (depth0 != null ? depth0.name : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0,{"name":"name","hash":{},"data":data}) : helper)))
-    + "</td>\n<td>"
+    + "</a>\n</td>\n<td>"
     + this.escapeExpression(((helper = (helper = helpers.surname || (depth0 != null ? depth0.surname : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0,{"name":"surname","hash":{},"data":data}) : helper)))
     + "</td>\n<td>"
     + this.escapeExpression(((helper = (helper = helpers.email || (depth0 != null ? depth0.email : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0,{"name":"email","hash":{},"data":data}) : helper)))
@@ -8323,6 +8325,7 @@ module.exports = Marionette.View.extend({
     serializeData: function () {
         var user = this.model.attributes;
         return {
+            id: user._id,
             name: user.name,
             surname: user.surname,
             email: user.email,
@@ -8403,6 +8406,22 @@ var MainMenuView = require("./../MainMenuView");
 var AdminUserEditorView = require("./AdminUserEditorView");
 var AdminUserTableView = require("./AdminUserTableView");
 
+function getQueryStrParam(name, url) {
+    if (!url) {
+        url = window.location.href;
+    }
+    name = name.replace(/[\[\]]/g, "\\$&");
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+    if (!results) {
+        return null;
+    }
+    if (!results[2]) {
+        return '';
+    }
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
+}
+
 module.exports = Marionette.View.extend({
     el: "body",
     template: AdminScreenTemplate,
@@ -8419,12 +8438,16 @@ module.exports = Marionette.View.extend({
 
     onRender: function () {
         this.showChildView('header', new MainMenuView());
-        this.showChildView('userTable', new AdminUserTableView({
-            collection: this.collection
-        }));
-
-        //todo comment this view
-        this.showChildView('userEditor', new AdminUserEditorView());
+        var userId = getQueryStrParam('id');
+        if (userId){
+            //show user details
+            this.showChildView('userEditor', new AdminUserEditorView());
+        }else{
+            //show all users
+            this.showChildView('userTable', new AdminUserTableView({
+                collection: this.collection
+            }));
+        }
 
         console.log("AdminView onRender");
     }
