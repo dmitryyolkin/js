@@ -8231,6 +8231,29 @@ return t;
 });
 /* END_TEMPLATE */
 ;
+define('models/UserModel',['require','exports','module','backbone'],function (require, exports, module) {/**
+ * Created by dmitry on 30.12.16.
+ */
+
+
+var Backbone = require('backbone');
+module.exports = Backbone.Model.extend({
+    //urlRoot is needed to be able to get a certain user by id
+    //e.g. new User({id: 'some id'}).fetch();
+    urlRoot: '/users',
+    defaults: {
+        name: null,
+        surname: null,
+        email: null,
+        login: null,
+        roles: [],
+        animals: []
+    }
+});
+
+
+});
+
 
 /* START_TEMPLATE */
 define('hbs!templates/admin/adminEditor',['hbs','hbs/handlebars'], function( hbs, Handlebars ){ 
@@ -8394,15 +8417,17 @@ module.exports = Marionette.View.extend({
 
 });
 
-define('views/admin/AdminView',['require','exports','module','marionette','hbs!templates/admin/adminScreen','./../MainMenuView','./AdminUserEditorView','./AdminUserTableView'],function (require, exports, module) {/**
+define('views/admin/AdminView',['require','exports','module','marionette','underscore','hbs!templates/admin/adminScreen','./../MainMenuView','./../../models/UserModel','./AdminUserEditorView','./AdminUserTableView'],function (require, exports, module) {/**
  * Created by dmitry on 30.12.16.
  */
 
 
 var Marionette = require('marionette');
+var _ = require('underscore');
 var AdminScreenTemplate = require("hbs!templates/admin/adminScreen");
-
 var MainMenuView = require("./../MainMenuView");
+
+var UserModel = require("./../../models/UserModel");
 var AdminUserEditorView = require("./AdminUserEditorView");
 var AdminUserTableView = require("./AdminUserTableView");
 
@@ -8439,10 +8464,19 @@ module.exports = Marionette.View.extend({
     onRender: function () {
         this.showChildView('header', new MainMenuView());
         var userId = getQueryStrParam('id');
-        if (userId){
+        if (userId) {
             //show user details
-            this.showChildView('userEditor', new AdminUserEditorView());
-        }else{
+            new UserModel({
+                id: userId
+            }).fetch({
+                    success: _.bind(function (userModel) {
+                        this.showChildView('userEditor', new AdminUserEditorView({
+                            model: userModel
+                        }));
+                    }, this)
+                }
+            );
+        } else {
             //show all users
             this.showChildView('userTable', new AdminUserTableView({
                 collection: this.collection
@@ -8470,26 +8504,6 @@ module.exports = Backbone.Model.extend({
         password: ''
     },
     url: '/login'
-});
-
-
-});
-
-define('models/UserModel',['require','exports','module','backbone'],function (require, exports, module) {/**
- * Created by dmitry on 30.12.16.
- */
-
-
-var Backbone = require('backbone');
-module.exports = Backbone.Model.extend({
-    defaults: {
-        name: null,
-        surname: null,
-        email: null,
-        login: null,
-        roles: [],
-        animals: []
-    }
 });
 
 

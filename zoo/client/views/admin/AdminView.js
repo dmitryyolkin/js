@@ -4,9 +4,11 @@
 'use strict';
 
 var Marionette = require('marionette');
+var _ = require('underscore');
 var AdminScreenTemplate = require("hbs!templates/admin/adminScreen");
-
 var MainMenuView = require("./../MainMenuView");
+
+var UserModel = require("./../../models/UserModel");
 var AdminUserEditorView = require("./AdminUserEditorView");
 var AdminUserTableView = require("./AdminUserTableView");
 
@@ -43,10 +45,19 @@ module.exports = Marionette.View.extend({
     onRender: function () {
         this.showChildView('header', new MainMenuView());
         var userId = getQueryStrParam('id');
-        if (userId){
+        if (userId) {
             //show user details
-            this.showChildView('userEditor', new AdminUserEditorView());
-        }else{
+            new UserModel({
+                id: userId
+            }).fetch({
+                    success: _.bind(function (userModel) {
+                        this.showChildView('userEditor', new AdminUserEditorView({
+                            model: userModel
+                        }));
+                    }, this)
+                }
+            );
+        } else {
             //show all users
             this.showChildView('userTable', new AdminUserTableView({
                 collection: this.collection
