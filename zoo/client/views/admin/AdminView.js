@@ -51,6 +51,7 @@ module.exports = Marionette.View.extend({
                 id: userId
             }).fetch({
                     success: _.bind(function (userModel) {
+                        this.detachChildView('userTable');
                         this.showChildView('userEditor', new AdminUserEditorView({
                             model: userModel
                         }));
@@ -59,6 +60,7 @@ module.exports = Marionette.View.extend({
             );
         } else {
             //show all users
+            this.detachChildView('userEditor');
             this.showChildView('userTable', new AdminUserTableView({
                 collection: this.collection
             }));
