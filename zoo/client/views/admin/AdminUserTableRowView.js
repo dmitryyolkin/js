@@ -17,15 +17,15 @@ module.exports = Marionette.View.extend({
 
     //it's required to show data in hbs template
     serializeData: function () {
-        var user = this.model.attributes;
+        var user = this.model;
         return {
-            id: user._id,
-            name: user.name,
-            surname: user.surname,
-            email: user.email,
-            login: user.login,
-            roles: user.roles,
-            animals: user.animals.map(function(animal){
+            id: user.get('_id'),
+            name: user.get('name'),
+            surname: user.get('surname'),
+            email: user.get('email'),
+            login: user.get('login'),
+            roles: user.get('roles'),
+            animals: user.get('animals').map(function(animal){
                 return animal.name;
             })
         };
