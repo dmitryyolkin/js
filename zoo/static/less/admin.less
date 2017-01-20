@@ -1,34 +1,26 @@
 @import "variables.less";
 
-#adminScreen {
+#admin-users-controls {
+  //max-width: 50em;
+  position: absolute;
+  top: 40%;
+  left: 40%;
+
+  //width percent of body
+  width: 50%;
+  height: 50%;
+  margin: -15% 0 0 -10%; /* Выравниваем по центру */
+
   > #admin-users {
     padding: 4em 1em;
-
-    //max-width: 50em;
-    position: absolute;
-    top: 40%;
-    left: 40%;
-
-    //width percent of body
-    width: 50%;
-    margin: -15% 0 0 -10%; /* Выравниваем по центру */
-
   }
 
   > #admin-user-editor {
 
-    //position: absolute;
-    //top: 40%;
-    //left: 40%;
-    //
-    //width: 40%;
-    //height: 30%;
-    //
-    ////todo margin делает не кликаьельными ссылки из таблицы
-    //margin: -15% 0 0 -10%; /* Выравниваем по центру */
+    width: 300px;
 
     //место для ввода login/password
-    > .user-details-place {
+    .user-details-place {
       clear: both;
       text-align: right;
       line-height: 20px; /* зададим отступ между заголовком и полем */
@@ -38,7 +30,7 @@
       }
     }
 
-    > .userControl {
+    .userControl {
       //выравнивание по правому краю
       text-align: right;
     }

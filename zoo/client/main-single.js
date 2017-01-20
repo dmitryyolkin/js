@@ -8224,7 +8224,7 @@ module.exports = Marionette.View.extend({
 /* START_TEMPLATE */
 define('hbs!templates/admin/adminScreen',['hbs','hbs/handlebars'], function( hbs, Handlebars ){ 
 var t = Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
-    return "<div id=\"adminScreen\">\n    <div id=\"mainMenu\"></div>\n    <div id=\"admin-users\"></div>\n    <div id=\"admin-user-editor\"></div>\n</div>";
+    return "<div id=\"adminScreen\">\n    <div id=\"mainMenu\"></div>\n    <div id=\"admin-users-controls\">\n        <div id=\"admin-users\"></div>\n        <div id=\"admin-user-editor\"></div>\n    </div>\n</div>";
 },"useData":true});
 Handlebars.registerPartial('templates/admin/adminScreen', t);
 return t;
@@ -8260,17 +8260,17 @@ define('hbs!templates/admin/adminEditor',['hbs','hbs/handlebars'], function( hbs
 var t = Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
     var helper;
 
-  return "<div id=\"admin-user-editor\">\n    <div class=\"user-details-place\">\n        <label for=\"name\">Name:</label>\n        <input type=\"text\" id=\"name\" value="
+  return "<div id=\"admin-user-editor\">\n    <div class=\"user-details-place\">\n        <label for=\"name-txt\">Name:</label>\n        <input type=\"text\" id=\"name-txt\" value="
     + this.escapeExpression(((helper = (helper = helpers.name || (depth0 != null ? depth0.name : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0,{"name":"name","hash":{},"data":data}) : helper)))
-    + ">\n    </div>\n\n    <div class=\"user-details-place\">\n        <label for=\"surname\">Surname:</label>\n        <input type=\"text\" id=\"surname\" value="
+    + ">\n    </div>\n\n    <div class=\"user-details-place\">\n        <label for=\"surname-txt\">Surname:</label>\n        <input type=\"text\" id=\"surname-txt\" value="
     + this.escapeExpression(((helper = (helper = helpers.surname || (depth0 != null ? depth0.surname : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0,{"name":"surname","hash":{},"data":data}) : helper)))
-    + ">\n    </div>\n\n    <div class=\"user-details-place\">\n        <label for=\"email\">Email:</label>\n        <input type=\"text\" id=\"email\" value="
+    + ">\n    </div>\n\n    <div class=\"user-details-place\">\n        <label for=\"email-txt\">Email:</label>\n        <input type=\"text\" id=\"email-txt\" value="
     + this.escapeExpression(((helper = (helper = helpers.email || (depth0 != null ? depth0.email : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0,{"name":"email","hash":{},"data":data}) : helper)))
-    + ">\n    </div>\n\n    <div class=\"user-details-place\">\n        <label for=\"login\">Login:</label>\n        <input type=\"text\" id=\"login\" value="
+    + ">\n    </div>\n\n    <div class=\"user-details-place\">\n        <label for=\"login-txt\">Login:</label>\n        <input type=\"text\" id=\"login-txt\" value="
     + this.escapeExpression(((helper = (helper = helpers.email || (depth0 != null ? depth0.email : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0,{"name":"email","hash":{},"data":data}) : helper)))
-    + ">\n    </div>\n\n    <div class=\"user-details-place\">\n        <label for=\"roles\">Roles:</label>\n        <input type=\"text\" id=\"roles\" value="
+    + ">\n    </div>\n\n    <div class=\"user-details-place\">\n        <label for=\"roles-txt\">Roles:</label>\n        <input type=\"text\" id=\"roles-txt\" value="
     + this.escapeExpression(((helper = (helper = helpers.roles || (depth0 != null ? depth0.roles : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0,{"name":"roles","hash":{},"data":data}) : helper)))
-    + ">\n    </div>\n\n    <div class=\"user-details-place\">\n        <label for=\"animals\">Animals:</label>\n        <input type=\"text\" id=\"animals\" value="
+    + ">\n    </div>\n\n    <div class=\"user-details-place\">\n        <label for=\"animals-txt\">Animals:</label>\n        <input type=\"text\" id=\"animals-txt\" value="
     + this.escapeExpression(((helper = (helper = helpers.animals || (depth0 != null ? depth0.animals : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0,{"name":"animals","hash":{},"data":data}) : helper)))
     + ">\n    </div>\n\n    <div class=\"userControl\">\n        <input type=\"button\" id=\"SaveBtn\" value=\"Save\">\n        <input type=\"button\" id=\"CancelBtn\" value=\"Cancel\">\n    </div>\n\n</div>\n";
 },"useData":true});
