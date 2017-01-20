@@ -8272,7 +8272,7 @@ var t = Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(de
     + this.escapeExpression(((helper = (helper = helpers.roles || (depth0 != null ? depth0.roles : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0,{"name":"roles","hash":{},"data":data}) : helper)))
     + ">\n    </div>\n\n    <div class=\"user-details-place\">\n        <label for=\"animals\">Animals:</label>\n        <input type=\"text\" id=\"animals\" value="
     + this.escapeExpression(((helper = (helper = helpers.animals || (depth0 != null ? depth0.animals : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0,{"name":"animals","hash":{},"data":data}) : helper)))
-    + ">\n    </div>\n</div>\n";
+    + ">\n    </div>\n\n    <div class=\"userControl\">\n        <input type=\"button\" id=\"SaveBtn\" value=\"Save\">\n        <input type=\"button\" id=\"CancelBtn\" value=\"Cancel\">\n    </div>\n\n</div>\n";
 },"useData":true});
 Handlebars.registerPartial('templates/admin/adminEditor', t);
 return t;
