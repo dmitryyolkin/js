@@ -32,10 +32,11 @@ router.get('/', function (req, res, next) {
 
 //get user by id
 router.get('/:id', function (req, res, next) {
-    logger.log('get /users/:id ' + req.params.id);
+    var userId = req.params.id;
+    logger.log('get /users/:id ' + userId);
     User
         .find({
-            _id: req.params.id
+            _id: userId
         })
         .populate('animals')
         .exec(function (err, users) {
@@ -44,10 +45,15 @@ router.get('/:id', function (req, res, next) {
                 res
                     .status(500)
                     .send(err);
+            } else if (users.length > 1) {
+                logger.error(err);
+                res
+                    .status(500)
+                    .send('More than 1 user is found with id: ' + userId);
             } else {
                 res
                     .status(200)
-                    .send(users);
+                    .send(users[0]);
             }
         })
 });
@@ -83,10 +89,10 @@ router.post('/', function (req, res, next) {
 router.put('/:id', function (req, res, next) {
     logger.log('put /users/:id ' + req.params.id);
 
-    function checkAndSet(req, newObj, prop){
+    function checkAndSet(req, newObj, prop) {
         var body = req.body;
         var propValue = body[prop];
-        if (propValue){
+        if (propValue) {
             newObj[prop] = propValue;
         }
     }
@@ -110,7 +116,7 @@ router.put('/:id', function (req, res, next) {
             upsert: false
         },
         //callback
-        function(err, user){
+        function (err, user) {
             if (err) {
                 logger.error(err);
                 res

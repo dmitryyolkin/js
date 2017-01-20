@@ -34,10 +34,11 @@ router.get('/', function (req, res, next) {
 
 //get animal by id
 router.get('/:id', function (req, res, next) {
-    logger.log('get /animals/:id ' + req.params.id);
+    var animalId = req.params.id;
+    logger.log('get /animals/:id ' + animalId);
     Animal
         .find({
-            _id: req.params.id
+            _id: animalId
         })
         .populate('keeper')
         .populate('cage')
@@ -47,10 +48,15 @@ router.get('/:id', function (req, res, next) {
                 res
                     .status(500)
                     .send(err);
+            } else if (users.length > 1) {
+                logger.error(err);
+                res
+                    .status(500)
+                    .send('More than 1 animal is found with id: ' + animalId);
             } else {
                 res
                     .status(200)
-                    .send(anumals);
+                    .send(anumals[0]);
             }
         })
 

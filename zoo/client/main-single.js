@@ -8258,7 +8258,21 @@ module.exports = Backbone.Model.extend({
 /* START_TEMPLATE */
 define('hbs!templates/admin/adminEditor',['hbs','hbs/handlebars'], function( hbs, Handlebars ){ 
 var t = Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
-    return "<h1>Admin Editor</h1>";
+    var helper;
+
+  return "<div id=\"admin-user-editor\">\n    <div class=\"user-details-place\">\n        <label for=\"name\">Name:</label>\n        <input type=\"text\" id=\"name\" value="
+    + this.escapeExpression(((helper = (helper = helpers.name || (depth0 != null ? depth0.name : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0,{"name":"name","hash":{},"data":data}) : helper)))
+    + ">\n    </div>\n\n    <div class=\"user-details-place\">\n        <label for=\"surname\">Surname:</label>\n        <input type=\"text\" id=\"surname\" value="
+    + this.escapeExpression(((helper = (helper = helpers.surname || (depth0 != null ? depth0.surname : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0,{"name":"surname","hash":{},"data":data}) : helper)))
+    + ">\n    </div>\n\n    <div class=\"user-details-place\">\n        <label for=\"email\">Email:</label>\n        <input type=\"text\" id=\"email\" value="
+    + this.escapeExpression(((helper = (helper = helpers.email || (depth0 != null ? depth0.email : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0,{"name":"email","hash":{},"data":data}) : helper)))
+    + ">\n    </div>\n\n    <div class=\"user-details-place\">\n        <label for=\"login\">Login:</label>\n        <input type=\"text\" id=\"login\" value="
+    + this.escapeExpression(((helper = (helper = helpers.email || (depth0 != null ? depth0.email : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0,{"name":"email","hash":{},"data":data}) : helper)))
+    + ">\n    </div>\n\n    <div class=\"user-details-place\">\n        <label for=\"roles\">Roles:</label>\n        <input type=\"text\" id=\"roles\" value="
+    + this.escapeExpression(((helper = (helper = helpers.roles || (depth0 != null ? depth0.roles : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0,{"name":"roles","hash":{},"data":data}) : helper)))
+    + ">\n    </div>\n\n    <div class=\"user-details-place\">\n        <label for=\"animals\">Animals:</label>\n        <input type=\"text\" id=\"animals\" value="
+    + this.escapeExpression(((helper = (helper = helpers.animals || (depth0 != null ? depth0.animals : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0,{"name":"animals","hash":{},"data":data}) : helper)))
+    + ">\n    </div>\n</div>\n";
 },"useData":true});
 Handlebars.registerPartial('templates/admin/adminEditor', t);
 return t;
@@ -8282,6 +8296,22 @@ module.exports = Marionette.View.extend({
 
     onRender: function(){
         console.log("AdminEditor onRender");
+    },
+
+    //it's required to show data in hbs template
+    serializeData: function () {
+        var user = this.model;
+        return {
+            id: user.get('_id'),
+            name: user.get('name'),
+            surname: user.get('surname'),
+            email: user.get('email'),
+            login: user.get('login'),
+            roles: user.get('roles'),
+            animals: user.get('animals').map(function(animal){
+                return animal.name;
+            })
+        };
     }
 
 });
@@ -8346,15 +8376,15 @@ module.exports = Marionette.View.extend({
 
     //it's required to show data in hbs template
     serializeData: function () {
-        var user = this.model.attributes;
+        var user = this.model;
         return {
-            id: user._id,
-            name: user.name,
-            surname: user.surname,
-            email: user.email,
-            login: user.login,
-            roles: user.roles,
-            animals: user.animals.map(function(animal){
+            id: user.get('_id'),
+            name: user.get('name'),
+            surname: user.get('surname'),
+            email: user.get('email'),
+            login: user.get('login'),
+            roles: user.get('roles'),
+            animals: user.get('animals').map(function(animal){
                 return animal.name;
             })
         };
@@ -8470,6 +8500,7 @@ module.exports = Marionette.View.extend({
                 id: userId
             }).fetch({
                     success: _.bind(function (userModel) {
+                        this.detachChildView('userTable');
                         this.showChildView('userEditor', new AdminUserEditorView({
                             model: userModel
                         }));
@@ -8478,6 +8509,7 @@ module.exports = Marionette.View.extend({
             );
         } else {
             //show all users
+            this.detachChildView('userEditor');
             this.showChildView('userTable', new AdminUserTableView({
                 collection: this.collection
             }));
