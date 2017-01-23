@@ -1,9 +1,14 @@
 <div id="admin-user-editor">
+    <div class="userModificationFailed"></div>
     <div class="user-details-place">
         <label for="name-txt">Name:</label>
         <input type="text" id="name-txt" value={{name}}>
     </div>
 
+    <!--
+        todo it's strange if a surname contains more than one word then only 1st word is shown.
+        if words are connected with _ then all is ok
+    -->
     <div class="user-details-place">
         <label for="surname-txt">Surname:</label>
         <input type="text" id="surname-txt" value={{surname}}>
@@ -16,7 +21,7 @@
 
     <div class="user-details-place">
         <label for="login-txt">Login:</label>
-        <input type="text" id="login-txt" value={{email}}>
+        <input type="text" id="login-txt" value={{login}}>
     </div>
 
     <div class="user-details-place">

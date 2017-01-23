@@ -23,7 +23,7 @@ module.exports = Marionette.View.extend({
 
     template: LoginTemplate,
     events: {
-        'click input:button': 'login',  //Обработчик клика на кнопке "Log in"
+        'click input:button#loginBtn': 'login',  //Обработчик клика на кнопке "Log in"
         'keyup input#pass': 'keyPressEventHandler', //Обработчик нажатия enter в тексовом поле
         'keyup input#login, input#pass': 'hideLoginFailedMsg' //скрываем login failed message
     },

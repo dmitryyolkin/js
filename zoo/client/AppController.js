@@ -94,7 +94,7 @@ module.exports = Marionette.Object.extend({
     admin: function () {
         console.log('AppController: admin is invoked');
         handleRequest(function (model, response, options) {
-            console.log('login/check - success)');
+            console.log('login/check - success');
             var user = model.user;
             if (user.roles && user.roles.indexOf('ADMIN') != -1) {
                 var animalsView = new AdminView({

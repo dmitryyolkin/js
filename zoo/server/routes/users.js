@@ -98,7 +98,7 @@ router.put('/:id', function (req, res, next) {
     }
 
     var newUser = {};
-    var props = ['name', 'email', 'login', 'password', 'roles'];
+    var props = ['name', 'surname', 'email', 'login', 'password', 'roles', 'animals'];
     for (var i = 0; i < props.length; i++) {
         var propName = props[i];
         checkAndSet(req, newUser, propName);

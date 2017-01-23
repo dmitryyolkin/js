@@ -48,7 +48,7 @@ module.exports = {
     //create test user
     createAdmin: function () {
         var admin = new User({
-                name: 'Unknown',
+                name: 'admin',
                 email: 'dmitry.yolkin@gmail.com',
                 login: 'admin',
                 password: 'admin',

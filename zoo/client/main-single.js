@@ -7944,7 +7944,7 @@ module.exports = Marionette.View.extend({
 
     template: LoginTemplate,
     events: {
-        'click input:button': 'login',  //Обработчик клика на кнопке "Log in"
+        'click input:button#loginBtn': 'login',  //Обработчик клика на кнопке "Log in"
         'keyup input#pass': 'keyPressEventHandler', //Обработчик нажатия enter в тексовом поле
         'keyup input#login, input#pass': 'hideLoginFailedMsg' //скрываем login failed message
     },
@@ -8260,14 +8260,14 @@ define('hbs!templates/admin/adminEditor',['hbs','hbs/handlebars'], function( hbs
 var t = Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
     var helper;
 
-  return "<div id=\"admin-user-editor\">\n    <div class=\"user-details-place\">\n        <label for=\"name-txt\">Name:</label>\n        <input type=\"text\" id=\"name-txt\" value="
+  return "<div id=\"admin-user-editor\">\n    <div class=\"userModificationFailed\"></div>\n    <div class=\"user-details-place\">\n        <label for=\"name-txt\">Name:</label>\n        <input type=\"text\" id=\"name-txt\" value="
     + this.escapeExpression(((helper = (helper = helpers.name || (depth0 != null ? depth0.name : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0,{"name":"name","hash":{},"data":data}) : helper)))
-    + ">\n    </div>\n\n    <div class=\"user-details-place\">\n        <label for=\"surname-txt\">Surname:</label>\n        <input type=\"text\" id=\"surname-txt\" value="
+    + ">\n    </div>\n\n    <!--\n        todo it's strange if a surname contains more than one word then only 1st word is shown.\n        if words are connected with _ then all is ok\n    -->\n    <div class=\"user-details-place\">\n        <label for=\"surname-txt\">Surname:</label>\n        <input type=\"text\" id=\"surname-txt\" value="
     + this.escapeExpression(((helper = (helper = helpers.surname || (depth0 != null ? depth0.surname : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0,{"name":"surname","hash":{},"data":data}) : helper)))
     + ">\n    </div>\n\n    <div class=\"user-details-place\">\n        <label for=\"email-txt\">Email:</label>\n        <input type=\"text\" id=\"email-txt\" value="
     + this.escapeExpression(((helper = (helper = helpers.email || (depth0 != null ? depth0.email : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0,{"name":"email","hash":{},"data":data}) : helper)))
     + ">\n    </div>\n\n    <div class=\"user-details-place\">\n        <label for=\"login-txt\">Login:</label>\n        <input type=\"text\" id=\"login-txt\" value="
-    + this.escapeExpression(((helper = (helper = helpers.email || (depth0 != null ? depth0.email : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0,{"name":"email","hash":{},"data":data}) : helper)))
+    + this.escapeExpression(((helper = (helper = helpers.login || (depth0 != null ? depth0.login : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0,{"name":"login","hash":{},"data":data}) : helper)))
     + ">\n    </div>\n\n    <div class=\"user-details-place\">\n        <label for=\"roles-txt\">Roles:</label>\n        <input type=\"text\" id=\"roles-txt\" value="
     + this.escapeExpression(((helper = (helper = helpers.roles || (depth0 != null ? depth0.roles : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0,{"name":"roles","hash":{},"data":data}) : helper)))
     + ">\n    </div>\n\n    <div class=\"user-details-place\">\n        <label for=\"animals-txt\">Animals:</label>\n        <input type=\"text\" id=\"animals-txt\" value="
@@ -8279,22 +8279,78 @@ return t;
 });
 /* END_TEMPLATE */
 ;
-define('views/admin/AdminUserEditorView',['require','exports','module','marionette','hbs!templates/admin/adminEditor'],function (require, exports, module) {/**
+define('views/admin/AdminUserEditorView',['require','exports','module','backbone','marionette','hbs!templates/admin/adminEditor','jquery'],function (require, exports, module) {/**
  * Created by dmitry on 30.12.16.
  */
 
 
+var Backbone = require('backbone');
 var Marionette = require('marionette');
 var AdminEditorTemplate = require("hbs!templates/admin/adminEditor");
+
+var $ = require('jquery');
+
+var userModificationFailedClass = '.userModificationFailed';
+
+function go2AdminScreen () {
+    Backbone.history.navigate(
+        'admin',
+        //we have to invoke 'animals' handler
+        {trigger: true}
+    );
+}
 
 module.exports = Marionette.View.extend({
     template: AdminEditorTemplate,
 
-    initialize: function(options){
+    initialize: function (options) {
         _.extend(this, options);
     },
 
-    onRender: function(){
+    events: {
+        'click input:button#SaveBtn': 'upsertUser',
+        'click input:button#CancelBtn': 'cancel',
+        'keyup input:text': 'hideUserModificationFailedMsg' //скрываем user modification failed message
+    },
+
+    upsertUser: function () {
+        console.log("AdminEditor upsertUser");
+        var animals = $(this.el).find('input#animals-txt').val();
+        this.model.save(
+            {
+                name: $(this.el).find('input#name-txt').val(),
+                surname: $(this.el).find('input#surname-txt').val(),
+                email: $(this.el).find('input#email-txt').val(),
+                login: $(this.el).find('input#login-txt').val(),
+                roles: $(this.el).find('input#roles-txt').val(),
+                animals: animals && animals.length > 0 ? animals.split(',') : []
+            },
+            {
+                success: function (model, response, options) {
+                    console.log('User credentials were changed sucessfully: ' + JSON.stringify(response.user));
+                    go2AdminScreen();
+                },
+
+                error: function (model, xhr, options) {
+                    $(userModificationFailedClass).text(xhr.responseText).show();
+                }
+            }
+        );
+    },
+
+    cancel: function () {
+        console.log("AdminEditor cancel");
+        go2AdminScreen();
+    },
+
+    hideUserModificationFailedMsg: function(){
+        var $userModifFailedEl = $(userModificationFailedClass);
+        if ($userModifFailedEl.is(':visible')){
+            $userModifFailedEl.hide();
+        }
+    },
+
+    onRender: function () {
         console.log("AdminEditor onRender");
     },
 
@@ -8308,7 +8364,7 @@ module.exports = Marionette.View.extend({
             email: user.get('email'),
             login: user.get('login'),
             roles: user.get('roles'),
-            animals: user.get('animals').map(function(animal){
+            animals: user.get('animals').map(function (animal) {
                 return animal.name;
             })
         };
@@ -8713,7 +8769,7 @@ module.exports = Marionette.Object.extend({
     admin: function () {
         console.log('AppController: admin is invoked');
         handleRequest(function (model, response, options) {
-            console.log('login/check - success)');
+            console.log('login/check - success');
             var user = model.user;
             if (user.roles && user.roles.indexOf('ADMIN') != -1) {
                 var animalsView = new AdminView({
