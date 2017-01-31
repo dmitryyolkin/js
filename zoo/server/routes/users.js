@@ -6,6 +6,7 @@
 var express = require('express');
 var mongoModels = require('../schema/MongoModels');
 var User = mongoModels.User;
+var Animal = mongoModels.Animal;
 
 var logger = require('../logger');
 var router = express.Router();
@@ -87,7 +88,8 @@ router.post('/', function (req, res, next) {
 
 //update user
 router.put('/:id', function (req, res, next) {
-    logger.log('put /users/:id ' + req.params.id);
+    var userId = req.params.id;
+    logger.log('put /users/:id ' + userId);
 
     function checkAndSet(req, newObj, prop) {
         var body = req.body;
@@ -98,37 +100,63 @@ router.put('/:id', function (req, res, next) {
     }
 
     var newUser = {};
-    var props = ['name', 'surname', 'email', 'login', 'password', 'roles', 'animals'];
+    var props = ['name', 'surname', 'email', 'login', 'password', 'roles'];
     for (var i = 0; i < props.length; i++) {
         var propName = props[i];
         checkAndSet(req, newUser, propName);
     }
 
-    User.findOneAndUpdate(
-        //conditions
-        {
-            _id: req.params.id
-        },
-        //new values
-        newUser,
-        //options
-        {
-            upsert: false
-        },
-        //callback
-        function (err, user) {
+    //fill animals
+    var animalNames = req.body.animals;
+    var animalCriteria = animalNames.map(function (animalName) {
+        return {
+            name: animalName
+        }
+    });
+    Animal.find()
+        .or(animalCriteria)
+        .exec(function (err, animals) {
             if (err) {
                 logger.error(err);
                 res
                     .status(500)
                     .send(err);
-            } else {
-                res
-                    .status(200)
-                    .send(user);
+                return;
             }
-        }
-    );
+
+            //fill animals
+            newUser.animals = animals.map(function (animal) {
+                return animal._id;
+            });
+
+            User.findOneAndUpdate(
+                //conditions
+                {
+                    _id: userId
+                },
+                //new values
+                newUser,
+                //options
+                {
+                    upsert: false
+                },
+                //callback
+                function (err, user) {
+                    if (err) {
+                        logger.error(err);
+                        res
+                            .status(500)
+                            .send(err);
+                    } else {
+                        //return result
+                        res
+                            .status(200)
+                            .send(user);
+                    }
+                }
+            );
+
+        });
 });
 
 //delete user
