@@ -108,56 +108,66 @@ router.put('/:id', function (req, res, next) {
 
     //fill animals
     var animalNames = req.body.animals;
-    var animalCriteria = animalNames.map(function (animalName) {
-        return {
-            name: animalName
-        }
-    });
-    Animal.find()
-        .or(animalCriteria)
-        .exec(function (err, animals) {
+    if (animalNames.length == 0) {
+        newUser.animals = [];
+        updateUser(newUser, userId, res);
+    } else {
+        //fill animals
+        var animalCriteria = animalNames.map(function (animalName) {
+            return {
+                name: animalName
+            }
+        });
+        Animal.find()
+            .or(animalCriteria)
+            .exec(function (err, animals) {
+                if (err) {
+                    logger.error(err);
+                    res
+                        .status(500)
+                        .send(err);
+                    return;
+                }
+
+                //fill animals
+                newUser.animals = animals.map(function (animal) {
+                    return animal._id;
+                });
+
+                updateUser(newUser, userId, res);
+            });
+    }
+
+});
+
+function updateUser(newUser, userId, res) {
+    User.findOneAndUpdate(
+        //conditions
+        {
+            _id: userId
+        },
+        //new values
+        newUser,
+        //options
+        {
+            upsert: false
+        },
+        //callback
+        function (err, user) {
             if (err) {
                 logger.error(err);
                 res
                     .status(500)
                     .send(err);
-                return;
+            } else {
+                //return result
+                res
+                    .status(200)
+                    .send(user);
             }
-
-            //fill animals
-            newUser.animals = animals.map(function (animal) {
-                return animal._id;
-            });
-
-            User.findOneAndUpdate(
-                //conditions
-                {
-                    _id: userId
-                },
-                //new values
-                newUser,
-                //options
-                {
-                    upsert: false
-                },
-                //callback
-                function (err, user) {
-                    if (err) {
-                        logger.error(err);
-                        res
-                            .status(500)
-                            .send(err);
-                    } else {
-                        //return result
-                        res
-                            .status(200)
-                            .send(user);
-                    }
-                }
-            );
-
-        });
-});
+        }
+    );
+}
 
 //delete user
 router.delete('/:id', function (req, res, next) {
