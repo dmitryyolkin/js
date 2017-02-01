@@ -11,7 +11,7 @@ var $ = require('jquery');
 
 var userModificationFailedClass = '.userModificationFailed';
 
-function go2AdminScreen () {
+function go2AdminScreen() {
     Backbone.history.navigate(
         'admin',
         //we have to invoke 'animals' handler
@@ -29,7 +29,7 @@ module.exports = Marionette.View.extend({
     events: {
         'click input:button#SaveBtn': 'upsertUser',
         'click input:button#CancelBtn': 'cancel',
-        'keyup input:text': 'hideUserModificationFailedMsg' //скрываем user modification failed message
+        'keyup input:text': 'keyPressEventHandler'
     },
 
     upsertUser: function () {
@@ -62,9 +62,20 @@ module.exports = Marionette.View.extend({
         go2AdminScreen();
     },
 
-    hideUserModificationFailedMsg: function(){
+    keyPressEventHandler: function (event) {
+        if (event.keyCode == 13) {
+            //it's interesting if I invoke this.render() then method above is executed
+            //but data is not updated in UI
+            $('input:button#SaveBtn').click();
+        } else {
+            //скрываем user modification failed message
+            hideUserModificationFailedMsg(event);
+        }
+    },
+
+    hideUserModificationFailedMsg: function () {
         var $userModifFailedEl = $(userModificationFailedClass);
-        if ($userModifFailedEl.is(':visible')){
+        if ($userModifFailedEl.is(':visible')) {
             $userModifFailedEl.hide();
         }
     },
