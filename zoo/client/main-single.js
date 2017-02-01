@@ -7912,7 +7912,7 @@ var t = Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(de
     + this.escapeExpression(this.lambda(((stack1 = (depth0 != null ? depth0.user : depth0)) != null ? stack1.login : stack1), depth0))
     + ">\n    </div>\n    <div class=\"credentials-place\">\n        <label for=\"pass\">Password:</label>\n        <input type=\"password\" id=\"pass\" value="
     + this.escapeExpression(this.lambda(((stack1 = (depth0 != null ? depth0.user : depth0)) != null ? stack1.password : stack1), depth0))
-    + ">\n    </div>\n\n    <div class=\"loginControl\">\n        <!-- todo отображать login в одну строчку -->\n        <div class=\"signup-place\">\n            <a class=\"signup-new-user\" href=\"#admin/new\">New user</a>\n            <label for=\"rememberMe\">Keep me logged in</label>\n            <input type=\"checkbox\" id=\"rememberMe\" checked>\n        </div>\n\n        <div class=\"button-place\">\n            <input type=\"button\" id=\"loginBtn\" value=\"Log in\">\n        </div>\n    </div>\n</div>\n";
+    + ">\n    </div>\n\n    <div class=\"loginControl\">\n        <!-- todo отображать login в одну строчку -->\n        <div class=\"signup-place\">\n            <label for=\"rememberMe\">Keep me logged in</label>\n            <input type=\"checkbox\" id=\"rememberMe\" checked>\n        </div>\n\n        <div class=\"button-place\">\n            <input type=\"button\" id=\"loginBtn\" value=\"Log in\">\n        </div>\n    </div>\n</div>\n";
 },"useData":true});
 Handlebars.registerPartial('templates/login', t);
 return t;
