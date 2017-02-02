@@ -1,16 +1,14 @@
 /**
- * Created by dmitry on 01.02.17.
+ * Created by dmitry on 02.02.17.
  */
 'use strict';
 
 var Backbone = require('backbone');
 var Marionette = require('marionette');
-var _ = require('underscore');
 
-var ErrorTemplate = require("hbs!templates/error");
+var ErrorTemplate = require("hbs!templates/error/error");
 
 module.exports = Marionette.View.extend({
-    el: 'body',
     template: ErrorTemplate,
 
     initialize: function(options){
@@ -19,7 +17,7 @@ module.exports = Marionette.View.extend({
     },
 
     onRender: function(){
-        console.log("ErrorView onRender");
+        console.log("ErrorScreenView onRender");
     },
 
     //it's required to show data in hbs template
@@ -31,4 +29,5 @@ module.exports = Marionette.View.extend({
     }
 
 });
+
 

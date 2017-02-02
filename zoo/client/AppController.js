@@ -8,7 +8,7 @@ var Marionette = require('marionette');
 var LoginView = require('./views/login/LoginView');
 var AnimalsView = require('./views/animals/AnimalsView');
 var AdminView = require('./views/admin/AdminView');
-var ErrorView = require('./views/ErrorView');
+var ErrorScreenView = require('./views/error/ErrorScreenView');
 
 //models
 var LoginModel = require('./models/LoginModel');
@@ -66,7 +66,7 @@ function handleRequest(successF, errorF) {
 
 function showError(msg) {
     console.log('AppController: error is invoked');
-    var errorView = new ErrorView({
+    var errorView = new ErrorScreenView({
         message: msg
     });
     errorView.render();

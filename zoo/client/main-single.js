@@ -8594,7 +8594,18 @@ module.exports = Marionette.View.extend({
 
 
 /* START_TEMPLATE */
-define('hbs!templates/error',['hbs','hbs/handlebars'], function( hbs, Handlebars ){ 
+define('hbs!templates/error/errorScreen',['hbs','hbs/handlebars'], function( hbs, Handlebars ){ 
+var t = Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
+    return "<div id=\"errorScreen\">\n    <div id=\"mainMenu\"></div>\n    <div id=\"error-controls\"></div>\n</div>";
+},"useData":true});
+Handlebars.registerPartial('templates/error/errorScreen', t);
+return t;
+});
+/* END_TEMPLATE */
+;
+
+/* START_TEMPLATE */
+define('hbs!templates/error/error',['hbs','hbs/handlebars'], function( hbs, Handlebars ){ 
 var t = Handlebars.template({"1":function(depth0,helpers,partials,data) {
     var stack1;
 
@@ -8612,21 +8623,58 @@ var t = Handlebars.template({"1":function(depth0,helpers,partials,data) {
     + ((stack1 = helpers['if'].call(depth0,(depth0 != null ? depth0.error : depth0),{"name":"if","hash":{},"fn":this.program(1, data, 0),"inverse":this.noop,"data":data})) != null ? stack1 : "")
     + "</div>";
 },"useData":true});
-Handlebars.registerPartial('templates/error', t);
+Handlebars.registerPartial('templates/error/error', t);
 return t;
 });
 /* END_TEMPLATE */
 ;
-define('views/ErrorView',['require','exports','module','backbone','marionette','underscore','hbs!templates/error'],function (require, exports, module) {/**
+define('views/error/ErrorView',['require','exports','module','backbone','marionette','hbs!templates/error/error'],function (require, exports, module) {/**
+ * Created by dmitry on 02.02.17.
+ */
+
+
+var Backbone = require('backbone');
+var Marionette = require('marionette');
+
+var ErrorTemplate = require("hbs!templates/error/error");
+
+module.exports = Marionette.View.extend({
+    template: ErrorTemplate,
+
+    initialize: function(options){
+        _.extend(this, options);
+        Backbone.history.navigate('error');
+    },
+
+    onRender: function(){
+        console.log("ErrorScreenView onRender");
+    },
+
+    //it's required to show data in hbs template
+    serializeData: function () {
+        return {
+            message: this.message || 'No error message specified',
+            error: this.error
+        };
+    }
+
+});
+
+
+
+});
+
+define('views/error/ErrorScreenView',['require','exports','module','backbone','marionette','hbs!templates/error/errorScreen','./../MainMenuView','./ErrorView'],function (require, exports, module) {/**
  * Created by dmitry on 01.02.17.
  */
 
 
 var Backbone = require('backbone');
 var Marionette = require('marionette');
-var _ = require('underscore');
 
-var ErrorTemplate = require("hbs!templates/error");
+var ErrorTemplate = require("hbs!templates/error/errorScreen");
+var MainMenuView = require("./../MainMenuView");
+var ErrorView = require("./ErrorView");
 
 module.exports = Marionette.View.extend({
     el: 'body',
@@ -8637,16 +8685,18 @@ module.exports = Marionette.View.extend({
         Backbone.history.navigate('error');
     },
 
-    onRender: function(){
-        console.log("ErrorView onRender");
+    regions: {
+        header: "#mainMenu",
+        error: "#error-controls"
     },
 
-    //it's required to show data in hbs template
-    serializeData: function () {
-        return {
-            message: this.message || 'No error message specified',
+    onRender: function(){
+        console.log("ErrorScreenView onRender");
+        this.showChildView('header', new MainMenuView());
+        this.showChildView('error', new ErrorView({
+            message: this.message,
             error: this.error
-        };
+        }));
     }
 
 });
@@ -8747,7 +8797,7 @@ module.exports = Backbone.Collection.extend({
 });
 });
 
-define('AppController',['require','exports','module','marionette','./views/login/LoginView','./views/animals/AnimalsView','./views/admin/AdminView','./views/ErrorView','./models/LoginModel','./models/UserModel','./models/AnimalsCollection','./models/UsersCollection','underscore'],function (require, exports, module) {/**
+define('AppController',['require','exports','module','marionette','./views/login/LoginView','./views/animals/AnimalsView','./views/admin/AdminView','./views/error/ErrorScreenView','./models/LoginModel','./models/UserModel','./models/AnimalsCollection','./models/UsersCollection','underscore'],function (require, exports, module) {/**
  * Created by dmitry on 19.08.16.
  */
 
@@ -8757,7 +8807,7 @@ var Marionette = require('marionette');
 var LoginView = require('./views/login/LoginView');
 var AnimalsView = require('./views/animals/AnimalsView');
 var AdminView = require('./views/admin/AdminView');
-var ErrorView = require('./views/ErrorView');
+var ErrorScreenView = require('./views/error/ErrorScreenView');
 
 //models
 var LoginModel = require('./models/LoginModel');
@@ -8815,7 +8865,7 @@ function handleRequest(successF, errorF) {
 
 function showError(msg) {
     console.log('AppController: error is invoked');
-    var errorView = new ErrorView({
+    var errorView = new ErrorScreenView({
         message: msg
     });
     errorView.render();
