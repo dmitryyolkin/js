@@ -8,6 +8,7 @@ var Marionette = require('marionette');
 var LoginView = require('./views/login/LoginView');
 var AnimalsView = require('./views/animals/AnimalsView');
 var AdminView = require('./views/admin/AdminView');
+var ErrorView = require('./views/ErrorView');
 
 //models
 var LoginModel = require('./models/LoginModel');
@@ -39,7 +40,7 @@ function showloginView(loginModel) {
     }).render();
 }
 
-function handleRequest(success, error){
+function handleRequest(successF, errorF) {
     var loginModel = updateLoginModel(new LoginModel());
     if (!loginModel.user.login) {
         showloginView(loginModel);
@@ -49,11 +50,11 @@ function handleRequest(success, error){
         'GET',
         loginModel,
         {
-            success: success,
+            success: successF,
 
             error: function (model, response, options) {
-                if (error){
-                    return error(model, response, options);
+                if (errorF) {
+                    return errorF(model, response, options);
                 }
 
                 console.log('login/check - error: ' + response.responseText);
@@ -61,6 +62,14 @@ function handleRequest(success, error){
             }
         }
     )
+}
+
+function showError(msg) {
+    console.log('AppController: error is invoked');
+    var errorView = new ErrorView({
+        message: msg
+    });
+    errorView.render();
 }
 
 //Started with marionette 3.0 Marionette.Object should be used instead of Marionette.Controller
@@ -102,10 +111,12 @@ module.exports = Marionette.Object.extend({
                 });
                 animalsView.render();
             } else {
-                console.error("user dosn't have admin permissions");
-                //todo надо показывать какую-то error page
+                var msg = "user " + user.login +  " doesn't have admin permissions";
+                console.error(msg);
+                showError(msg);
             }
-
         });
-    }
+    },
+
+    error: showError
 });

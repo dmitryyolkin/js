@@ -1698,7 +1698,8 @@ module.exports = Marionette.AppRouter.extend({
         "": "animals",
         "animals": "animals",
         "login": "login",
-        "admin": "admin"
+        "admin": "admin",
+        "error": "error"
     }
 });
 
@@ -8591,6 +8592,68 @@ module.exports = Marionette.View.extend({
 
 });
 
+
+/* START_TEMPLATE */
+define('hbs!templates/error',['hbs','hbs/handlebars'], function( hbs, Handlebars ){ 
+var t = Handlebars.template({"1":function(depth0,helpers,partials,data) {
+    var stack1;
+
+  return "        <h3>"
+    + this.escapeExpression(this.lambda(((stack1 = (depth0 != null ? depth0.error : depth0)) != null ? stack1.status : stack1), depth0))
+    + "</h3>\n        <pre>"
+    + this.escapeExpression(this.lambda(((stack1 = (depth0 != null ? depth0.error : depth0)) != null ? stack1.stack : stack1), depth0))
+    + "</pre>\n";
+},"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
+    var stack1, helper;
+
+  return "<div class=\"error\">\n    <h2>"
+    + this.escapeExpression(((helper = (helper = helpers.message || (depth0 != null ? depth0.message : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0,{"name":"message","hash":{},"data":data}) : helper)))
+    + "</h2>\n"
+    + ((stack1 = helpers['if'].call(depth0,(depth0 != null ? depth0.error : depth0),{"name":"if","hash":{},"fn":this.program(1, data, 0),"inverse":this.noop,"data":data})) != null ? stack1 : "")
+    + "</div>";
+},"useData":true});
+Handlebars.registerPartial('templates/error', t);
+return t;
+});
+/* END_TEMPLATE */
+;
+define('views/ErrorView',['require','exports','module','backbone','marionette','underscore','hbs!templates/error'],function (require, exports, module) {/**
+ * Created by dmitry on 01.02.17.
+ */
+
+
+var Backbone = require('backbone');
+var Marionette = require('marionette');
+var _ = require('underscore');
+
+var ErrorTemplate = require("hbs!templates/error");
+
+module.exports = Marionette.View.extend({
+    el: 'body',
+    template: ErrorTemplate,
+
+    initialize: function(options){
+        _.extend(this, options);
+        Backbone.history.navigate('error');
+    },
+
+    onRender: function(){
+        console.log("ErrorView onRender");
+    },
+
+    //it's required to show data in hbs template
+    serializeData: function () {
+        return {
+            message: this.message || 'No error message specified',
+            error: this.error
+        };
+    }
+
+});
+
+
+});
+
 define('models/LoginModel',['require','exports','module','backbone'],function (require, exports, module) {/**
  * Created by dmitry on 27.09.16.
  */
@@ -8684,7 +8747,7 @@ module.exports = Backbone.Collection.extend({
 });
 });
 
-define('AppController',['require','exports','module','marionette','./views/login/LoginView','./views/animals/AnimalsView','./views/admin/AdminView','./models/LoginModel','./models/UserModel','./models/AnimalsCollection','./models/UsersCollection','underscore'],function (require, exports, module) {/**
+define('AppController',['require','exports','module','marionette','./views/login/LoginView','./views/animals/AnimalsView','./views/admin/AdminView','./views/ErrorView','./models/LoginModel','./models/UserModel','./models/AnimalsCollection','./models/UsersCollection','underscore'],function (require, exports, module) {/**
  * Created by dmitry on 19.08.16.
  */
 
@@ -8694,6 +8757,7 @@ var Marionette = require('marionette');
 var LoginView = require('./views/login/LoginView');
 var AnimalsView = require('./views/animals/AnimalsView');
 var AdminView = require('./views/admin/AdminView');
+var ErrorView = require('./views/ErrorView');
 
 //models
 var LoginModel = require('./models/LoginModel');
@@ -8725,7 +8789,7 @@ function showloginView(loginModel) {
     }).render();
 }
 
-function handleRequest(success, error){
+function handleRequest(successF, errorF) {
     var loginModel = updateLoginModel(new LoginModel());
     if (!loginModel.user.login) {
         showloginView(loginModel);
@@ -8735,11 +8799,11 @@ function handleRequest(success, error){
         'GET',
         loginModel,
         {
-            success: success,
+            success: successF,
 
             error: function (model, response, options) {
-                if (error){
-                    return error(model, response, options);
+                if (errorF) {
+                    return errorF(model, response, options);
                 }
 
                 console.log('login/check - error: ' + response.responseText);
@@ -8747,6 +8811,14 @@ function handleRequest(success, error){
             }
         }
     )
+}
+
+function showError(msg) {
+    console.log('AppController: error is invoked');
+    var errorView = new ErrorView({
+        message: msg
+    });
+    errorView.render();
 }
 
 //Started with marionette 3.0 Marionette.Object should be used instead of Marionette.Controller
@@ -8788,12 +8860,14 @@ module.exports = Marionette.Object.extend({
                 });
                 animalsView.render();
             } else {
-                console.error("user dosn't have admin permissions");
-                //todo надо показывать какую-то error page
+                var msg = "user " + user.login +  " doesn't have admin permissions";
+                console.error(msg);
+                showError(msg);
             }
-
         });
-    }
+    },
+
+    error: showError
 });
 
 });
