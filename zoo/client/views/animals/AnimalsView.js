@@ -4,7 +4,7 @@
 'use strict';
 
 var Marionette = require('marionette');
-var AnimalsScreenTemplate = require("hbs!templates/animalsScreen");
+var AnimalsScreenTemplate = require("hbs!templates/animals/animalsScreen");
 
 var MainMenuView = require("./../MainMenuView");
 var AnimalsTableView = require("./AnimalsTableView");

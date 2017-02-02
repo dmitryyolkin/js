@@ -4,7 +4,7 @@
 'use strict';
 
 var Marionette = require('marionette');
-var AnimalRowTemplate = require("hbs!templates/animalRow");
+var AnimalRowTemplate = require("hbs!templates/animals/animalRow");
 
 module.exports = Marionette.View.extend({
     //all template's content will be wrapped with 'tr' tag

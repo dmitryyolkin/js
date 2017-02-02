@@ -8017,11 +8017,11 @@ module.exports = Marionette.View.extend({
 
 
 /* START_TEMPLATE */
-define('hbs!templates/animalsScreen',['hbs','hbs/handlebars'], function( hbs, Handlebars ){ 
+define('hbs!templates/animals/animalsScreen',['hbs','hbs/handlebars'], function( hbs, Handlebars ){ 
 var t = Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
     return "<div id=\"animalsScreen\">\n    <div id=\"mainMenu\"></div>\n    <div id=\"animals\"></div>\n</div>";
 },"useData":true});
-Handlebars.registerPartial('templates/animalsScreen', t);
+Handlebars.registerPartial('templates/animals/animalsScreen', t);
 return t;
 });
 /* END_TEMPLATE */
@@ -8062,18 +8062,18 @@ module.exports = Marionette.View.extend({
 
 
 /* START_TEMPLATE */
-define('hbs!templates/animalsTable',['hbs','hbs/handlebars'], function( hbs, Handlebars ){ 
+define('hbs!templates/animals/animalsTable',['hbs','hbs/handlebars'], function( hbs, Handlebars ){ 
 var t = Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
     return "<table class=\"animals-table\">\n    <thead>\n        <tr>\n            <th>Name</th>\n            <th>Species</th>\n            <th>Age</th>\n            <th>Cage</th>\n            <th>Keeper</th>\n        </tr>\n    </thead>\n\n    <!-- insert data -->\n    <tbody></tbody>\n    <tfoot>\n        <tr>\n            <td colspan=\"5\">Animals table footer</td>\n        </tr>\n    </tfoot>\n</table>";
 },"useData":true});
-Handlebars.registerPartial('templates/animalsTable', t);
+Handlebars.registerPartial('templates/animals/animalsTable', t);
 return t;
 });
 /* END_TEMPLATE */
 ;
 
 /* START_TEMPLATE */
-define('hbs!templates/animalRow',['hbs','hbs/handlebars'], function( hbs, Handlebars ){ 
+define('hbs!templates/animals/animalRow',['hbs','hbs/handlebars'], function( hbs, Handlebars ){ 
 var t = Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
     var stack1, helper;
 
@@ -8091,18 +8091,18 @@ var t = Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(de
     + this.escapeExpression(this.lambda(((stack1 = (depth0 != null ? depth0.keeper : depth0)) != null ? stack1.surname : stack1), depth0))
     + "</td>";
 },"useData":true});
-Handlebars.registerPartial('templates/animalRow', t);
+Handlebars.registerPartial('templates/animals/animalRow', t);
 return t;
 });
 /* END_TEMPLATE */
 ;
-define('views/animals/AnimalRowView',['require','exports','module','marionette','hbs!templates/animalRow'],function (require, exports, module) {/**
+define('views/animals/AnimalRowView',['require','exports','module','marionette','hbs!templates/animals/animalRow'],function (require, exports, module) {/**
  * Created by dmitry on 31.10.16.
  */
 
 
 var Marionette = require('marionette');
-var AnimalRowTemplate = require("hbs!templates/animalRow");
+var AnimalRowTemplate = require("hbs!templates/animals/animalRow");
 
 module.exports = Marionette.View.extend({
     //all template's content will be wrapped with 'tr' tag
@@ -8145,13 +8145,13 @@ module.exports = Marionette.CollectionView.extend({
 
 });
 
-define('views/animals/AnimalsTableView',['require','exports','module','marionette','hbs!templates/animalsTable','./AnimalTableBodyView'],function (require, exports, module) {/**
+define('views/animals/AnimalsTableView',['require','exports','module','marionette','hbs!templates/animals/animalsTable','./AnimalTableBodyView'],function (require, exports, module) {/**
  * Created by dmitry on 28.09.16.
  */
 
 
 var Marionette = require('marionette');
-var AnimalsTemplate = require("hbs!templates/animalsTable");
+var AnimalsTemplate = require("hbs!templates/animals/animalsTable");
 var AnimalTableBodyView = require("./AnimalTableBodyView");
 
 
@@ -8183,13 +8183,13 @@ module.exports = Marionette.View.extend({
 
 });
 
-define('views/animals/AnimalsView',['require','exports','module','marionette','hbs!templates/animalsScreen','./../MainMenuView','./AnimalsTableView'],function (require, exports, module) {/**
+define('views/animals/AnimalsView',['require','exports','module','marionette','hbs!templates/animals/animalsScreen','./../MainMenuView','./AnimalsTableView'],function (require, exports, module) {/**
  * Created by dmitry on 28.09.16.
  */
 
 
 var Marionette = require('marionette');
-var AnimalsScreenTemplate = require("hbs!templates/animalsScreen");
+var AnimalsScreenTemplate = require("hbs!templates/animals/animalsScreen");
 
 var MainMenuView = require("./../MainMenuView");
 var AnimalsTableView = require("./AnimalsTableView");
