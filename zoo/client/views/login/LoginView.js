@@ -34,11 +34,10 @@ module.exports = Marionette.View.extend({
         this.model.save(
             {
                 user: {
-                    //todo pass should be encrypted on client before sending
                     login: $(this.el).find('input#login').val(),
-                    password: $(this.el).find('input#pass').val()
-                },
-                rememberMe: $(this.el).find('input#rememberMe').val() == 'on'
+                    password: $(this.el).find('input#pass').val(),
+                    rememberMe: $(this.el).find('input#rememberMe').val() == 'on'
+                }
             },
             {
                 success: function(model, response, options){

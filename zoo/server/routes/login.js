@@ -39,7 +39,7 @@ router.post('/', function (req, res) {
             req.session.user_id = user.id;
 
             // Remember me
-            if (req.body.rememberMe) {
+            if (req.body.user.rememberMe) {
                 saveLoginToken(
                     new LoginToken({login: user.login}),
                     req, res, user
