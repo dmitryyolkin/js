@@ -4,6 +4,8 @@
 'use strict';
 
 var express = require('express');
+var auth = require('./auth');
+
 var MongoModels = require('../schema/MongoModels');
 
 var User = MongoModels.User;
@@ -11,26 +13,16 @@ var LoginToken = MongoModels.LoginToken;
 
 var router = express.Router();
 
-router.get('/', function (req, res) {
-    var userId = req.session.user_id;
-    if (userId) {
-        User.findById(userId, function (error, user) {
-            if (user) {
-                req.currentUser = user;
-                sendUser(req, res, user);
-            } else {
-                res
-                    .status(401)
-                    .send("User is not found: " + userId);
-            }
-        });
-    } else if (req.cookies.loginToken) {
-        authenticateFromLoginToken(req, res);
-    } else {
+//todo If authentication is done on Server with auth then Login is no need anymore
+
+router.get('/', auth.checkPermissions, function (req, res) {
+    if (!req.currentUser) {
         res
-            .status(401)
-            .send('User is not specified in coockie')
+            .status(500)
+            .send("Auth.checkPermission is passed but currentUser is absent from req.currentUser");
     }
+
+    sendUser(req, res, req.currentUser);
 });
 
 router.post('/', function (req, res) {
@@ -56,47 +48,6 @@ router.post('/', function (req, res) {
     });
 });
 
-/**
- * If user decides to keep him/her logged in then
- * System saves info about him/her in cookie in shape of loginToken
- */
-function authenticateFromLoginToken(req, res) {
-    var cookieLoginToken = JSON.parse(req.cookies.loginToken);
-    LoginToken.findOne({
-        login: cookieLoginToken.login,
-        series: cookieLoginToken.series,
-        token: cookieLoginToken.token
-    }, (function (err, token) {
-        if (!token) {
-            res
-                .status(401)
-                .send("Login token is specified for login: " + cookieLoginToken.login);
-            return;
-        }
-
-        User.findOne({login: token.login}, function (err, user) {
-            if (user) {
-                //we save user id in session to avoid token verification within the one session
-                req.session.user_id = user.id;
-                req.currentUser = user;
-
-                token.token = token.randomToken();
-                saveLoginToken(
-                    token,
-                    req, res, user
-                )
-            } else {
-                res
-                    .status(401)
-                    .send(
-                        "Login Token exists but user is not found. Login: "
-                        + cookieLoginToken.login + ", userId: " + token.login
-                    );
-            }
-        });
-    }));
-}
-
 function saveLoginToken(loginToken, req, res, user) {
 
     //cookie set this way can not be read with JS on client
@@ -115,7 +66,7 @@ function sendUser(req, res, user) {
     res
         .status(200)
         .send({
-            user :{
+            user: {
                 login: user.login,
                 name: user.name,
                 surname: user.surname,

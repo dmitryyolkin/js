@@ -4,6 +4,8 @@
 'use strict';
 
 var express = require('express');
+var auth = require('./auth');
+
 var mongoModels = require('../schema/MongoModels');
 var logger = require('../logger');
 
@@ -11,7 +13,7 @@ var router = express.Router();
 var Animal = mongoModels.Animal;
 
 //get all animals
-router.get('/', function (req, res, next) {
+router.get('/', auth.checkPermissions, function (req, res, next) {
     logger.log('get /animals');
     Animal
         .find({})
@@ -33,7 +35,7 @@ router.get('/', function (req, res, next) {
 });
 
 //get animal by id
-router.get('/:id', function (req, res, next) {
+router.get('/:id', auth.checkPermissions, function (req, res, next) {
     var animalId = req.params.id;
     logger.log('get /animals/:id ' + animalId);
     Animal

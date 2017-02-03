@@ -4,6 +4,8 @@
 'use strict';
 
 var express = require('express');
+var auth = require('./auth');
+
 var mongoModels = require('../schema/MongoModels');
 var User = mongoModels.User;
 var Animal = mongoModels.Animal;
@@ -12,7 +14,7 @@ var logger = require('../logger');
 var router = express.Router();
 
 //get all users
-router.get('/', function (req, res, next) {
+router.get('/', auth.checkPermissions, function (req, res, next) {
     logger.log('get /users');
     User
         .find({})
@@ -32,7 +34,7 @@ router.get('/', function (req, res, next) {
 });
 
 //get user by id
-router.get('/:id', function (req, res, next) {
+router.get('/:id', auth.checkPermissions, function (req, res, next) {
     var userId = req.params.id;
     logger.log('get /users/:id ' + userId);
     User
@@ -60,7 +62,7 @@ router.get('/:id', function (req, res, next) {
 });
 
 //create new user
-router.post('/', function (req, res, next) {
+router.post('/', auth.checkPermissions, function (req, res, next) {
     logger.log('post /users');
 
     var body = req.body;
@@ -87,7 +89,7 @@ router.post('/', function (req, res, next) {
 });
 
 //update user
-router.put('/:id', function (req, res, next) {
+router.put('/:id', auth.checkPermissions, function (req, res, next) {
     var userId = req.params.id;
     logger.log('put /users/:id ' + userId);
 
@@ -170,7 +172,7 @@ function updateUser(newUser, userId, res) {
 }
 
 //delete user
-router.delete('/:id', function (req, res, next) {
+router.delete('/:id', auth.checkPermissions, function (req, res, next) {
     logger.log('delete /users/:id ' + req.params.id);
     User.remove(
         {_id: req.params.id},

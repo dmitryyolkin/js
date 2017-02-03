@@ -4,11 +4,12 @@
 'use strict';
 
 var express = require('express');
+var auth = require('./auth');
+
 var json2csv = require('json2csv');
 var excel = require('node-excel-export');
 
 var mongoModels = require('../schema/MongoModels');
-
 var router = express.Router();
 var Animal = mongoModels.Animal;
 
@@ -42,7 +43,7 @@ function mapAnimalsSchema2SimpleJson(animals) {
 }
 
 //get all animals (json)
-router.get('/json/', function (req, res, next) {
+router.get('/json/', auth.checkPermissions, function (req, res, next) {
     console.log('get /export/json');
     exportAnimals(function (animals) {
 
@@ -66,7 +67,7 @@ router.get('/json/', function (req, res, next) {
 });
 
 //get all animals (csv)
-router.get('/csv/', function (req, res, next) {
+router.get('/csv/', auth.checkPermissions, function (req, res, next) {
     console.log('get /export/csv');
     exportAnimals(function (animals) {
         var animalsCsv = json2csv({
@@ -111,7 +112,7 @@ router.get('/csv/', function (req, res, next) {
 });
 
 //get all animals (excel)
-router.get('/excel/', function (req, res, next) {
+router.get('/excel/', auth.checkPermissions, function (req, res, next) {
     console.log('get /export/excel');
     exportAnimals(function (animals) {
 
