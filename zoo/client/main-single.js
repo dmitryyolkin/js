@@ -8844,22 +8844,24 @@ function handleRequest(successF, errorF) {
         showloginView(loginModel);
     }
 
-    loginModel.sync(
-        'GET',
-        loginModel,
-        {
-            success: successF,
+    successF(loginModel);
 
-            error: function (model, response, options) {
-                if (errorF) {
-                    return errorF(model, response, options);
-                }
-
-                console.log('login/check - error: ' + response.responseText);
-                showloginView(loginModel);
-            }
-        }
-    )
+    //loginModel.sync(
+    //    'GET',
+    //    loginModel,
+    //    {
+    //        success: successF,
+    //
+    //        error: function (model, response, options) {
+    //            if (errorF) {
+    //                return errorF(model, response, options);
+    //            }
+    //
+    //            console.log('login/check - error: ' + response.responseText);
+    //            showloginView(loginModel);
+    //        }
+    //    }
+    //)
 }
 
 function showError(msg) {
@@ -8921,7 +8923,7 @@ module.exports = Marionette.Object.extend({
 
 });
 
-define('App',['require','exports','module','backbone','marionette','./AppRouter','./AppController'],function (require, exports, module) {/**
+define('App',['require','exports','module','backbone','marionette','jquery','./AppRouter','./AppController','./views/error/ErrorScreenView'],function (require, exports, module) {/**
  * Created by dmitry on 19.08.16.
  */
 
@@ -8929,20 +8931,23 @@ define('App',['require','exports','module','backbone','marionette','./AppRouter'
 //imports
 var Backbone = require('backbone');
 var Marionette = require('marionette');
+var $ = require('jquery');
 
 //routers
 var AppRouter = require('./AppRouter');
 var AppController = require('./AppController');
 
+var ErrorScreenView = require('./views/error/ErrorScreenView');
+
 //init
 module.exports = Marionette.Application.extend({
-    initialize: function(options) {
+    initialize: function (options) {
         //some initializers can be added here
         //keep it just in case as an example
         console.log('App.initialize is invoked with options: ' + options);
     },
 
-    onStart: function() {
+    onStart: function () {
 
 
         //init controller and router
@@ -8951,7 +8956,26 @@ module.exports = Marionette.Application.extend({
             controller: appController
         });
 
-        if (Backbone.history){
+        $.ajaxSetup({
+            cache: false,
+            statusCode: {
+                401: function(jqXHR, textStatus, errorThrown){
+                    // Redirect the to the login page.
+                    console.log('ajaxSetup for 401 status is invoked with ' + textStatus + 'errorThrows: ' + errorThrown);
+                    Backbone.history.navigate('login');
+                },
+                403: function(jqXHR, textStatus, errorThrown) {
+                    // 403 -- Access denied
+                    console.log('ajaxSetup for 403 status is invoked with ' + textStatus + 'errorThrows: ' + errorThrown);
+                    new ErrorScreenView({
+                        message: "Use doesn't have permissions",
+                        error: errorThrown
+                    }).render();
+                }
+            }
+        });
+
+        if (Backbone.history) {
             Backbone.history.start();
         }
     }

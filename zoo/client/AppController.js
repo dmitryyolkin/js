@@ -46,22 +46,25 @@ function handleRequest(successF, errorF) {
         showloginView(loginModel);
     }
 
-    loginModel.sync(
-        'GET',
-        loginModel,
-        {
-            success: successF,
+    successF(loginModel);
 
-            error: function (model, response, options) {
-                if (errorF) {
-                    return errorF(model, response, options);
-                }
-
-                console.log('login/check - error: ' + response.responseText);
-                showloginView(loginModel);
-            }
-        }
-    )
+    //todo remove it
+    //loginModel.sync(
+    //    'GET',
+    //    loginModel,
+    //    {
+    //        success: successF,
+    //
+    //        error: function (model, response, options) {
+    //            if (errorF) {
+    //                return errorF(model, response, options);
+    //            }
+    //
+    //            console.log('login/check - error: ' + response.responseText);
+    //            showloginView(loginModel);
+    //        }
+    //    }
+    //)
 }
 
 function showError(msg) {
