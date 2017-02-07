@@ -8,7 +8,7 @@ var MongoModels = require('../schema/MongoModels');
 var User = MongoModels.User;
 var LoginToken = MongoModels.LoginToken;
 
-function authenticateFromLoginToken(req, res, next) {
+function authenticateFromLoginToken(req, res, next, checkAdminPermissions) {
     var cookieLoginToken = JSON.parse(req.cookies.loginToken);
     LoginToken.findOne({
         login: cookieLoginToken.login,
@@ -24,12 +24,19 @@ function authenticateFromLoginToken(req, res, next) {
 
         User.findOne({login: token.login}, function (err, user) {
             if (user) {
-                //we save user id in session to avoid token verification within the one session
-                req.session.user_id = user.id;
-                req.currentUser = user;
+                if (checkAdminPermissions && !isAdmin(user)) {
+                    res
+                        .status(403)
+                        .send("User doesn't have Admin permissions: " + user.id);
+                } else {
 
-                token.token = token.randomToken();
-                saveLoginToken(token, req, res, next)
+                    //we save user id in session to avoid token verification within the one session
+                    req.session.user_id = user.id;
+                    req.currentUser = user;
+
+                    token.token = token.randomToken();
+                    saveLoginToken(token, req, res, next)
+                }
             } else {
                 res
                     .status(401)
@@ -56,28 +63,47 @@ function saveLoginToken(loginToken, req, res, next) {
     });
 }
 
+function isAdmin(user) {
+    return user.roles && user.roles.indexOf('ADMIN') != -1;
+}
+
+function validate(req, res, next, checkAdminPermissions) {
+    var userId = req.session.user_id;
+    if (userId) {
+        User.findById(userId, function (error, user) {
+            if (user) {
+                if (checkAdminPermissions && !isAdmin(user)) {
+                    res
+                        .status(403)
+                        .send("User doesn't have Admin permissions: " + userId);
+                }
+                req.currentUser = user;
+                next();
+            } else {
+                res
+                    .status(401)
+                    .send("User is not found: " + userId);
+            }
+        });
+    } else if (req.cookies.loginToken) {
+        authenticateFromLoginToken(req, res, next, checkAdminPermissions);
+    } else {
+        res
+            .status(401)
+            .send('User is not specified in cookie')
+    }
+}
+
 module.exports = {
 
-    //load user
+    //check if there is a user with login/password
     checkPermissions: function (req, res, next) {
-        var userId = req.session.user_id;
-        if (userId) {
-            User.findById(userId, function (error, user) {
-                if (user) {
-                    req.currentUser = user;
-                    next();
-                } else {
-                    res
-                        .status(401)
-                        .send("User is not found: " + userId);
-                }
-            });
-        } else if (req.cookies.loginToken) {
-            authenticateFromLoginToken(req, res, next);
-        } else {
-            res
-                .status(401)
-                .send('User is not specified in cookie')
-        }
+        validate(req, res, next, false);
+    },
+
+    //check if there is a user with login/password having Admin permissions
+    checkAdminPermissions: function (req, res, next) {
+        validate(req, res, next, true);
     }
+
 };

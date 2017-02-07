@@ -8838,6 +8838,14 @@ function showloginView(loginModel) {
     }).render();
 }
 
+function showError(msg) {
+    console.log('AppController: error is invoked');
+    var errorView = new ErrorScreenView({
+        message: msg
+    });
+    errorView.render();
+}
+
 function handleRequest(successF, errorF) {
     var loginModel = updateLoginModel(new LoginModel());
     if (!loginModel.user.login) {
@@ -8845,31 +8853,6 @@ function handleRequest(successF, errorF) {
     }
 
     successF(loginModel);
-
-    //loginModel.sync(
-    //    'GET',
-    //    loginModel,
-    //    {
-    //        success: successF,
-    //
-    //        error: function (model, response, options) {
-    //            if (errorF) {
-    //                return errorF(model, response, options);
-    //            }
-    //
-    //            console.log('login/check - error: ' + response.responseText);
-    //            showloginView(loginModel);
-    //        }
-    //    }
-    //)
-}
-
-function showError(msg) {
-    console.log('AppController: error is invoked');
-    var errorView = new ErrorScreenView({
-        message: msg
-    });
-    errorView.render();
 }
 
 //Started with marionette 3.0 Marionette.Object should be used instead of Marionette.Controller
@@ -8904,17 +8887,10 @@ module.exports = Marionette.Object.extend({
         console.log('AppController: admin is invoked');
         handleRequest(function (model, response, options) {
             console.log('login/check - success');
-            var user = model.user;
-            if (user.roles && user.roles.indexOf('ADMIN') != -1) {
-                var animalsView = new AdminView({
-                    collection: new UsersCollection()
-                });
-                animalsView.render();
-            } else {
-                var msg = "user " + user.login +  " doesn't have admin permissions";
-                console.error(msg);
-                showError(msg);
-            }
+            var animalsView = new AdminView({
+                collection: new UsersCollection()
+            });
+            animalsView.render();
         });
     },
 
@@ -8956,20 +8932,18 @@ module.exports = Marionette.Application.extend({
             controller: appController
         });
 
+        //add global error handler for Backbone
         $.ajaxSetup({
             cache: false,
             statusCode: {
                 401: function(jqXHR, textStatus, errorThrown){
                     // Redirect the to the login page.
-                    console.log('ajaxSetup for 401 status is invoked with ' + textStatus + 'errorThrows: ' + errorThrown);
                     Backbone.history.navigate('login');
                 },
                 403: function(jqXHR, textStatus, errorThrown) {
                     // 403 -- Access denied
-                    console.log('ajaxSetup for 403 status is invoked with ' + textStatus + 'errorThrows: ' + errorThrown);
                     new ErrorScreenView({
-                        message: "Use doesn't have permissions",
-                        error: errorThrown
+                        message: "Use doesn't have permissions"
                     }).render();
                 }
             }
