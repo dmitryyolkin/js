@@ -48,6 +48,7 @@ router.post('/', function (req, res) {
     });
 });
 
+//todo добавить handler в параметры и вынести в хелпер
 function saveLoginToken(loginToken, req, res, user) {
 
     //cookie set this way can not be read with JS on client

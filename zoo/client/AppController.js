@@ -34,29 +34,6 @@ function updateLoginModel(loginModel) {
     return loginModel;
 }
 
-function showloginView(loginModel) {
-    var loginView = new LoginView({
-        model: updateLoginModel(loginModel)
-    }).render();
-}
-
-function showError(msg) {
-    console.log('AppController: error is invoked');
-    var errorView = new ErrorScreenView({
-        message: msg
-    });
-    errorView.render();
-}
-
-function handleRequest(successF, errorF) {
-    var loginModel = updateLoginModel(new LoginModel());
-    if (!loginModel.user.login) {
-        showloginView(loginModel);
-    }
-
-    successF(loginModel);
-}
-
 //Started with marionette 3.0 Marionette.Object should be used instead of Marionette.Controller
 module.exports = Marionette.Object.extend({
 
@@ -67,34 +44,35 @@ module.exports = Marionette.Object.extend({
 
     login: function () {
         console.log('AppController: login is invoked');
-        showloginView(new LoginModel())
+        var loginView = new LoginView({
+            model: updateLoginModel(new LoginModel())
+        }).render();
     },
 
     animals: function () {
         console.log('AppController: animals is invoked');
-        handleRequest(function (model, response, options) {
-            console.log('login/check - success)');
 
-            //details how collection can be shown
-            //http://stackoverflow.com/questions/27673371/backbone-js-collection-view-example-using-marionette-template
-            var animalsView = new AnimalsView({
-                collection: new AnimalsCollection()
-            });
-            animalsView.render();
+        //details how collection can be shown
+        //http://stackoverflow.com/questions/27673371/backbone-js-collection-view-example-using-marionette-template
+        var animalsView = new AnimalsView({
+            collection: new AnimalsCollection()
         });
-
+        animalsView.render();
     },
 
     admin: function () {
         console.log('AppController: admin is invoked');
-        handleRequest(function (model, response, options) {
-            console.log('login/check - success');
-            var animalsView = new AdminView({
-                collection: new UsersCollection()
-            });
-            animalsView.render();
+        var animalsView = new AdminView({
+            collection: new UsersCollection()
         });
+        animalsView.render();
     },
 
-    error: showError
+    error: function(){
+        console.log('AppController: error is invoked');
+        var errorView = new ErrorScreenView({
+            message: 'Some error happened'
+        });
+        errorView.render();
+    }
 });

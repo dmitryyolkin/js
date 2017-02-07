@@ -37,7 +37,11 @@ module.exports = Marionette.Application.extend({
             statusCode: {
                 401: function(jqXHR, textStatus, errorThrown){
                     // Redirect the to the login page.
-                    Backbone.history.navigate('login');
+                    Backbone.history.navigate(
+                        'login',
+                        //we have to invoke 'animals' handler
+                        {trigger: true}
+                    );
                 },
                 403: function(jqXHR, textStatus, errorThrown) {
                     // 403 -- Access denied
