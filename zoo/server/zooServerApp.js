@@ -2,12 +2,13 @@
 
 var express = require('express');
 var expressSession = require('express-session');
-var path = require('path');
-var favicon = require('serve-favicon');
+var passport = require('passport');
 
 var logger = require('./logger');
 var log4js = require('log4js');
 
+var path = require('path');
+var favicon = require('serve-favicon');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var methodOverride = require('method-override');
@@ -69,6 +70,10 @@ app.use(expressSession({
     maxAge: 30 * 60 * 1000 //period when session is expired
   }
 }));
+
+//initialize passport for user authentification
+app.use(passport.initialize());
+app.use(passport.session());
 
 //https://github.com/expressjs/method-override
 //Причиной этому является тот факт, что мы не можем полагаться на браузер в вопросах определения HTTP-методов (например, таких как DELETE).
