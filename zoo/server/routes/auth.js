@@ -31,16 +31,61 @@ passport.use(new LocalStrategy(
         passReqToCallback: true
     },
     function (req, login, password, done) {
-        if (req.cookies.loginToken) {
-            //try to optimize with login token
-            authenticateFromLoginToken(req, login, password, done);
-        } else {
-            authenticateFromLoginPassword(login, password, done);
-        }
+        //regsiter new user
+        User.findOne({login: login}, function (err, user) {
+            if (err) {
+                //some error happened
+                return done(err);
+            }
+
+            if (!user) {
+                //user is absent
+                //params
+                //  null is error
+                //  false means that credentials is wrong
+                //  message that should be provided in UI
+                return done(null, false, {message: 'Incorrect login'});
+            }
+
+            if (user && user.authenticate(password)) {
+                //user is found
+                return done(null, user);
+            } else {
+                //password is not correct
+                return done(null, false, {message: 'Incorrect password'});
+            }
+        });
     }
 ));
 
-function authenticateFromLoginToken(req, login, password, done) {
+function authenticateFromLoginPassword(req, res, next) {
+    //Check user credentials
+    passport.authenticate('local',
+        function (err, user, info) {
+            if (err) {
+                return next(err);
+            }
+            if (!user) {
+                res
+                    .status(401)
+                    .send('User is not specified in cookie')
+            }
+
+            //user exists
+            if (req.body.rememberMe) {
+                saveLoginToken(
+                    new LoginToken({login: user.login}),
+                    user, req, res, next
+                );
+            } else {
+                //log in
+                logIn(req, user, next);
+            }
+
+        })(req, res, next);
+}
+
+function authenticateFromLoginToken(req, res, next) {
     var cookieLoginToken = JSON.parse(req.cookies.loginToken);
     LoginToken.findOne({
         login: cookieLoginToken.login,
@@ -48,58 +93,29 @@ function authenticateFromLoginToken(req, login, password, done) {
         token: cookieLoginToken.token
     }, (function (err, token) {
         if (err) {
-            return done(err);
+            return next(err);
         }
 
         if (!token) {
-            return authenticateFromLoginPassword(login, password, done);
+            return authenticateFromLoginPassword(req, res, next);
         }
 
         User.findOne({login: token.login}, function (err, user) {
-            if (user) {
-                return done(null, user)
+            if (!user) {
+                var message =
+                    "Login Token exists but user is not found. Login: " +
+                    cookieLoginToken.login +
+                    ", userId: " + token.login;
+                return next(new Error(message));
             }
 
-            var message =
-                "Login Token exists but user is not found. Login: " +
-                cookieLoginToken.login +
-                ", userId: " + token.login;
-
-            return done(
-                null, false,
-                {
-                    message: message
-                }
-            );
+            token.token = token.randomToken();
+            saveLoginToken(
+                token, user,
+                req, res, next
+            )
         });
     }));
-}
-
-function authenticateFromLoginPassword(login, password, done) {
-//regsiter new user
-    User.findOne({login: login}, function (err, user) {
-        if (err) {
-            //some error happened
-            return done(err);
-        }
-
-        if (!user) {
-            //user is absent
-            //params
-            //  null is error
-            //  false means that credentials is wrong
-            //  message that should be provided in UI
-            return done(null, false, {message: 'Incorrect login'});
-        }
-
-        if (user && user.authenticate(password)) {
-            //user is found
-            return done(null, user);
-        } else {
-            //password is not correct
-            return done(null, false, {message: 'Incorrect password'});
-        }
-    });
 }
 
 function saveLoginToken(loginToken, user, req, res, next) {
@@ -119,7 +135,7 @@ function saveLoginToken(loginToken, user, req, res, next) {
 }
 
 function logIn(req, user, next) {
-    req.logIn(user, function (err) {
+    req.login(user, function (err) {
         if (err) {
             return next(err);
         }
@@ -136,66 +152,15 @@ module.exports = {
     //check if there is a user with login/password
     checkPermissions: function (req, res, next) {
         if (req.user) {
-            //user already exists in request
-            var userId = user.id;
-            User.findById(userId, function (error, user) {
-                if (error) {
-                    return next(error);
-                }
-
-                if (!user) {
-                    res
-                        .status(401)
-                        .send("User is not found: " + userId);
-
-                } else {
-                    next();
-                }
-            });
+            //user exists
+            next();
+        } else if (req.cookies.loginToken) {
+            //auth from login token
+            authenticateFromLoginToken(req, res, next);
         } else {
-
-            //Check user credentials
-            passport.authenticate('local',
-                function (err, user, info) {
-                    if (err) {
-                        return next(err);
-                    }
-                    if (!user) {
-                        res
-                            .status(401)
-                            .send('User is not specified in cookie')
-                    }
-
-                    //user exists
-                    if (req.body.rememberMe) {
-                        LoginToken.findOne({
-                            login: user.login
-                        }, (function (err, loginToken) {
-                            if (err) {
-                                return next(err);
-                            }
-
-                            if (!loginToken) {
-                                //create login token if it doesn't exist
-                                loginToken = new LoginToken({login: user.login});
-                            } else {
-                                //update token code for next usage
-                                loginToken.token = loginToken.randomToken();
-                            }
-                            saveLoginToken(
-                                loginToken, user,
-                                req, res, next
-                            );
-                        }));
-                    } else {
-                        //log in
-                        logIn(req, user, next);
-                    }
-
-                })(req, res, next);
+            //check new user
+            authenticateFromLoginPassword(req, res, next);
         }
-
-
     },
 
     //check if there is a user with login/password having Admin permissions
