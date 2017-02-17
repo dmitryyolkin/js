@@ -8027,7 +8027,7 @@ return t;
 /* START_TEMPLATE */
 define('hbs!templates/mainMenu',['hbs','hbs/handlebars'], function( hbs, Handlebars ){ 
 var t = Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
-    return "<header>\n    <ul>\n        <li><a href=\"#\">Home</a></li>\n        <li class=\"export\">\n            <a href=\"javascript:void(0)\" class=\"dropbtn\">Export</a>\n            <div class=\"export-dropdown\">\n                <a href=\"/export/json\">JSON</a>\n                <a href=\"/export/csv\">CSV</a>\n                <a href=\"/export/excel\">Excel</a>\n            </div>\n        </li>\n        <!-- todo this option should be shown only if there is Admin permissions-->\n        <li><a href=\"#admin\">Admin</a></li>\n        <li class=\"log-out\">\n            <a href=\"#login\">Log out</a>\n        </li>\n    </ul>\n</header>\n";
+    return "<header>\n    <ul>\n        <li><a href=\"#\">Home</a></li>\n        <li class=\"export\">\n            <a href=\"javascript:void(0)\" class=\"dropbtn\">Export</a>\n            <div class=\"export-dropdown\">\n                <a href=\"/export/json\">JSON</a>\n                <a href=\"/export/csv\">CSV</a>\n                <a href=\"/export/excel\">Excel</a>\n            </div>\n        </li>\n        <!-- todo this option should be shown only if there is Admin permissions-->\n        <li><a href=\"#admin\">Admin</a></li>\n        <li class=\"log-out\">\n            <a href=\"logout\">Log out</a>\n        </li>\n    </ul>\n</header>\n";
 },"useData":true});
 Handlebars.registerPartial('templates/mainMenu', t);
 return t;

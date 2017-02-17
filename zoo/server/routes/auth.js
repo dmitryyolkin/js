@@ -66,7 +66,7 @@ function authenticateFromLoginPassword(req, res, next) {
                 return next(err);
             }
             if (!user) {
-                res
+                return res
                     .status(401)
                     .send('User is not specified in cookie')
             }
