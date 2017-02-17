@@ -35,7 +35,7 @@ module.exports = Marionette.View.extend({
             {
                 login: $(this.el).find('input#login').val(),
                 password: $(this.el).find('input#pass').val(),
-                rememberMe: $(this.el).find('input#rememberMe').val() == 'on'
+                rememberMe: $(this.el).find('input#rememberMe')[0].checked
             },
             {
                 success: function(model, response, options){
