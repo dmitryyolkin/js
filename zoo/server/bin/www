@@ -5,32 +5,16 @@
  */
 
 var app = require('../zooServerApp');
+var defaults = require('../defaults');
 var debug = require('debug')('server:server');
 
 var http = require('http');
 var https = require('https');
 var fs = require('fs');
 
-var HTTP_PORT = normalizePort(process.env.PORT || 3000); //usually it's 80 but it requires requires elevated privileges for non root applications
-var HTTPS_PORT = normalizePort(process.env.PORT || 4000); //usually it's 443 but it requires requires elevated privileges for non root applications
 
-app.set('port', HTTP_PORT);
-app.set('sslport', HTTPS_PORT);
-
-//redirect from http to https
-//todo this middleware redict function is not invoked - check it
-app.all('/*', function (req, res, next) {
-    if (/^http$/.test(req.protocol)) {
-        var host = req.headers.host.replace(/:[0-9]+$/g, ""); // strip the port # if any
-        if ((HTTPS_PORT != null) && HTTPS_PORT !== 443) {
-            return res.redirect("https://" + host + ":" + HTTPS_PORT + req.url, 301);
-        } else {
-            return res.redirect("https://" + host + req.url, 301);
-        }
-    } else {
-        return next();
-    }
-});
+app.set('port', defaults.HTTP_PORT);
+app.set('sslport', defaults.HTTPS_PORT);
 
 /**
  * Create HTTP server.
@@ -45,8 +29,8 @@ var httpsServer = https.createServer(
     app
 );
 
-configureServer(httpServer, HTTP_PORT, onHttpError, onHttpListening);
-configureServer(httpsServer, HTTPS_PORT, onHttpsError, onHttpsListening);
+configureServer(httpServer, defaults.HTTP_PORT, onHttpError, onHttpListening);
+configureServer(httpsServer, defaults.HTTPS_PORT, onHttpsError, onHttpsListening);
 
 function configureServer(server, port, errorHandler, listenHandler) {
     /**
@@ -59,11 +43,11 @@ function configureServer(server, port, errorHandler, listenHandler) {
 }
 
 function onHttpError(error) {
-    return onError(error, HTTP_PORT);
+    return onError(error, defaults.HTTP_PORT);
 }
 
 function onHttpsError(error) {
-    return onError(error, HTTPS_PORT);
+    return onError(error, defaults.HTTPS_PORT);
 }
 
 /**
@@ -113,21 +97,3 @@ function onListening(server) {
     debug('Listening on ' + bind);
 }
 
-/**
- * Normalize a port into a number, string, or false.
- */
-function normalizePort(val) {
-    var port = parseInt(val, 10);
-
-    if (isNaN(port)) {
-        // named pipe
-        return val;
-    }
-
-    if (port >= 0) {
-        // port number
-        return port;
-    }
-
-    return false;
-}

@@ -85,6 +85,20 @@ app.use(methodOverride());
 app.use(express.static(path.join(__dirname, '../static')));
 app.use(express.static(path.join(__dirname, '../client')));
 
+//redirect from http to https
+app.use(function (req, res, next) {
+  if (/^http$/.test(req.protocol)) {
+    var host = req.headers.host.replace(/:[0-9]+$/g, ""); // strip the port # if any
+    if ((defaults.HTTPS_PORT != null) && defaults.HTTPS_PORT !== 443) {
+      return res.redirect("https://" + host + ":" + defaults.HTTPS_PORT + req.url, 301);
+    } else {
+      return res.redirect("https://" + host + req.url, 301);
+    }
+  } else {
+    return next();
+  }
+});
+
 app.use('/', index);
 app.use('/users', users);
 app.use('/animals', animals);
