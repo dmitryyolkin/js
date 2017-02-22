@@ -170,16 +170,14 @@ module.exports = {
             res
                 .status(401)
                 .send('User is not specified in cookie')
-        }
-
-        if (!isAdmin(user)) {
+        } else if (!isAdmin(user)) {
             res
                 .status(403)
                 .send("User doesn't have Admin permissions: " + user.id);
+        } else {
+            //user has all nessesary permissions
+            next();
         }
-
-        //user has all nessesary permissions
-        next();
     }
 
 };
