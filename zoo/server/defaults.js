@@ -25,6 +25,7 @@ function normalizePort(val) {
 module.exports = {
     //mongo data store
     'db-uri': 'mongodb://localhost/zoo',
+    'db-uri-test': 'mongodb://localhost/zoo_test',
 
     //listen ports
     HTTP_PORT: normalizePort(process.env.PORT || 3000), //usually it's 80 but it requires elevated privileges for non root applications

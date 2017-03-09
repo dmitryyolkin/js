@@ -29,6 +29,15 @@ var exporter = require('./routes/exporter');
 
 var app = express();
 
+//process.env.NODE_ENV - we can specify one of as follows:
+//development
+//test
+//production
+//Depending on value different properties can be used
+var env = app.get('env');
+var testMode = env == 'test';
+var developmentMode = env == 'development';
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
@@ -43,15 +52,20 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-//init test data
-testDataProvider.createAdmin();
-testDataProvider.createZoo();
-
 //line below is required not to get line below
-//Mongoose: mpromise (mongoose's default promise library) is deprecated,
+//Mongoose: promise (mongoose's default promise library) is deprecated,
 //plug in your own promise library instead: http://mongoosejs.com/docs/promises.html
 mongoose.Promise = global.Promise;
-mongoose.connect(defaults['db-uri']);
+
+if (testMode){
+    //test mode
+    mongoose.connect(defaults['db-uri-test']);
+} else {
+    //init test data
+    testDataProvider.createAdmin();
+    testDataProvider.createZoo();
+    mongoose.connect(defaults['db-uri']);
+}
 
 //it allows to have req.session variable
 var db = mongoose.connection;
@@ -86,18 +100,20 @@ app.use(express.static(path.join(__dirname, '../static')));
 app.use(express.static(path.join(__dirname, '../client')));
 
 //redirect from http to https
-app.use(function (req, res, next) {
-  if (/^http$/.test(req.protocol)) {
-    var host = req.headers.host.replace(/:[0-9]+$/g, ""); // strip the port # if any
-    if ((defaults.HTTPS_PORT != null) && defaults.HTTPS_PORT !== 443) {
-      return res.redirect("https://" + host + ":" + defaults.HTTPS_PORT + req.url, 301);
+if (!testMode){
+  app.use(function (req, res, next) {
+    if (/^http$/.test(req.protocol)) {
+      var host = req.headers.host.replace(/:[0-9]+$/g, ""); // strip the port # if any
+      if ((defaults.HTTPS_PORT != null) && defaults.HTTPS_PORT !== 443) {
+        return res.redirect(301, "https://" + host + ":" + defaults.HTTPS_PORT + req.url);
+      } else {
+        return res.redirect(301, "https://" + host + req.url);
+      }
     } else {
-      return res.redirect("https://" + host + req.url, 301);
+      return next();
     }
-  } else {
-    return next();
-  }
-});
+  });
+}
 
 app.use('/', index);
 app.use('/users', users);
@@ -117,7 +133,7 @@ app.use(function(req, res, next) {
 
 // development error handler
 // will print stacktrace
-if (app.get('env') === 'development') {
+if (developmentMode) {
   app.use(function(err, req, res, next) {
     res.status(err.status || 500);
     res.render('error', {
