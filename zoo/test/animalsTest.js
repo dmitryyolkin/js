@@ -12,6 +12,7 @@ var mongoModels = require('../server/schema/MongoModels');
 var Animal = mongoModels.Animal;
 
 //Подключаем dev-dependencies
+var mocha = require('mocha');
 var chai = require('chai');
 var chaiHttp = require('chai-http');
 var should = chai.should();
@@ -21,24 +22,31 @@ chai.use(chaiHttp);
 
 //Наш основной блок
 describe('animals', function () {
-    var authCheckPermissionsStub;
-    var authCheckAdminPermissionsStub;
+    // var authCheckPermissionsStub;
+    // var authCheckAdminPermissionsStub;
 
-    before(function(){
-        var defaultCallback = function(req, res, next){
-            return next();
-        };
+    mocha.before('init tests', function(){
+        //stub approach doesn't work
+        //it looks like auth stub instance is not used by server
+        // var defaultCallback = function(req, res, next){
+        //     console.log("test - checkPermissions");
+        //     return next();
+        // };
+        //
+        // authCheckPermissionsStub = sinon.stub(auth, 'checkPermissions', defaultCallback);
+        // authCheckAdminPermissionsStub = sinon.stub(auth, 'checkAdminPermissions', defaultCallback);
 
-        //todo не вызывается этот стаб
-        authCheckPermissionsStub = sinon.stub(auth, 'checkPermissions', defaultCallback);
-        authCheckAdminPermissionsStub = sinon.stub(auth, 'checkAdminPermissions', defaultCallback);
-
-        //invoke next() because var checkPermissions has signature like function (req, res, next){..} and 'next' argument has 3rd index
-        //authCheckPermissionsStub.callArg(2);
-        //authCheckAdminPermissionsStub.callArg(2);
+        //set non undefined user in request to ignore permissions check
+        server.use(function(req, res, next) {
+            req.isAuthenticated = function() {
+                return true;
+            };
+            req.user = {};
+            next();
+        });
     });
 
-    beforeEach('remove animals from DB', function (done) { //Перед каждым тестом чистим базу
+    mocha.beforeEach('remove animals from DB', function (done) { //Перед каждым тестом чистим базу
         Animal.remove({}, function (err) {
             if (err) {
                 done(err);
@@ -49,7 +57,7 @@ describe('animals', function () {
         })
     });
 
-    afterEach(function() {
+    mocha.afterEach(function() {
         //assert that our middleware was called once for each test
         sinon.assert.calledOnce(authCheckPermissionsStub);
         sinon.assert.calledOnce(authCheckAdminPermissionsStub);
