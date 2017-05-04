@@ -5,6 +5,7 @@ import './App.css';
 class App extends Component {
   render() {
     return (
+      //  JSX
       <div className="App">
         <div className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
