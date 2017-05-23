@@ -1,0 +1,5 @@
+/* disable button */
+button[disabled] {
+    cursor: not-allowed;
+    opacity: .5;
+}

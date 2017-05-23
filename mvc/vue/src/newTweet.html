@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Vue test</title>
+
+        <!-- css -->
+        <link rel=””stylesheet type=”text/css” href=”../css/default.css”/>
+
+        <!-- basic JS scripts -->
+        <!-- http://tachyons.io/ - Create fast loading, highly readable, and 100% responsive interfaces with as little css as possible -->
+        <link rel="stylesheet" href="https://unpkg.com/tachyons@4.7.0/css/tachyons.min.css"/>
+    </head>
+    <body class="flex items-center justify-center vh-100">
+        <div id="twitterVue" class="w-75 center ba b--black-10">
+            <div class="pv2 tc bb b--black-10">
+                <h1 class="ma0 f5 normal">Compose New Tweet</h1>
+            </div>
+            <div class="bg-near-white pa3">
+
+                <!--v-model added two-binding between user input and our instance's data model -->
+                <textarea name="tweet" rows="3"
+                          class="w-100 br2 ba b--black-10 pa2"
+                          placeholder="Write your tweet here"
+                          v-model="tweet"></textarea>
+                <div class="mt3 tr">
+
+                    <!-- 'disabled' attribute links button's disabled property with a certain function specified with Vue.js  -->
+                    <button
+                            :disabled="tweetIsEmpty"
+                            class="button-reset bg-blue bn white f6 fw5 pv2 ph3 br2 pointer dim">Tweet</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- scripts -->
+        <script src="../node_modules/vue/dist/vue.min.js" defer></script>
+        <script src="./newTweet.js" defer></script>
+    </body>
+</html>
