@@ -1,7 +1,7 @@
 {
   "name": "vue-app",
   "version": "1.0.0",
-  "description": "veu test app",
+  "description": "veu test app - example from https://medium.freecodecamp.com/vue-js-introduction-for-people-who-know-just-enough-jquery-to-get-by-eab5aa193d77",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

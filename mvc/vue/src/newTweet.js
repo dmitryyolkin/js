@@ -6,6 +6,7 @@
 new Vue({
     el: '#twitterVue',
     data: {
+        //this tweet value is specified with v-model attribute specified for an element
         tweet: ''
     },
     computed: {
