@@ -27,20 +27,24 @@
                           v-model="tweet"></textarea>
                 <div class="mt3 tr">
 
+                    <!--show how many characters remained -->
+                    <span class="mr3 black-70">{{ charactersRemaining }}</span>
                     <!-- 'disabled' attribute links button's disabled property with a certain function specified with Vue.js  -->
                     <button
-                            :disabled="tweetIsEmpty"
+                            :disabled="tweetIsOutOfRange"
                             class="button-reset bg-blue bn white f6 fw5 pv2 ph3 br2 pointer dim">Tweet</button>
                 </div>
             </div>
 
             <!-- Show reference to Vue data model -->
             <p>The value of <strong>tweet </strong>is: {{tweet}} </p>
-            <p>The value of <strong>tweetIsEmpty</strong>is: {{tweetIsEmpty}}</p>
+            <p>The length of <strong>trweet</strong> is: {{tweet.length}}</p>
+            <p>The length of <strong>charactersRemaining</strong> is: {{charactersRemaining}}</p>
+            <p>The value of <strong>tweetIsEmpty</strong> is: {{tweetIsOutOfRange}}</p>
         </div>
 
         <!-- scripts -->
         <script src="../node_modules/vue/dist/vue.min.js" defer></script>
-        <script src="./newTweet.js" defer></script>
+        <script src="../dist/newTweet.js" defer></script>
     </body>
 </html>
