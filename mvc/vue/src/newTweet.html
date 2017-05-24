@@ -5,11 +5,12 @@
         <title>Vue test</title>
 
         <!-- css -->
-        <link rel=””stylesheet type=”text/css” href=”../css/default.css”/>
+        <link rel="stylesheet" type="text/css" href="../css/style.css"/>
 
         <!-- basic JS scripts -->
         <!-- http://tachyons.io/ - Create fast loading, highly readable, and 100% responsive interfaces with as little css as possible -->
         <link rel="stylesheet" href="https://unpkg.com/tachyons@4.7.0/css/tachyons.min.css"/>
+
     </head>
     <body class="flex items-center justify-center vh-100">
         <div id="twitterVue" class="w-75 center ba b--black-10">
@@ -19,6 +20,7 @@
             <div class="bg-near-white pa3">
 
                 <!--v-model added two-binding between user input and our instance's data model -->
+                <!-- two-binding means your model has data from DOM element and you can refer to data model from html -->
                 <textarea name="tweet" rows="3"
                           class="w-100 br2 ba b--black-10 pa2"
                           placeholder="Write your tweet here"
@@ -31,6 +33,10 @@
                             class="button-reset bg-blue bn white f6 fw5 pv2 ph3 br2 pointer dim">Tweet</button>
                 </div>
             </div>
+
+            <!-- Show reference to Vue data model -->
+            <p>The value of <strong>tweet </strong>is: {{tweet}} </p>
+            <p>The value of <strong>tweetIsEmpty</strong>is: {{tweetIsEmpty}}</p>
         </div>
 
         <!-- scripts -->
