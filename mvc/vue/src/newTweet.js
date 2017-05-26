@@ -9,7 +9,8 @@ new Vue({
     el: '#twitterVue',
     data: {
         //this tweet value is specified with v-model attribute specified for an element
-        tweet: ''
+        tweet: '',
+        photo: null
     },
     //this is computed properties that can be refered from html code
     computed: {
@@ -24,6 +25,35 @@ new Vue({
         },
         underTenMark: function() {
             return this.charactersRemaining <= 10;
+        },
+        photoHasBeenUploaded: function() {
+            return this.photo !== null;
+        }
+    },
+
+    //this 'methods' block contains all event handlers and methods that don't require two-binding model
+    methods: {
+        triggerFileUpload: function() {
+            //It is notoriously difficult to style HTML5 file inputs.
+            //One workaround involves putting an input in the DOM and hiding it with CSS.
+            //In order for the browser to open the native file picker, this input must be clicked.
+            //How it gets clicked, and how the client handles what the user uploads,
+            //though, is a different matter.
+            this.$refs.photoUpload.click();
+        },
+        handlePhotoUpload: function(e) {
+            var self = this;
+            var reader = new FileReader();
+
+            reader.onload = function(e) {
+                // Set that base 64 string to our data model's 'photo' key
+                self.photo = (e.target.result);
+            };
+            // Read upload file as base 64  string
+            reader.readAsDataURL(e.target.files[0]);
+        },
+        removePhoto: function() {
+            this.photo = null;
         }
     }
 });

@@ -1,5 +1,16 @@
+/* this import provies us with list of icons */
+@import url(https://fonts.googleapis.com/icon?family=Material+Icons);
+
 /* disable button */
 button[disabled] {
     cursor: not-allowed;
     opacity: .5;
+}
+
+.hide {
+    clip: rect(1px, 1px, 1px, 1px);
+    height: 1px;
+    overflow: hidden;
+    position: absolute !important;
+    width: 1px;
 }
