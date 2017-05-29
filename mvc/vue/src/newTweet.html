@@ -30,12 +30,26 @@
                     Vue offers a handful of template helpers (v-if, v-show, v-else , etc) to help you show and hide content conditionally.
                 -->
                 <div v-if="photoHasBeenUploaded" class="bg-black-10 pa2 flex">
-                    <figure class="ma0 relative flex items-center justify-center">
+                    <!--
+                        v-for directive expects you to provide an expression in the form of
+                        (thing, index) in collectionOfThings,
+                            where collectionOfThings is the source array,
+                            thing is an alias for the array element being iterated on,
+                            and index is, well, the index of that element.
+                    -->
+                    <figure
+                            class="ma0 relative flex items-center justify-center"
+                            v-for="(photo, index) in photos">
                         <button
-                                @click="removePhoto"
+                                @click="removePhoto(index)"
                                 class="button-reset pointer dim bn bg-black h2 w2 br-100 white flex items-center justify-center absolute absolute--fill-l center">
                             <i class="material-icons f5">close</i>
                         </button>
+
+                        <!--
+                            Please keep in mind 'photo' variable name in v-bind:src="photo" below
+                            should be equal to variable from 'v-for' vue instruction above
+                        -->
                         <img v-bind:src="photo" class="h3 w3" alt="Uploaded photo">
                     </figure>
                 </div>
@@ -46,7 +60,7 @@
                     Luckily, Vue allows us to attach a handler to the input’s change event via the @change directive.
                     The method that we pass to this directive will be invoked after a user selects a file from the file picker.
                 -->
-                <input @change="handlePhotoUpload" ref="photoUpload" type="file" class="hide">
+                <input multiple @change="handlePhotoUpload" ref="photoUpload" type="file" class="hide">
                 <div class="mt3 flex justify-between">
                     <div>
                         <!-- we simulate clicking on 'photoUpload' input above  -->

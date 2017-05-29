@@ -10,7 +10,7 @@ new Vue({
     data: {
         //this tweet value is specified with v-model attribute specified for an element
         tweet: '',
-        photo: null
+        photos: []
     },
     //this is computed properties that can be refered from html code
     computed: {
@@ -27,7 +27,7 @@ new Vue({
             return this.charactersRemaining <= 10;
         },
         photoHasBeenUploaded: function() {
-            return this.photo !== null;
+            return this.photos.length > 0;
         }
     },
 
@@ -43,17 +43,18 @@ new Vue({
         },
         handlePhotoUpload: function(e) {
             var self = this;
-            var reader = new FileReader();
-
-            reader.onload = function(e) {
-                // Set that base 64 string to our data model's 'photo' key
-                self.photo = (e.target.result);
-            };
-            // Read upload file as base 64  string
-            reader.readAsDataURL(e.target.files[0]);
+            var files = e.target.files;
+            for(let i = 0; i < files.length; i++) {
+                let reader = new FileReader();
+                reader.onloadend = function (evt) {
+                    self.photos.push(evt.target.result);
+                };
+                reader.readAsDataURL(files[i]);
+            }
         },
-        removePhoto: function() {
-            this.photo = null;
+        removePhoto: function(index) {
+            console.log('photo N' + index + ' is removed');
+            this.photos.splice(index, 1);
         }
     }
 });
