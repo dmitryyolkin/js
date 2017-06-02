@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- в нём мы подключаем библиотеки и стили для тестирования, нашего кода там нет -->
+    <meta charset="utf-8">
+    <title>Mocha Tests</title>
+
+    <!-- подключаем стили Mocha, для отображения результатов -->
+    <link rel="stylesheet" href="../../node_modules/mocha/mocha.css"/>
+
+    <!-- подключаем библиотеку Mocha -->
+    <script src="../../node_modules/mocha/mocha.js"></script>
+    <script src="../../node_modules/chai/chai.js"></script>
+    <script src="../../node_modules/sinon/pkg/sinon.js"></script>
+
+    <!-- настраиваем Mocha: предстоит BDD-тестирование -->
+    <script>
+        mocha.setup('bdd');
+        <!-- в chai есть много всего, выносим assert в глобальную область -->
+        var assert = chai.assert;
+    </script>
+
+    <!-- config dependencies and require -->
+    <script src="../../static/components/cajon/cajon.js"></script>
+    <script>
+        require.config({
+            baseUrl: '../', // 'client' folder
+            paths: {
+                //we have to specify paths relative to baseUrl even if Idea highlights the path
+                'jquery': '../static/components/jquery/dist/jquery.min',
+                'underscore': '../static/components/underscore/underscore-min',
+                'backbone': '../static/components/backbone/backbone-min',
+                'backbone.radio': '../static/components/backbone.radio/build/backbone.radio.min',
+                'marionette': "../static/components/backbone.marionette/lib/backbone.marionette.min",
+
+                // Handlerbars plugins
+                hbs: "../static/components/hbs/hbs",
+
+                // Marionette application
+                App: "./App"
+            },
+
+            hbs: {
+                helperDirectory: 'templates/helpers/',
+                i18nDirectory: 'templates/i18n',
+                templateExtension: "hbs",
+                disableI18n: true,
+                disableHelpers: false
+            },
+
+            //для поддержки сторонних модулей описанных не через define
+            //если в данном случае убрать блок shim, то мы не сможем обращаться к
+            //underscore через require('underscore')
+            //напр-р, jQuery уже поддерживает стандарт AMD и его не обязательно описывать в блоке shim
+            shim: {
+                underscore: {
+                    exports: '_'
+                }
+            }
+        });
+    </script>
+
+</head>
+
+<body>
+
+<!-- в элементе с id="mocha" будут результаты тестов -->
+<div id="mocha"></div>
+
+<script>
+    require([
+        "backbone",
+        "jquery",
+
+        //Spec
+        "./specs/pow_spec.js",
+
+        //Models
+        "./specs/models/AnimalsCollection_spec.js"
+
+    ], function(Backbone, $){
+        Backbone.$ = $;
+        mocha.run();
+    })
+</script>
+
+</body>
+</html>

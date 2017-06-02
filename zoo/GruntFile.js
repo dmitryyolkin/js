@@ -64,16 +64,55 @@ module.exports = function (grunt) {
                     "static/less/styles.min.css": "static/less/styles.less"
                 }
             }
-        }
+        },
 
+        //server side test are run with simple-mocha
+        //https://github.com/yaymukund/grunt-simple-mocha
+        simplemocha: {
+            src: 'test/**/*.js',
+            options: {
+                globals: ['should', 'cptable', 'QUOTE'],
+                timeout: 10000,
+                ignoreLeaks: false,
+                ui: 'bdd'
+            }
+        },
+
+        // Tests (client-side) run with help of Phantom.js
+        //https://github.com/kmiyashiro/grunt-mocha
+        mocha: {
+            test: {
+                src: ["client/test/**/*.html"],
+                options: {
+                    log: true, // uncomment if you want to see console.log output
+                    logErrors: true,
+                    reporter: "Spec",
+                    ui: "bdd",
+                    //set run = false when mocha.run() will be run asynchroniously with AMD
+                    //Otherwise ser run = true (for synchronous run)
+                    run: false,
+                    ignoreLeaks: true
+                }
+            }
+        },
+
+        concurrent: {
+            //speed up building process
+            verify: [
+                'simplemocha',
+                'mocha:test'
+            ]
+        }
     });
 
     grunt.loadNpmTasks('grunt-contrib-requirejs');
-
     grunt.loadNpmTasks('grunt-contrib-less');
+    grunt.loadNpmTasks('grunt-simple-mocha');
+    grunt.loadNpmTasks('grunt-mocha');
+    grunt.loadNpmTasks('grunt-concurrent');
 
     // Default task.
     //grunt.registerTask('default', ['clean', 'requirejs:centralized']);
-    grunt.registerTask('default', ['less', 'requirejs:centralized']);
+    grunt.registerTask('default', ['less', 'concurrent:verify', 'requirejs:centralized']);
 };
 

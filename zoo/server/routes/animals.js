@@ -44,21 +44,24 @@ router.get('/:id', auth.checkPermissions, function (req, res, next) {
         })
         .populate('keeper')
         .populate('cage')
-        .exec(function (err, anumals) {
+        .exec(function (err, animals) {
             if (err) {
                 logger.error(err);
                 res
                     .status(500)
                     .send(err);
-            } else if (users.length > 1) {
-                logger.error(err);
+            } else if (animals.length == 0) {
+                res
+                    .status(404)
+                    .send('Animal is not found with id: ' + animalId);
+            } else if (animals.length > 1) {
                 res
                     .status(500)
                     .send('More than 1 animal is found with id: ' + animalId);
             } else {
                 res
                     .status(200)
-                    .send(anumals[0]);
+                    .send(animals[0]);
             }
         })
 

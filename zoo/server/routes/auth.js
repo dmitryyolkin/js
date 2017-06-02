@@ -12,6 +12,8 @@ var MongoModels = require('../schema/MongoModels');
 var User = MongoModels.User;
 var LoginToken = MongoModels.LoginToken;
 
+var authId = Math.floor(Math.random() * 100000);
+
 passport.serializeUser(function (user, done) {
     done(null, user.id);
 });
@@ -149,8 +151,11 @@ function isAdmin(user) {
 
 module.exports = {
 
+    id: authId,
+
     //check if there is a user with login/password
     checkPermissions: function (req, res, next) {
+        console.log('auth.checkPermissions is invoked for authId: ' + authId);
         if (req.user) {
             //user exists
             next();
@@ -165,6 +170,7 @@ module.exports = {
 
     //check if there is a user with login/password having Admin permissions
     checkAdminPermissions: function (req, res, next) {
+        console.log('auth.checkAdminPermissions is invoked for authId: ' + authId);
         var user = req.user;
         if (!user) {
             res
