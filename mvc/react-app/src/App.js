@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
-import Clock from './Clock';
 import logo from './logo.svg';
 import './App.css';
+
+//components
+import Clock from './components/Clock';
+import Toggle from './components/Toggle';
 
 function TestFuncComponent(prop){
     return <b>{prop.name}</b>;
@@ -30,6 +33,7 @@ class App extends Component {
         <TestClassComponent freeFormAttr="test: TestClassComponent-freeFormAttr"/>
 
         <Clock />
+        <Toggle />
       </div>
     );
   }
