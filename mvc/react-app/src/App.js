@@ -5,6 +5,7 @@ import './App.css';
 //components
 import Clock from './components/Clock';
 import Toggle from './components/Toggle';
+import LoginControl from './components/LoginControl';
 
 function TestFuncComponent(prop){
     return <b>{prop.name}</b>;
@@ -34,6 +35,7 @@ class App extends Component {
 
         <Clock />
         <Toggle />
+        <LoginControl />
       </div>
     );
   }
