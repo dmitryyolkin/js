@@ -6,6 +6,7 @@ import './App.css';
 import Clock from './components/Clock';
 import Toggle from './components/Toggle';
 import LoginControl from './components/LoginControl';
+import List from './components/List';
 
 function TestFuncComponent(prop){
     return <b>{prop.name}</b>;
@@ -36,6 +37,7 @@ class App extends Component {
         <Clock />
         <Toggle />
         <LoginControl />
+        <List elements={[1,2,3,4,5]} />
       </div>
     );
   }
