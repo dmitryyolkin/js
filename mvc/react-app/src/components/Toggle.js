@@ -1,8 +1,6 @@
 /**
  * Created by dmitry on 07.07.17.
  */
-'use strict';
-
 import React from 'react';
 
 class Toggle extends React.Component {
