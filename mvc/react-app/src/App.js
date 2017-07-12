@@ -7,6 +7,7 @@ import Clock from './components/Clock';
 import Toggle from './components/Toggle';
 import LoginControl from './components/LoginControl';
 import List from './components/List';
+import InputForm from './components/forms/InputForm';
 
 function TestFuncComponent(prop){
     return <b>{prop.name}</b>;
@@ -38,6 +39,7 @@ class App extends Component {
         <Toggle />
         <LoginControl />
         <List elements={[1,2,3,4,5]} />
+        <InputForm defaultValue="Hello, world!"/>
       </div>
     );
   }
