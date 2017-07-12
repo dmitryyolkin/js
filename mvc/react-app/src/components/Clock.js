@@ -1,7 +1,7 @@
 /**
  * Created by dmitry on 06.07.17.
  */
-import React, { Component } from 'react';
+import React from 'react';
 
 class Clock extends React.Component {
 
