@@ -8,6 +8,7 @@ import Toggle from './components/Toggle';
 import LoginControl from './components/LoginControl';
 import List from './components/List';
 import InputForm from './components/forms/InputForm';
+import ChildrenContainer from './components/forms/ChildrenContainer';
 import WaterTemperatureCalculator from './components/forms/WaterTemperatureCalculator'
 
 function TestFuncComponent(prop){
@@ -38,10 +39,14 @@ class App extends Component {
 
         <Clock />
         <Toggle />
-        <LoginControl />
-        <List elements={[1,2,3,4,5]} />
-        <InputForm defaultValue="Hello, world!"/>
-        <WaterTemperatureCalculator />
+        <ChildrenContainer>
+            <h2>Below there are some forms examples</h2>
+
+            <LoginControl />
+            <List elements={[1,2,3,4,5]} />
+            <InputForm defaultValue="Hello, world!"/>
+            <WaterTemperatureCalculator />
+        </ChildrenContainer>
       </div>
     );
   }
