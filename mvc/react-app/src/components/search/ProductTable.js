@@ -6,10 +6,18 @@ import ProductCategoryRow from './ProductCategoryRow';
 import ProductRow from './ProductRow';
 
 class ProductTable extends React.Component {
+
     render() {
         var rows = [];
         var lastCategory = null;
+
+        const filterText = this.props.filterText;
+        const inStockOnly = this.props.inStockOnly;
         this.props.products.forEach(function(product){
+            if (product.name.indexOf(filterText) === -1 || (!product.stocked && inStockOnly)) {
+                return;
+            }
+
             if (product.category !== lastCategory) {
                 rows.push(<ProductCategoryRow category={product.category} key={product.category} />);
             }
